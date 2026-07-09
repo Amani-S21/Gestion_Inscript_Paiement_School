@@ -29,5 +29,5 @@ npm run dev
 Compte initial cree au demarrage si la base est vide:
 
 - Login: `admin`
-- Mot de passe: `Admin@12345`
+- Mot de passe: `admin123`
 
