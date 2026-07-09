@@ -1,0 +1,53 @@
+import { createBrowserRouter } from "react-router-dom";
+
+import { ProtectedRoute } from "../components/ProtectedRoute";
+import { AppLayout } from "../layouts/AppLayout";
+import { LoginPage } from "../pages/auth/LoginPage";
+import { DashboardPage } from "../pages/dashboard/DashboardPage";
+import { StudentsPage } from "../pages/students/StudentsPage";
+import { RegistrationsPage } from "../pages/registrations/RegistrationsPage";
+import { PaymentsPage } from "../pages/payments/PaymentsPage";
+import { ReportsPage } from "../pages/reports/ReportsPage";
+import { AdministrationPage } from "../pages/administration/AdministrationPage";
+import { StudentSpacePage } from "../pages/student-space/StudentSpacePage";
+
+export const router = createBrowserRouter([
+  { path: "/login", element: <LoginPage /> },
+  { path: "/forbidden", element: <div className="grid min-h-screen place-items-center text-slate-600">Acces non autorise.</div> },
+  {
+    element: <ProtectedRoute />,
+    children: [
+      {
+        element: <AppLayout />,
+        children: [
+          { index: true, element: <DashboardPage /> },
+          {
+            element: <ProtectedRoute permission="students.view" />,
+            children: [{ path: "students", element: <StudentsPage /> }],
+          },
+          {
+            element: <ProtectedRoute permission="registrations.view" />,
+            children: [{ path: "registrations", element: <RegistrationsPage /> }],
+          },
+          {
+            element: <ProtectedRoute permission="payments.view" />,
+            children: [{ path: "payments", element: <PaymentsPage /> }],
+          },
+          {
+            element: <ProtectedRoute permission="reports.view" />,
+            children: [{ path: "reports", element: <ReportsPage /> }],
+          },
+          {
+            element: <ProtectedRoute permission="admin.settings" />,
+            children: [{ path: "administration", element: <AdministrationPage /> }],
+          },
+          {
+            element: <ProtectedRoute role="ROLE_ELEVE" permission="student.self.view" />,
+            children: [{ path: "student", element: <StudentSpacePage /> }],
+          },
+        ],
+      },
+    ],
+  },
+]);
+
