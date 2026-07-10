@@ -34,7 +34,9 @@ ROLE_PERMISSION_MAP = {
     ROLE_COMPTABLE: [
         "dashboard.view",
         "students.manage",
+        "students.view",
         "registrations.manage",
+        "registrations.view",
         "payments.manage",
         "payments.view",
         "receipts.print",
@@ -71,4 +73,3 @@ ROLE_PERMISSION_MAP = {
         "notifications.view",
     ],
 }
-

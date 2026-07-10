@@ -4,7 +4,7 @@ from uuid import uuid4
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import func
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from app.auth.password_handler import hash_password
 from app.auth.dependencies import require_permission
@@ -14,8 +14,8 @@ from app.models.communication import Announcement
 from app.models.finance import Fee, FeeType, Payment, Receipt
 from app.models.registration import Registration
 from app.models.student import Student
-from app.models.user import Role, User
-from app.permissions.codes import ROLE_ELEVE
+from app.models.user import Permission, Role, User
+from app.permissions.codes import ROLE_ELEVE, ROLE_PERMISSION_MAP
 from app.schemas.common_schema import AnnouncementIn, FeeIn, PaymentIn, RegistrationIn, StructureIn
 from app.schemas.student_schema import StudentCreate, StudentUpdate
 
@@ -46,6 +46,32 @@ def serialize_student(student: Student) -> dict:
     }
 
 
+def serialize_user(user: User) -> dict:
+    return {
+        "id": user.id,
+        "nom": user.nom,
+        "postnom": user.postnom,
+        "prenom": user.prenom,
+        "email": user.email,
+        "login": user.login,
+        "telephone": user.telephone,
+        "statut": user.statut,
+        "type_utilisateur": user.type_utilisateur,
+        "roles": [{"id": role.id, "code": role.code, "nom": role.nom} for role in user.roles],
+        "permissions": sorted({permission.code for role in user.roles for permission in role.permissions}),
+    }
+
+
+def serialize_role(role: Role) -> dict:
+    return {
+        "id": role.id,
+        "code": role.code,
+        "nom": role.nom,
+        "description": role.description,
+        "permissions": sorted(permission.code for permission in role.permissions),
+    }
+
+
 @router.get("/dashboard", dependencies=[Depends(require_permission("dashboard.view"))])
 def dashboard(db: Session = Depends(get_db)):
     today = datetime.utcnow().date()
@@ -59,6 +85,64 @@ def dashboard(db: Session = Depends(get_db)):
         "paiements_recents": db.query(Payment).order_by(Payment.date_paiement.desc()).limit(8).all(),
         "inscriptions_recentes": db.query(Registration).order_by(Registration.id.desc()).limit(8).all(),
     }
+
+
+@router.get("/users", dependencies=[Depends(require_permission("admin.users"))])
+def list_users(q: str | None = None, page: int = 1, size: int = 20, db: Session = Depends(get_db)):
+    query = db.query(User).options(joinedload(User.roles).joinedload(Role.permissions))
+    if q:
+        like = f"%{q}%"
+        query = query.filter(
+            (User.nom.ilike(like))
+            | (User.prenom.ilike(like))
+            | (User.email.ilike(like))
+            | (User.login.ilike(like))
+        )
+    total = query.count()
+    users = query.order_by(User.id.desc()).offset((page - 1) * size).limit(size).all()
+    return {"items": [serialize_user(user) for user in users], "total": total, "page": page, "size": size}
+
+
+@router.post("/users", dependencies=[Depends(require_permission("admin.users"))])
+def create_user(payload: dict, db: Session = Depends(get_db)):
+    role_code = payload.get("role_code") or payload.get("type_utilisateur")
+    if role_code not in ROLE_PERMISSION_MAP:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Role invalide.")
+    if db.query(User).filter((User.login == payload.get("login")) | (User.email == payload.get("email"))).first():
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Login ou email deja utilise.")
+
+    role = db.query(Role).filter(Role.code == role_code).first()
+    if not role:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Role introuvable.")
+    user = User(
+        nom=payload.get("nom") or "Utilisateur",
+        postnom=payload.get("postnom"),
+        prenom=payload.get("prenom"),
+        email=payload.get("email"),
+        login=payload.get("login"),
+        telephone=payload.get("telephone"),
+        adresse=payload.get("adresse"),
+        mot_de_passe=hash_password(payload.get("password") or "Passer@123"),
+        statut=payload.get("statut") or "actif",
+        type_utilisateur=role_code,
+    )
+    user.roles.append(role)
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return serialize_user(user)
+
+
+@router.get("/roles", dependencies=[Depends(require_permission("admin.roles"))])
+def list_roles(db: Session = Depends(get_db)):
+    roles = db.query(Role).options(joinedload(Role.permissions)).order_by(Role.nom.asc()).all()
+    return [serialize_role(role) for role in roles]
+
+
+@router.get("/permissions", dependencies=[Depends(require_permission("admin.roles"))])
+def list_permissions(db: Session = Depends(get_db)):
+    permissions = db.query(Permission).order_by(Permission.code.asc()).all()
+    return [{"id": permission.id, "code": permission.code, "description": permission.description} for permission in permissions]
 
 
 @router.get("/students", dependencies=[Depends(require_permission("students.view"))])
