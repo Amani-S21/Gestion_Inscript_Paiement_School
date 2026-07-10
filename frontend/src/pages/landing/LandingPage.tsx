@@ -8,9 +8,7 @@ import {
   FileCheck2,
   GraduationCap,
   Landmark,
-  LayoutDashboard,
   LockKeyhole,
-  ReceiptText,
   School,
   ShieldCheck,
   Sparkles,
@@ -133,19 +131,20 @@ export function LandingPage() {
         </div>
       </header>
 
-      <section className="relative overflow-hidden border-b border-slate-200/80">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/images/nengapeta-school-hero.png')" }}
+      <section className="relative min-h-[calc(100vh-64px)] overflow-hidden border-b border-slate-200/80">
+        <img
+          src="/images/nengapeta-school-hero.png"
+          alt=""
+          className="absolute inset-y-4 right-0 h-[calc(100%-2rem)] w-full object-contain object-center opacity-95 lg:object-right"
         />
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(90deg, rgba(244,248,247,0.98) 0%, rgba(244,248,247,0.94) 38%, rgba(244,248,247,0.62) 68%, rgba(244,248,247,0.32) 100%), linear-gradient(180deg, rgba(255,255,255,0.72) 0%, rgba(244,248,247,0.92) 100%)",
+              "linear-gradient(90deg, rgba(244,248,247,0.98) 0%, rgba(244,248,247,0.95) 40%, rgba(244,248,247,0.68) 66%, rgba(244,248,247,0.26) 100%), linear-gradient(180deg, rgba(255,255,255,0.62) 0%, rgba(244,248,247,0.9) 100%)",
           }}
         />
-        <div className="relative mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 md:py-16 lg:grid-cols-[1.02fr_0.98fr] lg:px-8 lg:py-20">
+        <div className="relative mx-auto grid min-h-[calc(100vh-64px)] max-w-7xl gap-8 px-4 py-12 sm:px-6 md:py-16 lg:grid-cols-[0.82fr_1.18fr] lg:px-8 lg:py-20">
           <div className="flex flex-col justify-center">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a] shadow-sm">
               <Sparkles size={14} />
@@ -186,49 +185,7 @@ export function LandingPage() {
             </div>
           </div>
 
-          <div className="relative">
-            <div className="rounded-[18px] border border-white bg-white/90 p-4 shadow-2xl shadow-slate-900/10 backdrop-blur">
-              <div className="rounded-[14px] bg-[#0b1f33] p-4 text-white">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-emerald-200">Tableau de bord</p>
-                    <h2 className="mt-1 text-[19px] font-black">Suivi institutionnel</h2>
-                  </div>
-                  <LayoutDashboard size={22} className="text-emerald-200" />
-                </div>
-                <div className="mt-5 grid grid-cols-2 gap-3">
-                  {[
-                    ["Eleves inscrits", "428"],
-                    ["Paiements", "312"],
-                    ["Solde global", "$ 8 940"],
-                    ["Recus edites", "286"],
-                  ].map(([label, value]) => (
-                    <div key={label} className="rounded-[12px] bg-white/10 p-3 ring-1 ring-white/10">
-                      <p className="text-[11px] font-semibold text-slate-300">{label}</p>
-                      <p className="mt-2 text-[20px] font-black">{value}</p>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-5 rounded-[12px] bg-white p-4 text-slate-900">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-[12px] font-black">Derniers encaissements</p>
-                      <p className="text-[11px] text-slate-500">Paiements valides par l'agent comptable</p>
-                    </div>
-                    <ReceiptText size={18} className="text-[#0e4f4a]" />
-                  </div>
-                  <div className="mt-4 space-y-3">
-                    {["Minerval T1", "Frais d'inscription", "Uniforme scolaire"].map((item, index) => (
-                      <div key={item} className="flex items-center justify-between rounded-[10px] bg-slate-50 px-3 py-2">
-                        <span className="text-[12px] font-bold text-slate-700">{item}</span>
-                        <span className="text-[12px] font-black text-[#0e4f4a]">{index === 0 ? "$ 90" : index === 1 ? "$ 45" : "$ 30"}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div className="hidden lg:block" aria-hidden="true" />
         </div>
       </section>
 
