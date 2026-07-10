@@ -24,7 +24,7 @@ export function LoginPage() {
       await refresh();
       navigate(params.get("from") || "/app", { replace: true });
     } catch {
-      setError("Identifiants incorrects ou compte desactive.");
+      setError("Identifiants incorrects ou compte désactivé.");
     } finally {
       setLoading(false);
     }
@@ -43,20 +43,20 @@ export function LoginPage() {
               </div>
               <div className="min-w-0">
                 <p className="heading text-[clamp(1.35rem,2.2vw,2.1rem)] font-bold leading-tight">Institut NENGAPETA</p>
-                <p className="mt-1 text-[clamp(0.86rem,1.3vw,1.18rem)] font-medium text-sky-50/75">Gestion scolaire integree</p>
+                <p className="mt-1 text-[clamp(0.86rem,1.3vw,1.18rem)] font-medium text-sky-50/75">Gestion scolaire intégrée</p>
               </div>
             </div>
 
             <div className="-mt-2">
               <div className="mb-[clamp(1.4rem,2.2vw,2.2rem)] inline-flex items-center gap-3 rounded-full bg-white/10 px-6 py-3 text-[clamp(0.82rem,1.15vw,1.05rem)] font-semibold text-emerald-50 ring-1 ring-white/15">
                 <ShieldCheck className="h-[clamp(1rem,1.35vw,1.25rem)] w-[clamp(1rem,1.35vw,1.25rem)]" />
-                Acces securise
+                Accès sécurisé
               </div>
               <h2 className="heading max-w-[34rem] text-[clamp(2.15rem,3.85vw,3.45rem)] font-extrabold leading-[1.14]">
                 Gestion des inscriptions et paiements.
               </h2>
               <p className="mt-[clamp(1rem,1.7vw,1.5rem)] max-w-[36rem] text-[clamp(0.92rem,1.35vw,1.18rem)] font-medium leading-[1.75] text-sky-50/75">
-                Une interface fiable pour suivre les eleves, les frais, les paiements et les recus.
+                Une interface fiable pour suivre les élèves, les frais, les paiements et les reçus.
               </p>
             </div>
 
@@ -76,7 +76,7 @@ export function LoginPage() {
             </div>
             <div className="min-w-0">
               <p className="heading max-w-full break-words text-[clamp(0.95rem,4.5vw,1.125rem)] font-bold leading-tight text-slate-950">Institut NENGAPETA</p>
-              <p className="text-[clamp(0.65rem,3.2vw,0.75rem)] font-medium text-slate-500">Gestion scolaire integree</p>
+              <p className="text-[clamp(0.65rem,3.2vw,0.75rem)] font-medium text-slate-500">Gestion scolaire intégrée</p>
             </div>
           </div>
           <p className="inline-flex w-fit items-center gap-2 rounded-full bg-emerald-50 px-[clamp(0.55rem,2vw,0.75rem)] py-1 text-[clamp(0.62rem,2.7vw,0.75rem)] font-bold uppercase tracking-[0.12em] text-emerald-700 lg:px-6 lg:py-2 lg:text-[clamp(0.8rem,1vw,0.98rem)]">
@@ -132,7 +132,7 @@ export function LoginPage() {
             className="mt-[clamp(0.55rem,2.5vw,0.75rem)] inline-flex w-full items-center justify-center gap-1.5 text-[clamp(0.7rem,2.8vw,0.75rem)] font-semibold text-slate-500 transition hover:text-emerald-800"
           >
             <ArrowLeft className="h-[clamp(0.75rem,3vw,0.8125rem)] w-[clamp(0.75rem,3vw,0.8125rem)]" />
-            Retour a l'accueil
+            Retour à l'accueil
           </Link>
         </form>
       </section>
