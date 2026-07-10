@@ -31,9 +31,9 @@ export function LoginPage() {
   };
 
   return (
-    <main className="relative grid min-h-[100dvh] place-items-center overflow-hidden bg-[#eef5f6] px-3 py-3 sm:px-4">
+    <main className="relative grid min-h-[100dvh] place-items-center overflow-x-hidden bg-[#eef5f6] px-3 py-4 sm:px-4 sm:py-6 md:h-[100dvh] md:min-h-0 md:overflow-hidden md:py-3">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_10%,rgba(14,165,233,0.13),transparent_24rem),radial-gradient(circle_at_90%_86%,rgba(16,185,129,0.16),transparent_23rem),linear-gradient(135deg,#eef5f6_0%,#f8fbfb_52%,#eef3ff_100%)]" />
-      <section className="relative grid max-h-[calc(100dvh-1rem)] min-h-[min(560px,calc(100dvh-1rem))] w-full max-w-4xl overflow-hidden rounded-[16px] border border-white/80 bg-white/95 shadow-2xl shadow-slate-900/10 backdrop-blur md:grid-cols-[0.9fr_1.1fr]">
+      <section className="relative grid w-full max-w-4xl overflow-hidden rounded-[16px] border border-white/80 bg-white/95 shadow-2xl shadow-slate-900/10 backdrop-blur md:h-[calc(100dvh-1.5rem)] md:max-h-[600px] md:min-h-0 md:grid-cols-[0.9fr_1.1fr] lg:max-h-[620px]">
         <div className="relative hidden bg-[#0b1f33] p-6 text-white md:block lg:p-7">
           <div className="absolute inset-0 bg-[linear-gradient(140deg,rgba(14,165,233,.26),transparent_42%),radial-gradient(circle_at_20%_18%,rgba(16,185,129,.28),transparent_15rem),radial-gradient(circle_at_84%_82%,rgba(245,158,11,.20),transparent_14rem)]" />
           <div className="relative flex h-full flex-col justify-between">
@@ -65,7 +65,7 @@ export function LoginPage() {
             </div>
           </div>
         </div>
-        <form onSubmit={submit} className="flex min-h-0 flex-col justify-center overflow-y-auto p-4 sm:p-6 md:p-7 lg:p-8">
+        <form onSubmit={submit} className="flex min-h-0 flex-col justify-center p-4 sm:p-6 md:p-7 lg:p-8">
           <div className="mb-4 flex items-center gap-3 md:hidden">
             <div className="grid h-10 w-10 place-items-center rounded-[10px] bg-[#0b1f33] text-emerald-200">
               <School size={23} />
@@ -80,7 +80,7 @@ export function LoginPage() {
             Connexion
           </p>
           <h1 className="heading mt-2 text-[22px] font-bold text-slate-950 sm:text-2xl">Bienvenue</h1>
-          <div className="mt-4 space-y-3">
+          <div className="mt-4 space-y-3 sm:mt-5">
             <label className="block">
               <span className="text-[13px] font-semibold text-slate-700">Login</span>
               <span className="mt-1.5 flex h-10 items-center gap-3 rounded-[10px] border border-slate-200 bg-slate-50 px-3 transition focus-within:border-emerald-600 focus-within:bg-white focus-within:ring-4 focus-within:ring-emerald-50 sm:h-11">
@@ -117,7 +117,7 @@ export function LoginPage() {
               </span>
             </label>
           </div>
-          {error && <p className="mt-4 rounded-[10px] bg-rose-50 px-4 py-3 text-[13px] font-semibold text-rose-700">{error}</p>}
+          {error && <p className="mt-3 rounded-[10px] bg-rose-50 px-4 py-2.5 text-[13px] font-semibold text-rose-700 sm:mt-4 sm:py-3">{error}</p>}
           <button disabled={loading} className="mt-4 h-10 w-full rounded-[10px] bg-[#0b1f33] px-4 text-[13px] font-bold text-white shadow-lg shadow-slate-950/15 transition hover:bg-[#123554] disabled:opacity-60 sm:h-11">
             {loading ? "Connexion..." : "Se connecter"}
           </button>
