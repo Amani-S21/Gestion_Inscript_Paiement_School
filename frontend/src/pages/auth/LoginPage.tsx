@@ -61,7 +61,7 @@ export function LoginPage() {
             </div>
 
             <div className="grid grid-cols-3 gap-2">
-              {["Eleves", "Paiements", "Recus"].map((item) => (
+              {["Élèves", "Paiements", "Reçus"].map((item) => (
                 <div key={item} className="rounded-[16px] bg-white/10 px-3 py-[clamp(0.85rem,1.5vw,1.2rem)] text-center text-[clamp(0.78rem,1.15vw,1rem)] font-semibold text-white/85 ring-1 ring-white/10">
                   {item}
                 </div>
