@@ -18,23 +18,23 @@ import { Link } from "react-router-dom";
 
 const advantages = [
   {
-    title: "Inscriptions maitrisees",
-    description: "Creation des eleves, inscriptions, reinscriptions et suivi des classes dans un meme espace.",
+    title: "Inscriptions maîtrisées",
+    description: "Création des élèves, inscriptions, réinscriptions et suivi des classes dans un même espace.",
     icon: BookOpenCheck,
   },
   {
     title: "Paiements fiables",
-    description: "Encaissements traces, soldes calcules automatiquement et recus generes sans ressaisie.",
+    description: "Encaissements tracés, soldes calculés automatiquement et reçus générés sans ressaisie.",
     icon: CreditCard,
   },
   {
-    title: "Acces par role",
-    description: "Administrateur, agent comptable et eleve disposent chacun d'un espace limite a leurs droits.",
+    title: "Accès par rôle",
+    description: "Administrateur, agent comptable et élève disposent chacun d'un espace limité à leurs droits.",
     icon: ShieldCheck,
   },
   {
     title: "Dossiers consultables",
-    description: "Chaque eleve retrouve son profil, son inscription, ses frais, ses paiements et son etat financier.",
+    description: "Chaque élève retrouve son profil, son inscription, ses frais, ses paiements et son état financier.",
     icon: FileCheck2,
   },
 ];
@@ -42,52 +42,52 @@ const advantages = [
 const roleCards = [
   {
     role: "Administrateur",
-    text: "Configure les annees scolaires, sections, options, classes, frais, utilisateurs, roles et permissions.",
+    text: "Configure les années scolaires, sections, options, classes, frais, utilisateurs, rôles et permissions.",
     icon: UserCog,
   },
   {
     role: "Agent comptable",
-    text: "Enregistre les paiements, consulte les soldes, edite les recus et suit les encaissements de l'etablissement.",
+    text: "Enregistre les paiements, consulte les soldes, édite les reçus et suit les encaissements de l'établissement.",
     icon: Landmark,
   },
   {
-    role: "Eleve",
-    text: "Consulte son profil, son inscription, ses paiements, son solde, ses recus et ses informations personnelles.",
+    role: "Élève",
+    text: "Consulte son profil, son inscription, ses paiements, son solde, ses reçus et ses informations personnelles.",
     icon: GraduationCap,
   },
 ];
 
 const functionalities = [
-  "Gestion des eleves avec photo de profil",
-  "Options, sections, classes et annees scolaires",
-  "Inscriptions et reinscriptions",
+  "Gestion des élèves avec photo de profil",
+  "Options, sections, classes et années scolaires",
+  "Inscriptions et réinscriptions",
   "Configuration des frais scolaires",
   "Paiements, soldes et historiques",
-  "Generation automatique des recus",
+  "Génération automatique des reçus",
   "Tableaux de bord par profil",
-  "Roles, permissions et securite",
+  "Rôles, permissions et sécurité",
 ];
 
 const faqs = [
   {
-    question: "Qui peut creer un eleve dans le systeme ?",
+    question: "Qui peut créer un élève dans le système ?",
     answer:
-      "L'administrateur dispose des droits de creation et de gestion des eleves. Il peut aussi configurer les classes, options, sections, frais et utilisateurs du systeme.",
+      "L'administrateur dispose des droits de création et de gestion des élèves. Il peut aussi configurer les classes, options, sections, frais et utilisateurs du système.",
   },
   {
-    question: "Le comptable peut-il modifier les parametres administratifs ?",
+    question: "Le comptable peut-il modifier les paramètres administratifs ?",
     answer:
-      "Non. L'agent comptable travaille sur le volet financier : enregistrement des paiements, verification des soldes, edition des recus et consultation des historiques autorises.",
+      "Non. L'agent comptable travaille sur le volet financier : enregistrement des paiements, vérification des soldes, édition des reçus et consultation des historiques autorisés.",
   },
   {
-    question: "Que voit un eleve apres connexion ?",
+    question: "Que voit un élève après connexion ?",
     answer:
-      "L'eleve accede uniquement a ses propres donnees : profil, inscription, classe, option, frais, paiements, recus et solde restant. Il ne peut pas consulter les informations d'un autre eleve.",
+      "L'élève accède uniquement à ses propres données : profil, inscription, classe, option, frais, paiements, reçus et solde restant. Il ne peut pas consulter les informations d'un autre élève.",
   },
   {
-    question: "Les recus de paiement sont-ils generes automatiquement ?",
+    question: "Les reçus de paiement sont-ils générés automatiquement ?",
     answer:
-      "Oui. Apres l'enregistrement d'un paiement, le systeme prepare un recu numerote et rattache a l'eleve, au frais concerne et a l'agent qui a realise l'operation.",
+      "Oui. Après l'enregistrement d'un paiement, le système prépare un reçu numéroté et rattaché à l'élève, au frais concerné et à l'agent qui a réalisé l'opération.",
   },
 ];
 
@@ -112,10 +112,10 @@ export function LandingPage() {
               Avantages
             </a>
             <a href="#roles" className="transition hover:text-[#0e4f4a]">
-              Roles
+              Rôles
             </a>
             <a href="#fonctionnalites" className="transition hover:text-[#0e4f4a]">
-              Fonctionnalites
+              Fonctionnalités
             </a>
             <a href="#faq" className="transition hover:text-[#0e4f4a]">
               FAQ
@@ -154,28 +154,28 @@ export function LandingPage() {
               Gestion dynamique des inscriptions et paiements scolaires
             </h1>
             <p className="mt-4 max-w-2xl text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-              Une application web concue pour centraliser les dossiers des eleves, organiser les inscriptions et suivre les paiements au sein d'une institution secondaire.
+              Une application web conçue pour centraliser les dossiers des élèves, organiser les inscriptions et suivre les paiements au sein d'une institution secondaire.
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Link
                 to="/login"
                 className="inline-flex h-11 items-center justify-center gap-2 rounded-[10px] bg-[#0e4f4a] px-5 text-[13px] font-extrabold text-white shadow-xl shadow-emerald-950/15 transition hover:-translate-y-0.5 hover:bg-[#0b403c]"
               >
-                Acceder au systeme
+                Accéder au système
                 <ArrowRight size={16} />
               </Link>
               <a
                 href="#fonctionnalites"
                 className="inline-flex h-11 items-center justify-center gap-2 rounded-[10px] border border-slate-200 bg-white px-5 text-[13px] font-extrabold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-200 hover:text-[#0e4f4a]"
               >
-                Voir les fonctionnalites
+                Voir les fonctionnalités
               </a>
             </div>
             <div className="mt-8 grid max-w-2xl grid-cols-3 gap-3">
               {[
-                ["Roles", "3 espaces"],
-                ["Recus", "Automatiques"],
-                ["Acces", "Securise"],
+                ["Rôles", "3 espaces"],
+                ["Reçus", "Automatiques"],
+                ["Accès", "Sécurisé"],
               ].map(([label, value]) => (
                 <div key={label} className="rounded-[12px] border border-white bg-white/75 p-3 shadow-sm">
                   <p className="text-[11px] font-bold text-slate-500">{label}</p>
@@ -192,7 +192,7 @@ export function LandingPage() {
       <section id="avantages" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
           <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">Avantages</p>
-          <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Un systeme adapte a la gestion scolaire</h2>
+          <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Un système adapté à la gestion scolaire</h2>
         </div>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {advantages.map((item) => (
@@ -211,10 +211,10 @@ export function LandingPage() {
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="grid gap-6 lg:grid-cols-[0.72fr_1.28fr]">
             <div>
-              <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">Roles et permissions</p>
-              <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Chaque utilisateur accede uniquement a son espace</h2>
+              <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">Rôles et permissions</p>
+              <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Chaque utilisateur accède uniquement à son espace</h2>
               <p className="mt-3 text-[13px] leading-6 text-slate-600">
-                Les permissions separent clairement les taches administratives, financieres et personnelles.
+                Les permissions séparent clairement les tâches administratives, financières et personnelles.
               </p>
             </div>
             <div className="grid gap-4 md:grid-cols-3">
@@ -232,10 +232,10 @@ export function LandingPage() {
 
       <section id="fonctionnalites" className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8">
         <div>
-          <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">Fonctionnalites</p>
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">Fonctionnalités</p>
           <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Outils essentiels pour l'Institut NENGAPETA</h2>
           <p className="mt-3 text-[13px] leading-6 text-slate-600">
-            Le projet est organise autour des operations reelles d'une institution secondaire : dossier eleve, inscription, paiement, recu, solde et controle d'acces.
+            Le projet est organisé autour des opérations réelles d'une institution secondaire : dossier élève, inscription, paiement, reçu, solde et contrôle d'accès.
           </p>
         </div>
         <div className="grid gap-3 sm:grid-cols-2">
@@ -252,9 +252,9 @@ export function LandingPage() {
         <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[0.72fr_1.28fr] lg:px-8">
           <div>
             <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">FAQ</p>
-            <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Questions frequentes</h2>
+            <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Questions fréquentes</h2>
             <p className="mt-3 text-[13px] leading-6 text-slate-600">
-              Les reponses ci-contre precisent le fonctionnement attendu des principaux profils.
+              Les réponses ci-contre précisent le fonctionnement attendu des principaux profils.
             </p>
           </div>
           <div className="space-y-3">
@@ -287,7 +287,7 @@ export function LandingPage() {
           <p className="font-bold">Institut NENGAPETA - Gestion des inscriptions et paiements</p>
           <p className="flex items-center gap-2 text-slate-300">
             <LockKeyhole size={14} />
-            Acces securise par roles et permissions
+            Accès sécurisé par rôles et permissions
           </p>
         </div>
       </footer>
