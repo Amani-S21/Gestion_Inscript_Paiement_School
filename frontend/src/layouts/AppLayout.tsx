@@ -31,8 +31,8 @@ export function AppLayout() {
   const visibleItems = items.filter((item) => hasPermission(item.permission));
 
   return (
-    <div className="min-h-screen bg-[#eef5f6] pl-[76px] text-slate-900 lg:pl-[292px]">
-      <aside className="fixed bottom-3 left-3 top-3 z-30 flex w-[60px] flex-col rounded-[18px] border border-white/15 bg-[#10242f]/95 text-white shadow-2xl shadow-slate-950/25 backdrop-blur-xl lg:bottom-0 lg:left-0 lg:top-0 lg:w-[292px] lg:rounded-none lg:border-y-0 lg:border-l-0 lg:border-r lg:border-white/10 lg:bg-[#10242f]">
+    <div className="min-h-screen bg-[#eef5f6] pl-[172px] text-slate-900 lg:pl-[292px]">
+      <aside className="fixed bottom-3 left-3 top-3 z-30 flex w-[156px] flex-col rounded-[18px] border border-white/15 bg-[#10242f]/95 text-white shadow-2xl shadow-slate-950/25 backdrop-blur-xl lg:bottom-0 lg:left-0 lg:top-0 lg:w-[292px] lg:rounded-none lg:border-y-0 lg:border-l-0 lg:border-r lg:border-white/10 lg:bg-[#10242f]">
         <div className="hidden items-center gap-3 px-5 py-5 lg:flex">
           <div className="grid h-11 w-11 place-items-center rounded-[12px] bg-gradient-to-br from-emerald-300 to-sky-300 text-[#10242f] shadow-lg shadow-emerald-950/20">
             <Building2 size={24} />
@@ -50,7 +50,7 @@ export function AppLayout() {
               to={item.to}
               end={item.to === "/"}
               className={({ isActive }) =>
-                `group flex h-11 w-11 items-center justify-center rounded-[12px] text-[11px] font-bold transition duration-200 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-4 lg:py-3 lg:text-sm ${
+                `group flex h-auto w-full items-center justify-start gap-2 rounded-[12px] px-3 py-3 text-[12px] font-bold transition duration-200 lg:gap-3 lg:px-4 lg:text-sm ${
                   isActive
                     ? "bg-emerald-400 text-[#10242f] shadow-lg shadow-emerald-950/25"
                     : "text-slate-300 hover:bg-white/10 hover:text-white lg:hover:translate-x-1"
@@ -59,8 +59,8 @@ export function AppLayout() {
               style={{ animationDelay: `${index * 35}ms` }}
               title={item.label}
             >
-              <item.icon size={18} className="transition group-hover:scale-110" />
-              <span className="hidden lg:inline lg:max-w-none">{item.label}</span>
+              <item.icon size={16} className="shrink-0 transition group-hover:scale-110" />
+              <span className="min-w-0 truncate">{item.label}</span>
             </NavLink>
           ))}
         </nav>
