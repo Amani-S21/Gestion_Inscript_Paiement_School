@@ -31,8 +31,8 @@ export function AppLayout() {
   const visibleItems = items.filter((item) => hasPermission(item.permission));
 
   return (
-    <div className="min-h-screen bg-[#eef5f6] pl-[150px] text-slate-900 lg:pl-[248px]">
-      <aside className="fixed bottom-2 left-2 top-2 z-30 flex w-[136px] flex-col rounded-[14px] border border-white/15 bg-[#10242f]/95 text-white shadow-xl shadow-slate-950/20 backdrop-blur-xl lg:bottom-0 lg:left-0 lg:top-0 lg:w-[248px] lg:rounded-none lg:border-y-0 lg:border-l-0 lg:border-r lg:border-white/10 lg:bg-[#10242f]">
+    <div className="min-h-screen bg-[#eef5f6] pl-[70px] text-slate-900 sm:pl-[150px] lg:pl-[248px]">
+      <aside className="fixed bottom-2 left-2 top-2 z-30 flex w-[58px] flex-col rounded-[14px] border border-white/15 bg-[#10242f]/95 text-white shadow-xl shadow-slate-950/20 backdrop-blur-xl sm:w-[136px] lg:bottom-0 lg:left-0 lg:top-0 lg:w-[248px] lg:rounded-none lg:border-y-0 lg:border-l-0 lg:border-r lg:border-white/10 lg:bg-[#10242f]">
         <div className="hidden items-center gap-3 px-4 py-4 lg:flex">
           <div className="grid h-9 w-9 place-items-center rounded-[10px] bg-gradient-to-br from-emerald-300 to-sky-300 text-[#10242f] shadow-lg shadow-emerald-950/20">
             <Building2 size={20} />
@@ -50,7 +50,7 @@ export function AppLayout() {
               to={item.to}
               end={item.to === "/app"}
               className={({ isActive }) =>
-                `group flex h-auto w-full items-center justify-start gap-2 rounded-[10px] px-2.5 py-2 text-[10.5px] font-bold transition duration-200 lg:gap-2.5 lg:px-3 lg:text-[12px] ${
+                `group flex h-10 w-full items-center justify-center gap-2 rounded-[10px] px-2 py-2 text-[10.5px] font-bold transition duration-200 sm:h-auto sm:justify-start sm:px-2.5 lg:gap-2.5 lg:px-3 lg:text-[12px] ${
                   isActive
                     ? "bg-emerald-400 text-[#10242f] shadow-lg shadow-emerald-950/25"
                     : "text-slate-300 hover:bg-white/10 hover:text-white lg:hover:translate-x-1"
@@ -60,7 +60,7 @@ export function AppLayout() {
               title={item.label}
             >
               <item.icon size={14} className="shrink-0 transition group-hover:scale-110" />
-              <span className="min-w-0 truncate">{item.label}</span>
+              <span className="hidden min-w-0 truncate sm:block">{item.label}</span>
             </NavLink>
           ))}
         </nav>
