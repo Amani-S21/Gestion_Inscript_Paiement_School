@@ -33,7 +33,7 @@ export function LoginPage() {
   return (
     <main className="relative grid min-h-[100dvh] place-items-center overflow-hidden bg-[#eef5f6] px-3 py-3 sm:px-4">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_10%,rgba(14,165,233,0.13),transparent_24rem),radial-gradient(circle_at_90%_86%,rgba(16,185,129,0.16),transparent_23rem),linear-gradient(135deg,#eef5f6_0%,#f8fbfb_52%,#eef3ff_100%)]" />
-      <section className="relative grid max-h-[calc(100dvh-1.5rem)] min-h-[min(620px,calc(100dvh-1.5rem))] w-full max-w-4xl overflow-hidden rounded-[16px] border border-white/80 bg-white/95 shadow-2xl shadow-slate-900/10 backdrop-blur md:grid-cols-[0.9fr_1.1fr]">
+      <section className="relative grid max-h-[calc(100dvh-1rem)] min-h-[min(560px,calc(100dvh-1rem))] w-full max-w-4xl overflow-hidden rounded-[16px] border border-white/80 bg-white/95 shadow-2xl shadow-slate-900/10 backdrop-blur md:grid-cols-[0.9fr_1.1fr]">
         <div className="relative hidden bg-[#0b1f33] p-6 text-white md:block lg:p-7">
           <div className="absolute inset-0 bg-[linear-gradient(140deg,rgba(14,165,233,.26),transparent_42%),radial-gradient(circle_at_20%_18%,rgba(16,185,129,.28),transparent_15rem),radial-gradient(circle_at_84%_82%,rgba(245,158,11,.20),transparent_14rem)]" />
           <div className="relative flex h-full flex-col justify-between">
@@ -65,8 +65,8 @@ export function LoginPage() {
             </div>
           </div>
         </div>
-        <form onSubmit={submit} className="flex min-h-0 flex-col justify-center overflow-y-auto p-5 sm:p-7 md:p-8 lg:p-9">
-          <div className="mb-6 flex items-center gap-3 md:hidden">
+        <form onSubmit={submit} className="flex min-h-0 flex-col justify-center overflow-y-auto p-4 sm:p-6 md:p-7 lg:p-8">
+          <div className="mb-4 flex items-center gap-3 md:hidden">
             <div className="grid h-10 w-10 place-items-center rounded-[10px] bg-[#0b1f33] text-emerald-200">
               <School size={23} />
             </div>
@@ -79,11 +79,11 @@ export function LoginPage() {
             <ShieldCheck size={14} />
             Connexion
           </p>
-          <h1 className="heading mt-3 text-2xl font-bold text-slate-950">Bienvenue</h1>
-          <div className="mt-5 space-y-3.5 sm:space-y-4">
+          <h1 className="heading mt-2 text-[22px] font-bold text-slate-950 sm:text-2xl">Bienvenue</h1>
+          <div className="mt-4 space-y-3">
             <label className="block">
               <span className="text-[13px] font-semibold text-slate-700">Login</span>
-              <span className="mt-2 flex h-11 items-center gap-3 rounded-[10px] border border-slate-200 bg-slate-50 px-3 transition focus-within:border-emerald-600 focus-within:bg-white focus-within:ring-4 focus-within:ring-emerald-50">
+              <span className="mt-1.5 flex h-10 items-center gap-3 rounded-[10px] border border-slate-200 bg-slate-50 px-3 transition focus-within:border-emerald-600 focus-within:bg-white focus-within:ring-4 focus-within:ring-emerald-50 sm:h-11">
                 <UserRound size={17} className="text-emerald-700" />
                 <input
                   value={username}
@@ -96,7 +96,7 @@ export function LoginPage() {
             </label>
             <label className="block">
               <span className="text-[13px] font-semibold text-slate-700">Mot de passe</span>
-              <span className="mt-2 flex h-11 items-center gap-3 rounded-[10px] border border-slate-200 bg-slate-50 px-3 transition focus-within:border-emerald-600 focus-within:bg-white focus-within:ring-4 focus-within:ring-emerald-50">
+              <span className="mt-1.5 flex h-10 items-center gap-3 rounded-[10px] border border-slate-200 bg-slate-50 px-3 transition focus-within:border-emerald-600 focus-within:bg-white focus-within:ring-4 focus-within:ring-emerald-50 sm:h-11">
                 <LockKeyhole size={17} className="text-emerald-700" />
                 <input
                   type={showPassword ? "text" : "password"}
@@ -118,7 +118,7 @@ export function LoginPage() {
             </label>
           </div>
           {error && <p className="mt-4 rounded-[10px] bg-rose-50 px-4 py-3 text-[13px] font-semibold text-rose-700">{error}</p>}
-          <button disabled={loading} className="mt-6 h-11 w-full rounded-[10px] bg-[#0b1f33] px-4 text-[13px] font-bold text-white shadow-lg shadow-slate-950/15 transition hover:bg-[#123554] disabled:opacity-60">
+          <button disabled={loading} className="mt-4 h-10 w-full rounded-[10px] bg-[#0b1f33] px-4 text-[13px] font-bold text-white shadow-lg shadow-slate-950/15 transition hover:bg-[#123554] disabled:opacity-60 sm:h-11">
             {loading ? "Connexion..." : "Se connecter"}
           </button>
           <Link
