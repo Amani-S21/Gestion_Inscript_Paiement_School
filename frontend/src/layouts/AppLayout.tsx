@@ -16,13 +16,13 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 const items = [
-  { to: "/", label: "Dashboard", icon: LayoutDashboard, permission: "dashboard.view" },
-  { to: "/students", label: "Eleves", icon: Users, permission: "students.view" },
-  { to: "/registrations", label: "Inscriptions", icon: BookOpen, permission: "registrations.view" },
-  { to: "/payments", label: "Paiements", icon: CreditCard, permission: "payments.view" },
-  { to: "/reports", label: "Rapports", icon: FileBarChart, permission: "reports.view" },
-  { to: "/administration", label: "Administration", icon: Settings, permission: "admin.settings" },
-  { to: "/student", label: "Mon espace", icon: GraduationCap, permission: "student.self.view" },
+  { to: "/app", label: "Dashboard", icon: LayoutDashboard, permission: "dashboard.view" },
+  { to: "/app/students", label: "Eleves", icon: Users, permission: "students.view" },
+  { to: "/app/registrations", label: "Inscriptions", icon: BookOpen, permission: "registrations.view" },
+  { to: "/app/payments", label: "Paiements", icon: CreditCard, permission: "payments.view" },
+  { to: "/app/reports", label: "Rapports", icon: FileBarChart, permission: "reports.view" },
+  { to: "/app/administration", label: "Administration", icon: Settings, permission: "admin.settings" },
+  { to: "/app/student", label: "Mon espace", icon: GraduationCap, permission: "student.self.view" },
 ];
 
 export function AppLayout() {
@@ -48,7 +48,7 @@ export function AppLayout() {
             <NavLink
               key={item.to}
               to={item.to}
-              end={item.to === "/"}
+              end={item.to === "/app"}
               className={({ isActive }) =>
                 `group flex h-auto w-full items-center justify-start gap-2 rounded-[10px] px-2.5 py-2 text-[10.5px] font-bold transition duration-200 lg:gap-2.5 lg:px-3 lg:text-[12px] ${
                   isActive

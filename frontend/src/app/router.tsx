@@ -3,6 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { ProtectedRoute } from "../components/ProtectedRoute";
 import { AppLayout } from "../layouts/AppLayout";
 import { LoginPage } from "../pages/auth/LoginPage";
+import { LandingPage } from "../pages/landing/LandingPage";
 import { DashboardPage } from "../pages/dashboard/DashboardPage";
 import { StudentsPage } from "../pages/students/StudentsPage";
 import { RegistrationsPage } from "../pages/registrations/RegistrationsPage";
@@ -12,9 +13,11 @@ import { AdministrationPage } from "../pages/administration/AdministrationPage";
 import { StudentSpacePage } from "../pages/student-space/StudentSpacePage";
 
 export const router = createBrowserRouter([
+  { path: "/", element: <LandingPage /> },
   { path: "/login", element: <LoginPage /> },
   { path: "/forbidden", element: <div className="grid min-h-screen place-items-center text-slate-600">Acces non autorise.</div> },
   {
+    path: "/app",
     element: <ProtectedRoute />,
     children: [
       {
@@ -50,4 +53,3 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
-

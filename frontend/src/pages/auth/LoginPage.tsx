@@ -22,7 +22,7 @@ export function LoginPage() {
     try {
       await login(username, password);
       await refresh();
-      navigate(params.get("from") || "/", { replace: true });
+      navigate(params.get("from") || "/app", { replace: true });
     } catch {
       setError("Identifiants incorrects ou compte desactive.");
     } finally {
