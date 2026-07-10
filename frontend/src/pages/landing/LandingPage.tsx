@@ -135,7 +135,7 @@ export function LandingPage() {
         <img
           src="/images/nengapeta-school-hero.png"
           alt=""
-          className="absolute inset-0 h-full w-full object-contain object-center opacity-100 brightness-[1.16] contrast-[1.03] saturate-[1.06] lg:object-right"
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-100 brightness-[1.16] contrast-[1.03] saturate-[1.06] lg:object-right"
         />
         <div
           className="absolute inset-0"
