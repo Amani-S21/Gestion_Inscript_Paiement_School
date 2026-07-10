@@ -5,21 +5,21 @@ import { KeyRound, Layers3, Plus, School, Settings2, ShieldCheck, UsersRound } f
 import { createUser, getRoles, getUsers } from "../../services/adminService";
 
 const modules = [
-  { title: "Annees scolaires", description: "Ouverture, cloture et suivi des exercices.", icon: School },
-  { title: "Sections, options, classes", description: "Structure pedagogique de l'institut.", icon: Layers3 },
+  { title: "Années scolaires", description: "Ouverture, clôture et suivi des exercices.", icon: School },
+  { title: "Sections, options, classes", description: "Structure pédagogique de l'institut.", icon: Layers3 },
   { title: "Frais scolaires", description: "Types de frais, montants et affectations.", icon: Settings2 },
-  { title: "Utilisateurs", description: "Comptes admin, comptables, secretariat et eleves.", icon: UsersRound },
-  { title: "Roles et permissions", description: "Acces stricts par responsabilite.", icon: ShieldCheck },
-  { title: "Securite", description: "Sessions, mots de passe et sauvegardes.", icon: KeyRound },
+  { title: "Utilisateurs", description: "Comptes admin, comptables, secrétariat et élèves.", icon: UsersRound },
+  { title: "Rôles et permissions", description: "Accès stricts par responsabilité.", icon: ShieldCheck },
+  { title: "Sécurité", description: "Sessions, mots de passe et sauvegardes.", icon: KeyRound },
 ];
 
 const roleLabels: Record<string, string> = {
   ROLE_ADMIN: "Administrateur",
   ROLE_COMPTABLE: "Comptable",
-  ROLE_SECRETAIRE: "Secretaire",
-  ROLE_PREFET: "Prefet",
+  ROLE_SECRETAIRE: "Secrétaire",
+  ROLE_PREFET: "Préfet",
   ROLE_DIRECTION: "Direction",
-  ROLE_ELEVE: "Eleve",
+  ROLE_ELEVE: "Élève",
 };
 
 export function AdministrationPage() {
@@ -46,11 +46,11 @@ export function AdministrationPage() {
   const createMutation = useMutation({
     mutationFn: createUser,
     onSuccess: async () => {
-      setMessage("Utilisateur cree avec succes.");
+      setMessage("Utilisateur créé avec succès.");
       setForm({ nom: "", prenom: "", email: "", login: "", password: "", role_code: "ROLE_COMPTABLE" });
       await queryClient.invalidateQueries({ queryKey: ["admin-users"] });
     },
-    onError: () => setMessage("Impossible de creer cet utilisateur. Verifiez le login et l'email."),
+    onError: () => setMessage("Impossible de créer cet utilisateur. Vérifiez le login et l'email."),
   });
 
   const submit = (event: FormEvent) => {
@@ -64,8 +64,8 @@ export function AdministrationPage() {
       <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end">
         <div>
           <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-emerald-700">Administration</p>
-          <h2 className="heading mt-1 text-2xl font-extrabold text-[#0b1f33]">Parametres et acces</h2>
-          <p className="mt-1 text-sm text-slate-500">Gestion des utilisateurs, roles, permissions et structure scolaire.</p>
+          <h2 className="heading mt-1 text-2xl font-extrabold text-[#0b1f33]">Paramètres et accès</h2>
+          <p className="mt-1 text-sm text-slate-500">Gestion des utilisateurs, rôles, permissions et structure scolaire.</p>
         </div>
         <div className="grid grid-cols-3 gap-2 text-center">
           <div className="rounded-[12px] bg-white/80 px-4 py-2 shadow-sm">
@@ -74,7 +74,7 @@ export function AdministrationPage() {
           </div>
           <div className="rounded-[12px] bg-white/80 px-4 py-2 shadow-sm">
             <p className="heading text-lg font-extrabold text-[#0b1f33]">{roles.length}</p>
-            <p className="text-[11px] font-bold text-slate-500">Roles</p>
+            <p className="text-[11px] font-bold text-slate-500">Rôles</p>
           </div>
           <div className="rounded-[12px] bg-white/80 px-4 py-2 shadow-sm">
             <p className="heading text-lg font-extrabold text-[#0b1f33]">{permissionCount}</p>
@@ -101,12 +101,12 @@ export function AdministrationPage() {
             </div>
             <div>
               <h3 className="heading text-base font-extrabold text-[#0b1f33]">Nouvel utilisateur</h3>
-              <p className="text-[12px] text-slate-500">Attribuez directement un role.</p>
+              <p className="text-[12px] text-slate-500">Attribuez directement un rôle.</p>
             </div>
           </div>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             <input className="rounded-[10px] border border-slate-200 bg-white px-3 py-2 text-[13px] outline-none focus:border-emerald-500" placeholder="Nom" value={form.nom} onChange={(e) => setForm({ ...form, nom: e.target.value })} required />
-            <input className="rounded-[10px] border border-slate-200 bg-white px-3 py-2 text-[13px] outline-none focus:border-emerald-500" placeholder="Prenom" value={form.prenom} onChange={(e) => setForm({ ...form, prenom: e.target.value })} />
+            <input className="rounded-[10px] border border-slate-200 bg-white px-3 py-2 text-[13px] outline-none focus:border-emerald-500" placeholder="Prénom" value={form.prenom} onChange={(e) => setForm({ ...form, prenom: e.target.value })} />
             <input className="rounded-[10px] border border-slate-200 bg-white px-3 py-2 text-[13px] outline-none focus:border-emerald-500 sm:col-span-2" placeholder="Email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
             <input className="rounded-[10px] border border-slate-200 bg-white px-3 py-2 text-[13px] outline-none focus:border-emerald-500" placeholder="Login" value={form.login} onChange={(e) => setForm({ ...form, login: e.target.value })} required />
             <input className="rounded-[10px] border border-slate-200 bg-white px-3 py-2 text-[13px] outline-none focus:border-emerald-500" placeholder="Mot de passe" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
@@ -118,16 +118,16 @@ export function AdministrationPage() {
           </div>
           {message && <p className="mt-3 rounded-[10px] bg-emerald-50 px-3 py-2 text-[12px] font-bold text-emerald-700">{message}</p>}
           <button disabled={createMutation.isPending} className="mt-4 w-full rounded-[10px] bg-[#10242f] px-4 py-2.5 text-[13px] font-extrabold text-white transition hover:bg-[#163747] disabled:opacity-60">
-            {createMutation.isPending ? "Creation..." : "Creer l'utilisateur"}
+            {createMutation.isPending ? "Création..." : "Créer l'utilisateur"}
           </button>
         </form>
 
         <section className="surface rounded-[14px] p-4">
-          <h3 className="heading text-base font-extrabold text-[#0b1f33]">Utilisateurs recents</h3>
+          <h3 className="heading text-base font-extrabold text-[#0b1f33]">Utilisateurs récents</h3>
           <div className="mt-3 overflow-x-auto">
             <table className="w-full min-w-[620px] text-left text-[12px]">
               <thead className="text-[11px] uppercase text-slate-500">
-                <tr><th className="py-2">Nom</th><th>Login</th><th>Email</th><th>Role</th><th>Statut</th></tr>
+                <tr><th className="py-2">Nom</th><th>Login</th><th>Email</th><th>Rôle</th><th>Statut</th></tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {users.map((user: any) => (
@@ -146,7 +146,7 @@ export function AdministrationPage() {
       </div>
 
       <section className="surface rounded-[14px] p-4">
-        <h3 className="heading text-base font-extrabold text-[#0b1f33]">Roles et permissions</h3>
+        <h3 className="heading text-base font-extrabold text-[#0b1f33]">Rôles et permissions</h3>
         <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {roles.map((role: any) => (
             <div key={role.code} className="rounded-[12px] border border-slate-200 bg-white p-3">
