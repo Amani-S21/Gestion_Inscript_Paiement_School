@@ -1,13 +1,14 @@
 import { FormEvent, useState } from "react";
-import { LockKeyhole, School, UserRound } from "lucide-react";
+import { Eye, EyeOff, LockKeyhole, School, ShieldCheck, UserRound } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { useAuth } from "../../contexts/AuthContext";
 import { login } from "../../services/authService";
 
 export function LoginPage() {
-  const [username, setUsername] = useState("admin");
-  const [password, setPassword] = useState("Admin@12345");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { refresh } = useAuth();
@@ -80,4 +81,3 @@ export function LoginPage() {
     </main>
   );
 }
-
