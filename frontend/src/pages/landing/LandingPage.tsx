@@ -135,13 +135,13 @@ export function LandingPage() {
         <img
           src="/images/nengapeta-school-hero.png"
           alt=""
-          className="absolute inset-y-4 right-0 h-[calc(100%-2rem)] w-full object-contain object-center opacity-95 lg:object-right"
+          className="absolute inset-0 h-full w-full object-contain object-center opacity-100 brightness-[1.16] contrast-[1.03] saturate-[1.06] lg:object-right"
         />
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(90deg, rgba(244,248,247,0.98) 0%, rgba(244,248,247,0.95) 40%, rgba(244,248,247,0.68) 66%, rgba(244,248,247,0.26) 100%), linear-gradient(180deg, rgba(255,255,255,0.62) 0%, rgba(244,248,247,0.9) 100%)",
+              "linear-gradient(90deg, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.88) 40%, rgba(255,255,255,0.48) 66%, rgba(255,255,255,0.1) 100%), linear-gradient(180deg, rgba(255,255,255,0.42) 0%, rgba(244,248,247,0.68) 100%)",
           }}
         />
         <div className="relative mx-auto grid min-h-[calc(100vh-64px)] max-w-7xl gap-8 px-4 py-12 sm:px-6 md:py-16 lg:grid-cols-[0.82fr_1.18fr] lg:px-8 lg:py-20">
