@@ -31,47 +31,51 @@ export function LoginPage() {
   };
 
   return (
-    <main className="relative grid min-h-[100dvh] place-items-center overflow-x-hidden bg-[#eef5f6] px-2 py-3 sm:px-4 sm:py-5 md:h-[100dvh] md:min-h-0 md:overflow-hidden md:py-2">
+    <main className="relative grid min-h-[100dvh] place-items-center overflow-x-hidden bg-[#eef5f6] px-2 py-3 sm:px-4 sm:py-5 lg:h-[100dvh] lg:min-h-0 lg:overflow-hidden lg:py-3">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_10%,rgba(14,165,233,0.13),transparent_24rem),radial-gradient(circle_at_90%_86%,rgba(16,185,129,0.16),transparent_23rem),linear-gradient(135deg,#eef5f6_0%,#f8fbfb_52%,#eef3ff_100%)]" />
-      <section className="relative grid min-w-0 w-full max-w-[min(56rem,calc(100vw-1rem))] overflow-hidden rounded-[16px] border border-white/80 bg-white/95 shadow-2xl shadow-slate-900/10 backdrop-blur md:h-[calc(100dvh-1rem)] md:max-h-[590px] md:min-h-0 md:grid-cols-[0.9fr_1.1fr] lg:max-h-[610px]">
-        <div className="relative hidden bg-[#0b1f33] p-[clamp(1rem,2.2vw,1.75rem)] text-white md:block">
-          <div className="absolute inset-0 bg-[linear-gradient(140deg,rgba(14,165,233,.26),transparent_42%),radial-gradient(circle_at_20%_18%,rgba(16,185,129,.28),transparent_15rem),radial-gradient(circle_at_84%_82%,rgba(245,158,11,.20),transparent_14rem)]" />
-          <div className="relative flex h-full flex-col justify-between">
+      <section className="relative grid min-w-0 w-full max-w-[min(27rem,calc(100vw-1rem))] overflow-hidden rounded-[18px] border border-white/80 bg-white/95 shadow-2xl shadow-slate-900/10 backdrop-blur lg:h-[min(600px,calc(100dvh-1.5rem))] lg:min-h-0 lg:max-w-[min(58rem,calc(100vw-1.5rem))] lg:grid-cols-[0.95fr_1.05fr]">
+        <aside className="relative hidden min-h-0 overflow-hidden bg-[#0b1f33] p-[clamp(1.1rem,2.3vw,1.9rem)] text-white lg:block">
+          <div className="absolute inset-0 bg-[linear-gradient(145deg,rgba(14,165,233,.28),transparent_43%),radial-gradient(circle_at_18%_16%,rgba(16,185,129,.3),transparent_15rem),radial-gradient(circle_at_86%_84%,rgba(245,158,11,.18),transparent_14rem)]" />
+          <div className="relative flex h-full flex-col justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="grid h-[clamp(2rem,3.4vw,2.5rem)] w-[clamp(2rem,3.4vw,2.5rem)] place-items-center rounded-[10px] bg-emerald-300 text-[#0b1f33] shadow-lg shadow-slate-950/20">
-                <School className="h-[clamp(1.1rem,2vw,1.5rem)] w-[clamp(1.1rem,2vw,1.5rem)]" />
+              <div className="grid h-[clamp(2.1rem,3.4vw,2.65rem)] w-[clamp(2.1rem,3.4vw,2.65rem)] place-items-center rounded-[11px] bg-emerald-300 text-[#0b1f33] shadow-lg shadow-slate-950/20">
+                <School className="h-[clamp(1.15rem,2vw,1.5rem)] w-[clamp(1.15rem,2vw,1.5rem)]" />
               </div>
               <div className="min-w-0">
                 <p className="heading text-[clamp(1rem,1.55vw,1.25rem)] font-bold leading-tight">Institut NENGAPETA</p>
                 <p className="text-[clamp(0.65rem,1vw,0.75rem)] text-sky-50/75">Gestion scolaire integree</p>
               </div>
             </div>
+
             <div>
-              <div className="mb-[clamp(0.6rem,1.5vw,1rem)] inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[clamp(0.65rem,1vw,0.75rem)] font-semibold text-emerald-50 ring-1 ring-white/15">
+              <div className="mb-[clamp(0.7rem,1.5vw,1rem)] inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[clamp(0.65rem,1vw,0.75rem)] font-semibold text-emerald-50 ring-1 ring-white/15">
                 <ShieldCheck className="h-[clamp(0.75rem,1.2vw,0.875rem)] w-[clamp(0.75rem,1.2vw,0.875rem)]" />
                 Acces securise
               </div>
-              <p className="heading max-w-md text-[clamp(1.35rem,2.7vw,2rem)] font-extrabold leading-tight">Gestion des inscriptions et paiements.</p>
-              <p className="mt-[clamp(0.5rem,1.2vw,0.75rem)] max-w-sm text-[clamp(0.7rem,1.05vw,0.8125rem)] leading-[1.65] text-sky-50/75">
+              <h2 className="heading max-w-md text-[clamp(1.45rem,3vw,2.4rem)] font-extrabold leading-tight">
+                Gestion des inscriptions et paiements.
+              </h2>
+              <p className="mt-[clamp(0.55rem,1.2vw,0.85rem)] max-w-sm text-[clamp(0.72rem,1.05vw,0.86rem)] leading-[1.75] text-sky-50/75">
                 Une interface fiable pour suivre les eleves, les frais, les paiements et les recus.
               </p>
             </div>
+
             <div className="grid grid-cols-3 gap-2">
               {["Eleves", "Paiements", "Recus"].map((item) => (
-                <div key={item} className="rounded-[10px] bg-white/10 px-2 py-[clamp(0.4rem,1vw,0.5rem)] text-center text-[clamp(0.65rem,1vw,0.75rem)] font-semibold text-white/80 ring-1 ring-white/10">
+                <div key={item} className="rounded-[11px] bg-white/10 px-2 py-2.5 text-center text-[clamp(0.66rem,1vw,0.78rem)] font-semibold text-white/85 ring-1 ring-white/10">
                   {item}
                 </div>
               ))}
             </div>
           </div>
-        </div>
+        </aside>
         <form onSubmit={submit} className="flex min-h-0 min-w-0 flex-col justify-center p-[clamp(0.8rem,4vw,2rem)]">
-          <div className="mb-[clamp(0.75rem,3vw,1rem)] flex min-w-0 items-center gap-2.5 md:hidden">
+          <div className="mb-[clamp(0.75rem,3vw,1rem)] flex min-w-0 items-center gap-2.5 lg:hidden">
             <div className="grid h-[clamp(2rem,10vw,2.25rem)] w-[clamp(2rem,10vw,2.25rem)] shrink-0 place-items-center rounded-[10px] bg-[#0b1f33] text-emerald-200">
               <School className="h-[clamp(1.05rem,5vw,1.25rem)] w-[clamp(1.05rem,5vw,1.25rem)]" />
             </div>
             <div className="min-w-0">
-              <p className="heading break-words text-[clamp(0.95rem,5vw,1.125rem)] font-bold leading-tight text-slate-950">Institut NENGAPETA</p>
+              <p className="heading max-w-full break-words text-[clamp(0.95rem,4.5vw,1.125rem)] font-bold leading-tight text-slate-950">Institut NENGAPETA</p>
               <p className="text-[clamp(0.65rem,3.2vw,0.75rem)] font-medium text-slate-500">Gestion scolaire integree</p>
             </div>
           </div>
