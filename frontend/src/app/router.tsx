@@ -15,7 +15,7 @@ import { StudentSpacePage } from "../pages/student-space/StudentSpacePage";
 export const router = createBrowserRouter([
   { path: "/", element: <LandingPage /> },
   { path: "/login", element: <LoginPage /> },
-  { path: "/forbidden", element: <div className="grid min-h-screen place-items-center text-slate-600">Acces non autorise.</div> },
+  { path: "/forbidden", element: <div className="grid min-h-screen place-items-center text-slate-600">Accès non autorisé.</div> },
   {
     path: "/app",
     element: <ProtectedRoute />,
