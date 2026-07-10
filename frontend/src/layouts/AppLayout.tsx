@@ -17,7 +17,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 const items = [
   { to: "/app", label: "Dashboard", icon: LayoutDashboard, permission: "dashboard.view" },
-  { to: "/app/students", label: "Eleves", icon: Users, permission: "students.view" },
+  { to: "/app/students", label: "Élèves", icon: Users, permission: "students.view" },
   { to: "/app/registrations", label: "Inscriptions", icon: BookOpen, permission: "registrations.view" },
   { to: "/app/payments", label: "Paiements", icon: CreditCard, permission: "payments.view" },
   { to: "/app/reports", label: "Rapports", icon: FileBarChart, permission: "reports.view" },
@@ -71,7 +71,7 @@ export function AppLayout() {
             </div>
             <div className="min-w-0">
               <p className="truncate text-[12px] font-extrabold text-white">{user?.prenom || user?.nom || "Utilisateur"}</p>
-              <p className="truncate text-[10px] font-medium text-slate-300">{user?.type_utilisateur || "Connecte"}</p>
+              <p className="truncate text-[10px] font-medium text-slate-300">{user?.type_utilisateur || "Connecté"}</p>
             </div>
           </div>
           <button
@@ -80,10 +80,10 @@ export function AppLayout() {
               navigate("/login");
             }}
             className="flex w-full items-center justify-center gap-2 rounded-[10px] bg-white/10 px-3 py-2 text-[12px] font-bold text-white transition hover:bg-rose-500/90"
-            title="Deconnexion"
+            title="Déconnexion"
           >
             <LogOut size={15} />
-            Deconnexion
+            Déconnexion
           </button>
         </div>
         <button
@@ -92,7 +92,7 @@ export function AppLayout() {
             navigate("/login");
           }}
           className="mb-2 ml-2 grid h-9 w-9 place-items-center rounded-[10px] bg-white/10 text-white transition hover:bg-rose-500/90 lg:hidden"
-          title="Deconnexion"
+          title="Déconnexion"
         >
           <LogOut size={15} />
         </button>

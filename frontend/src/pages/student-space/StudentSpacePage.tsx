@@ -9,7 +9,7 @@ export function StudentSpacePage() {
   const { data, isLoading } = useQuery({ queryKey: ["student-dashboard"], queryFn: getStudentDashboard });
 
   if (isLoading) return <div className="text-slate-500">Chargement de votre espace...</div>;
-  if (!data) return <div className="text-slate-500">Aucune information eleve disponible.</div>;
+  if (!data) return <div className="text-slate-500">Aucune information élève disponible.</div>;
 
   return (
     <div className="space-y-6">
@@ -20,10 +20,10 @@ export function StudentSpacePage() {
               {data.profile.photo_url ? <img src={data.profile.photo_url} className="h-full w-full object-cover" /> : <UserRound size={42} />}
             </div>
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-100">Espace eleve</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-100">Espace élève</p>
               <h2 className="heading mt-2 text-3xl font-extrabold">{data.profile.nom_complet}</h2>
               <p className="mt-2 text-teal-50">
-                {data.classe ?? "Classe non renseignee"} - {data.option ?? "Option non renseignee"} - {data.annee_scolaire ?? "Annee non renseignee"}
+                {data.classe ?? "Classe non renseignée"} - {data.option ?? "Option non renseignée"} - {data.annee_scolaire ?? "Année non renseignée"}
               </p>
               <p className="mt-1 text-sm text-teal-100">Matricule: {data.profile.matricule}</p>
             </div>
@@ -37,7 +37,7 @@ export function StudentSpacePage() {
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Paiements" value={data.total_paiements} icon={CreditCard} />
         <StatCard label="Total frais" value={money(data.montant_total_frais)} icon={ReceiptText} tone="indigo" />
-        <StatCard label="Total paye" value={money(data.montant_total_paye)} icon={BadgeCheck} tone="amber" />
+        <StatCard label="Total payé" value={money(data.montant_total_paye)} icon={BadgeCheck} tone="amber" />
         <StatCard label="Solde restant" value={money(data.solde_restant)} icon={CreditCard} tone="rose" />
       </div>
 
@@ -45,14 +45,14 @@ export function StudentSpacePage() {
         <section className="surface rounded-[8px] p-5">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <h3 className="heading text-xl font-bold text-slate-950">Derniers recus</h3>
+              <h3 className="heading text-xl font-bold text-slate-950">Derniers reçus</h3>
               <p className="text-sm text-slate-500">Dernier paiement: {shortDate(data.dernier_paiement)}</p>
             </div>
             <span className="rounded-full bg-teal-50 px-3 py-1 text-xs font-bold text-teal-700">{data.etat_frais.replace("_", " ")}</span>
           </div>
           <div className="mt-4 space-y-3">
             {data.derniers_recus.length === 0 ? (
-              <p className="text-sm text-slate-500">Aucun recu disponible.</p>
+              <p className="text-sm text-slate-500">Aucun reçu disponible.</p>
             ) : (
               data.derniers_recus.map((receipt) => (
                 <div key={receipt.id} className="flex items-center justify-between gap-3 rounded-[8px] border border-slate-200 bg-white p-3">
@@ -60,7 +60,7 @@ export function StudentSpacePage() {
                     <ReceiptText className="text-teal-700" size={20} />
                     <span className="font-semibold text-slate-800">{receipt.numero}</span>
                   </div>
-                  <a href={receiptPdfUrl(receipt.id)} className="grid h-9 w-9 place-items-center rounded-[8px] bg-slate-950 text-white" title="Telecharger le recu">
+                  <a href={receiptPdfUrl(receipt.id)} className="grid h-9 w-9 place-items-center rounded-[8px] bg-slate-950 text-white" title="Télécharger le reçu">
                     <Download size={16} />
                   </a>
                 </div>
@@ -72,7 +72,7 @@ export function StudentSpacePage() {
           <h3 className="heading flex items-center gap-2 text-xl font-bold text-slate-950"><Bell className="text-teal-700" /> Notifications</h3>
           <div className="mt-4 space-y-3">
             {data.notifications.length === 0 ? (
-              <p className="text-sm text-slate-500">Aucune notification recente.</p>
+              <p className="text-sm text-slate-500">Aucune notification récente.</p>
             ) : (
               data.notifications.map((item) => (
                 <div key={item.id} className="rounded-[8px] border border-slate-200 bg-white p-3">
@@ -87,4 +87,3 @@ export function StudentSpacePage() {
     </div>
   );
 }
-
