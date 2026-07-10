@@ -118,16 +118,16 @@ export function LoginPage() {
             </label>
           </div>
           {error && <p className="mt-4 rounded-[10px] bg-rose-50 px-4 py-3 text-[13px] font-semibold text-rose-700">{error}</p>}
-          <Link
-            to="/"
-            className="mt-5 inline-flex h-10 w-full items-center justify-center gap-2 rounded-[10px] border border-slate-200 bg-white px-4 text-[13px] font-bold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-200 hover:text-emerald-800"
-          >
-            <ArrowLeft size={16} />
-            Retour a l'accueil
-          </Link>
-          <button disabled={loading} className="mt-3 h-11 w-full rounded-[10px] bg-[#0b1f33] px-4 text-[13px] font-bold text-white shadow-lg shadow-slate-950/15 transition hover:bg-[#123554] disabled:opacity-60">
+          <button disabled={loading} className="mt-6 h-11 w-full rounded-[10px] bg-[#0b1f33] px-4 text-[13px] font-bold text-white shadow-lg shadow-slate-950/15 transition hover:bg-[#123554] disabled:opacity-60">
             {loading ? "Connexion..." : "Se connecter"}
           </button>
+          <Link
+            to="/"
+            className="mt-3 inline-flex w-full items-center justify-center gap-1.5 text-[12px] font-semibold text-slate-500 transition hover:text-emerald-800"
+          >
+            <ArrowLeft size={13} />
+            Retour a l'accueil
+          </Link>
         </form>
       </section>
     </main>
