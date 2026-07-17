@@ -27,6 +27,9 @@ PERMISSIONS = {
     "announcements.view",
     "announcements.manage",
     "notifications.view",
+    "reclamations.view",
+    "reclamations.create",
+    "reclamations.manage",
 }
 
 ROLE_PERMISSION_MAP = {
@@ -42,6 +45,10 @@ ROLE_PERMISSION_MAP = {
         "receipts.print",
         "reports.finance",
         "reports.view",
+        "announcements.view",
+        "notifications.view",
+        "reclamations.view",
+        "reclamations.manage",
     ],
     ROLE_SECRETAIRE: [
         "dashboard.view",
@@ -49,12 +56,20 @@ ROLE_PERMISSION_MAP = {
         "students.view",
         "registrations.manage",
         "registrations.view",
+        "announcements.view",
+        "notifications.view",
+        "reclamations.view",
+        "reclamations.manage",
     ],
     ROLE_PREFET: [
         "dashboard.view",
         "students.view",
         "registrations.view",
+        "payments.view",
         "reports.view",
+        "announcements.view",
+        "notifications.view",
+        "reclamations.view",
     ],
     ROLE_DIRECTION: [
         "dashboard.view",
@@ -63,6 +78,10 @@ ROLE_PERMISSION_MAP = {
         "payments.view",
         "reports.view",
         "reports.finance",
+        "announcements.view",
+        "notifications.view",
+        "reclamations.view",
+        "reclamations.manage",
     ],
     ROLE_ELEVE: [
         "student.self.view",
@@ -71,5 +90,7 @@ ROLE_PERMISSION_MAP = {
         "student.card.download",
         "announcements.view",
         "notifications.view",
+        "reclamations.view",
+        "reclamations.create",
     ],
 }

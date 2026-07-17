@@ -7,7 +7,7 @@ from app.models.user import User
 
 def authenticate_user(db: Session, login: str, password: str) -> User | None:
     user = db.query(User).filter(User.login == login).first()
-    if not user or not verify_password(password, user.mot_de_passe):
+    if not user or user.statut != "actif" or not verify_password(password, user.mot_de_passe):
         return None
     return user
 

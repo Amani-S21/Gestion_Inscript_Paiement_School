@@ -4,7 +4,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.database.session import SessionLocal
+from app.database.session import Base, SessionLocal, engine
+import app.models  # noqa: F401
 from app.routers.admin_router import router as admin_router
 from app.routers.auth_router import router as auth_router
 from app.routers.student_space_router import router as student_space_router
@@ -13,6 +14,7 @@ from app.seed import seed_initial_data
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:
         seed_initial_data(db)

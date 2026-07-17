@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { ArrowLeft, Eye, EyeOff, LockKeyhole, School, ShieldCheck, UserRound } from "lucide-react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../contexts/AuthContext";
 import { login } from "../../services/authService";
@@ -13,7 +13,6 @@ export function LoginPage() {
   const [loading, setLoading] = useState(false);
   const { refresh } = useAuth();
   const navigate = useNavigate();
-  const [params] = useSearchParams();
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
@@ -22,7 +21,7 @@ export function LoginPage() {
     try {
       await login(username, password);
       await refresh();
-      navigate(params.get("from") || "/app", { replace: true });
+      navigate("/app", { replace: true });
     } catch {
       setError("Identifiants incorrects ou compte désactivé.");
     } finally {

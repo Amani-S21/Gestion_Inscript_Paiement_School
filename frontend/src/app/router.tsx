@@ -11,6 +11,7 @@ import { PaymentsPage } from "../pages/payments/PaymentsPage";
 import { ReportsPage } from "../pages/reports/ReportsPage";
 import { AdministrationPage } from "../pages/administration/AdministrationPage";
 import { StudentSpacePage } from "../pages/student-space/StudentSpacePage";
+import { ReclamationsPage } from "../pages/reclamations/ReclamationsPage";
 
 export const router = createBrowserRouter([
   { path: "/", element: <LandingPage /> },
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
           {
             element: <ProtectedRoute permission="reports.view" />,
             children: [{ path: "reports", element: <ReportsPage /> }],
+          },
+          {
+            element: <ProtectedRoute permission="reclamations.view" />,
+            children: [{ path: "reclamations", element: <ReclamationsPage /> }],
           },
           {
             element: <ProtectedRoute permission="admin.settings" />,

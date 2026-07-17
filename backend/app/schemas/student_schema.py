@@ -10,6 +10,7 @@ class StudentCreate(BaseModel):
     prenom: str | None = None
     email: EmailStr
     login: str
+    password: str | None = None
     telephone: str | None = None
     adresse: str | None = None
     matricule: str
@@ -24,10 +25,18 @@ class StudentUpdate(BaseModel):
     nom: str | None = None
     postnom: str | None = None
     prenom: str | None = None
+    matricule: str | None = None
+    login: str | None = None
+    password: str | None = None
     telephone: str | None = None
     adresse: str | None = None
     email: EmailStr | None = None
     photo_url: str | None = None
+    sexe: str | None = None
+    date_naissance: date | None = None
+    lieu_naissance: str | None = None
+    nom_tuteur: str | None = None
+    telephone_tuteur: str | None = None
 
 
 class StudentProfile(BaseModel):

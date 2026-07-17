@@ -8,6 +8,7 @@ from app.auth.password_handler import hash_password, verify_password
 from app.config import settings
 from app.database.session import get_db
 from app.models.user import User
+from app.permissions.codes import ROLE_PERMISSION_MAP
 from app.schemas.auth_schema import PasswordChange, TokenResponse, UserMe
 from app.services.auth_service import authenticate_user, make_token_pair
 
@@ -15,6 +16,10 @@ router = APIRouter(prefix="/auth", tags=["Authentification"])
 
 
 def user_response(user: User) -> UserMe:
+    permissions = {permission.code for role in user.roles for permission in role.permissions}
+    permissions.update(ROLE_PERMISSION_MAP.get(user.type_utilisateur, []))
+    for role in user.roles:
+        permissions.update(ROLE_PERMISSION_MAP.get(role.code, []))
     return UserMe(
         id=user.id,
         nom=user.nom,
@@ -27,7 +32,7 @@ def user_response(user: User) -> UserMe:
         photo_url=user.photo_url,
         type_utilisateur=user.type_utilisateur,
         roles=[role.code for role in user.roles],
-        permissions=sorted({permission.code for role in user.roles for permission in role.permissions}),
+        permissions=sorted(permissions),
         student_id=user.student.id if user.student else None,
     )
 
