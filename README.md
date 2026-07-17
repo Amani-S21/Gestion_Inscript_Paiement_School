@@ -1,6 +1,6 @@
 # GESTION_INSCRIPTION_PAIEMENT
 
-Application web autonome pour la gestion des inscriptions et paiements de l'Institut NENGAPETA.
+Application web autonome pour la gestion des inscriptions et paiements de l'Institut NENGAPETA. 
 
 ## Structure
 
