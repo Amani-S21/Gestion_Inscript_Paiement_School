@@ -1,3 +1,5 @@
+import base64
+
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session, joinedload
 
@@ -126,6 +128,18 @@ def student_card(student: Student = Depends(current_student), db: Session = Depe
         media_type="application/pdf",
         headers={"Content-Disposition": f'attachment; filename="carte-{student.matricule}.pdf"'},
     )
+
+
+@router.get("/card/pdf-data")
+def student_card_data(student: Student = Depends(current_student), db: Session = Depends(get_db)):
+    reg = db.query(Registration).options(joinedload(Registration.classroom)).filter(Registration.student_id == student.id).order_by(Registration.id.desc()).first()
+    payload = f"STUDENT:{student.id}:{student.matricule}"
+    pdf = render_student_card_pdf(payload, full_name(student.user), student.matricule, reg.classroom.nom if reg else None, student.user.photo_url)
+    return {
+        "file_name": f"carte-{student.matricule}.pdf",
+        "content_type": "application/pdf",
+        "content_base64": base64.b64encode(pdf).decode("ascii"),
+    }
 
 
 @router.get("/notifications")

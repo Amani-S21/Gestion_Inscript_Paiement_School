@@ -1,3 +1,4 @@
+import base64
 from datetime import date, datetime
 from io import BytesIO
 from pathlib import Path
@@ -464,6 +465,22 @@ def download_all_student_cards(db: Session = Depends(get_db)):
     )
 
 
+@router.get("/students/cards/pdf-data", dependencies=[Depends(require_permission("students.view"))])
+def download_all_student_cards_data(db: Session = Depends(get_db)):
+    students = db.query(Student).options(joinedload(Student.user)).order_by(Student.id.desc()).all()
+    if not students:
+        raise HTTPException(status_code=404, detail="Aucun élève trouvé.")
+    buffer = BytesIO()
+    with ZipFile(buffer, "w", ZIP_DEFLATED) as archive:
+        for student in students:
+            archive.writestr(f"carte-{student.matricule}.pdf", render_admin_student_card(db, student))
+    return {
+        "file_name": "cartes-eleves.zip",
+        "content_type": "application/zip",
+        "content_base64": base64.b64encode(buffer.getvalue()).decode("ascii"),
+    }
+
+
 @router.get("/students/{student_id}/card/pdf", dependencies=[Depends(require_permission("students.view"))])
 def download_student_card(student_id: int, db: Session = Depends(get_db)):
     student = db.query(Student).options(joinedload(Student.user)).filter(Student.id == student_id).first()
@@ -474,6 +491,19 @@ def download_student_card(student_id: int, db: Session = Depends(get_db)):
         media_type="application/pdf",
         headers={"Content-Disposition": f'attachment; filename="carte-{student.matricule}.pdf"'},
     )
+
+
+@router.get("/students/{student_id}/card/pdf-data", dependencies=[Depends(require_permission("students.view"))])
+def download_student_card_data(student_id: int, db: Session = Depends(get_db)):
+    student = db.query(Student).options(joinedload(Student.user)).filter(Student.id == student_id).first()
+    if not student:
+        raise HTTPException(status_code=404, detail="Élève introuvable.")
+    pdf = render_admin_student_card(db, student)
+    return {
+        "file_name": f"carte-{student.matricule}.pdf",
+        "content_type": "application/pdf",
+        "content_base64": base64.b64encode(pdf).decode("ascii"),
+    }
 
 
 @router.post("/students", dependencies=[Depends(require_permission("students.manage"))])
