@@ -213,6 +213,26 @@ export async function createAnnouncement(payload: { titre: string; contenu: stri
   return data;
 }
 
+export async function getPublicMarketingMedia() {
+  const { data } = await api.get("/api/public/marketing-media");
+  return data;
+}
+
+export async function getMarketingMedia() {
+  const { data } = await api.get("/api/marketing-media");
+  return data;
+}
+
+export async function createMarketingMedia(payload: { title: string; description?: string; image_url: string; statut?: string }) {
+  const { data } = await api.post("/api/marketing-media", payload);
+  return data;
+}
+
+export async function deleteMarketingMedia(mediaId: string | number) {
+  const { data } = await api.delete(`/api/marketing-media/${mediaId}`);
+  return data;
+}
+
 export async function getReclamations(params?: { page?: number; size?: number }) {
   const { data } = await api.get("/api/reclamations", { params });
   return data;

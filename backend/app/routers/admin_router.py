@@ -11,7 +11,7 @@ from app.auth.access import permission_codes
 from app.auth.dependencies import get_current_user, require_permission
 from app.database.session import get_db
 from app.models.academic import AcademicYear, ClassRoom, Option, Section
-from app.models.communication import Announcement, Notification, Reclamation
+from app.models.communication import Announcement, MarketingMedia, Notification, Reclamation
 from app.models.finance import Fee, FeeType, Payment, Receipt
 from app.models.registration import Registration
 from app.models.student import Student
@@ -195,6 +195,17 @@ def serialize_reclamation(item: Reclamation) -> dict:
         "response": item.response,
         "created_at": item.created_at,
         "resolved_at": item.resolved_at,
+    }
+
+
+def serialize_marketing_media(item: MarketingMedia) -> dict:
+    return {
+        "id": item.id,
+        "title": item.title,
+        "description": item.description,
+        "image_url": item.image_url,
+        "statut": item.statut,
+        "created_at": item.created_at,
     }
 
 
@@ -672,6 +683,44 @@ def create_announcement(payload: AnnouncementIn, db: Session = Depends(get_db)):
 @router.get("/announcements", dependencies=[Depends(require_permission("announcements.view"))])
 def list_announcements(db: Session = Depends(get_db)):
     return db.query(Announcement).order_by(Announcement.created_at.desc()).all()
+
+
+@router.get("/public/marketing-media")
+def public_marketing_media(db: Session = Depends(get_db)):
+    items = db.query(MarketingMedia).filter(MarketingMedia.statut == "publie").order_by(MarketingMedia.created_at.desc()).limit(6).all()
+    return [serialize_marketing_media(item) for item in items]
+
+
+@router.get("/marketing-media", dependencies=[Depends(require_permission("admin.settings"))])
+def list_marketing_media(db: Session = Depends(get_db)):
+    items = db.query(MarketingMedia).order_by(MarketingMedia.created_at.desc()).all()
+    return [serialize_marketing_media(item) for item in items]
+
+
+@router.post("/marketing-media", dependencies=[Depends(require_permission("admin.settings"))])
+def create_marketing_media(payload: dict, db: Session = Depends(get_db)):
+    if not payload.get("title") or not payload.get("image_url"):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Titre et image obligatoires.")
+    item = MarketingMedia(
+        title=payload.get("title"),
+        description=payload.get("description"),
+        image_url=payload.get("image_url"),
+        statut=payload.get("statut") or "publie",
+    )
+    db.add(item)
+    db.commit()
+    db.refresh(item)
+    return serialize_marketing_media(item)
+
+
+@router.delete("/marketing-media/{media_id}", dependencies=[Depends(require_permission("admin.settings"))])
+def delete_marketing_media(media_id: int, db: Session = Depends(get_db)):
+    item = db.get(MarketingMedia, media_id)
+    if not item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Photo publicitaire introuvable.")
+    db.delete(item)
+    db.commit()
+    return {"message": "Photo publicitaire supprimée."}
 
 
 @router.get("/academic-years", dependencies=[Depends(require_permission("registrations.view"))])
