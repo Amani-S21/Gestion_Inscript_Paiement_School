@@ -75,31 +75,31 @@ const fallbackMedia = [
   {
     title: "Vie scolaire organisée",
     description: "Une école vivante avec un encadrement structuré.",
-    image_url: "https://source.unsplash.com/900x600/?african-students,school",
+    image_url: "/images/nengapeta-school-hero.png",
   },
   {
     title: "Encadrement pédagogique",
     description: "Des élèves accompagnés dans leur parcours scolaire.",
-    image_url: "https://source.unsplash.com/900x600/?black-students,classroom",
+    image_url: "/images/nengapeta-school-hero.png",
   },
   {
     title: "Activités éducatives",
     description: "Des espaces de formation orientés vers la réussite.",
-    image_url: "https://source.unsplash.com/900x600/?african-school,education",
+    image_url: "/images/nengapeta-school-hero.png",
   },
 ];
 
 const reasons = [
-  { title: "Encadrement sérieux", image: "https://source.unsplash.com/600x400/?african-teacher,students" },
-  { title: "Suivi des élèves", image: "https://source.unsplash.com/600x400/?black-students,teacher" },
-  { title: "Communication claire", image: "https://source.unsplash.com/600x400/?african-students,computer" },
-  { title: "Paiements tracés", image: "https://source.unsplash.com/600x400/?african-office,finance" },
-  { title: "Reçus disponibles", image: "https://source.unsplash.com/600x400/?african-administration,documents" },
-  { title: "Espace élève", image: "https://source.unsplash.com/600x400/?african-students,study" },
-  { title: "Gestion moderne", image: "https://source.unsplash.com/600x400/?african-school,technology" },
-  { title: "Archives propres", image: "https://source.unsplash.com/600x400/?african-office,files" },
-  { title: "Rapports professionnels", image: "https://source.unsplash.com/600x400/?african-professional,charts" },
-  { title: "Administration structurée", image: "https://source.unsplash.com/600x400/?african-school,administration" },
+  { title: "Encadrement sérieux", image: "/images/nengapeta-school-hero.png" },
+  { title: "Suivi des élèves", image: "/images/nengapeta-school-hero.png" },
+  { title: "Communication claire", image: "/images/nengapeta-school-hero.png" },
+  { title: "Paiements tracés", image: "/images/nengapeta-school-hero.png" },
+  { title: "Reçus disponibles", image: "/images/nengapeta-school-hero.png" },
+  { title: "Espace élève", image: "/images/nengapeta-school-hero.png" },
+  { title: "Gestion moderne", image: "/images/nengapeta-school-hero.png" },
+  { title: "Archives propres", image: "/images/nengapeta-school-hero.png" },
+  { title: "Rapports professionnels", image: "/images/nengapeta-school-hero.png" },
+  { title: "Administration structurée", image: "/images/nengapeta-school-hero.png" },
 ];
 
 const faqs = [
@@ -258,7 +258,14 @@ export function LandingPage() {
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {publicMedia.map((item, index) => (
               <article key={item.id ?? item.title} className="overflow-hidden rounded-[14px] border border-slate-200 bg-[#f8fbfb] shadow-sm">
-                <img src={item.image_url} alt="" className="h-44 w-full object-cover" />
+                <img
+                  src={item.image_url}
+                  alt=""
+                  className="h-44 w-full object-cover"
+                  onError={(event) => {
+                    event.currentTarget.src = "/images/nengapeta-school-hero.png";
+                  }}
+                />
                 <div className="p-4">
                   <p className="font-black text-slate-900">{item.title}</p>
                   <p className="mt-1 text-[12px] leading-5 text-slate-600">{item.description || `Photo publicitaire ${index + 1}`}</p>
@@ -277,7 +284,14 @@ export function LandingPage() {
         <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {reasons.map((reason, index) => (
             <div key={reason.title} className="overflow-hidden rounded-[12px] border border-slate-200 bg-white shadow-sm">
-              <img src={reason.image} alt="" className="h-28 w-full object-cover" />
+              <img
+                src={reason.image}
+                alt=""
+                className="h-28 w-full object-cover"
+                onError={(event) => {
+                  event.currentTarget.src = "/images/nengapeta-school-hero.png";
+                }}
+              />
               <div className="p-4">
                 <p className="text-[11px] font-black text-[#0e4f4a]">Raison {index + 1}</p>
                 <p className="mt-1 text-[13px] font-bold text-slate-800">{reason.title}</p>
