@@ -83,10 +83,10 @@ export function LoginPage() {
             Connexion
           </p>
           <h1 className="heading mt-[clamp(0.4rem,1.5vw,0.5rem)] text-[clamp(1.15rem,6vw,1.5rem)] font-bold text-slate-950 lg:mt-7 lg:text-[clamp(2rem,3vw,2.8rem)]">Bienvenue</h1>
-          <div className="mt-[clamp(0.75rem,3.5vw,1.25rem)] space-y-[clamp(0.65rem,2.8vw,0.85rem)] lg:mt-10 lg:space-y-5">
+          <div className="mt-[clamp(0.75rem,3.5vw,1.25rem)] space-y-[clamp(0.65rem,2.8vw,0.85rem)] lg:mt-8 lg:space-y-4">
             <label className="block">
               <span className="text-[clamp(0.72rem,3vw,0.8125rem)] font-semibold text-slate-700 lg:text-[clamp(0.9rem,1.2vw,1.05rem)]">Login</span>
-              <span className="mt-1.5 flex h-[clamp(2.35rem,10vw,2.75rem)] min-w-0 items-center gap-[clamp(0.5rem,2.5vw,0.75rem)] rounded-[10px] border border-slate-200 bg-slate-50 px-[clamp(0.55rem,2.5vw,0.75rem)] transition focus-within:border-emerald-600 focus-within:bg-white focus-within:ring-4 focus-within:ring-emerald-50 lg:mt-2 lg:h-[4.35rem] lg:gap-5 lg:rounded-[18px] lg:px-7">
+              <span className="mt-1.5 flex h-[clamp(2.35rem,10vw,2.75rem)] min-w-0 items-center gap-[clamp(0.5rem,2.5vw,0.75rem)] rounded-[10px] border border-slate-200 bg-slate-50 px-[clamp(0.55rem,2.5vw,0.75rem)] transition focus-within:border-emerald-600 focus-within:bg-white focus-within:ring-4 focus-within:ring-emerald-50 lg:mt-2 lg:h-[3.65rem] lg:gap-4 lg:rounded-[16px] lg:px-6">
                 <UserRound className="h-[clamp(0.9rem,4vw,1rem)] w-[clamp(0.9rem,4vw,1rem)] shrink-0 text-emerald-700 lg:h-6 lg:w-6" />
                 <input
                   value={username}
@@ -94,13 +94,13 @@ export function LoginPage() {
                   autoComplete="username"
                   placeholder="Votre identifiant"
                   required
-                  className="min-w-0 flex-1 bg-transparent text-[clamp(0.75rem,3.2vw,0.8125rem)] text-slate-900 outline-none placeholder:text-slate-400 lg:text-[clamp(1.05rem,1.8vw,1.45rem)]"
+                  className="min-w-0 flex-1 bg-transparent text-[clamp(0.75rem,3.2vw,0.8125rem)] text-slate-900 outline-none placeholder:text-slate-400 lg:text-[clamp(0.95rem,1.45vw,1.15rem)]"
                 />
               </span>
             </label>
             <label className="block">
               <span className="text-[clamp(0.72rem,3vw,0.8125rem)] font-semibold text-slate-700 lg:text-[clamp(0.9rem,1.2vw,1.05rem)]">Mot de passe</span>
-              <span className="mt-1.5 flex h-[clamp(2.35rem,10vw,2.75rem)] min-w-0 items-center gap-[clamp(0.5rem,2.5vw,0.75rem)] rounded-[10px] border border-slate-200 bg-slate-50 px-[clamp(0.55rem,2.5vw,0.75rem)] transition focus-within:border-emerald-600 focus-within:bg-white focus-within:ring-4 focus-within:ring-emerald-50 lg:mt-2 lg:h-[4.35rem] lg:gap-5 lg:rounded-[18px] lg:px-7">
+              <span className="mt-1.5 flex h-[clamp(2.35rem,10vw,2.75rem)] min-w-0 items-center gap-[clamp(0.5rem,2.5vw,0.75rem)] rounded-[10px] border border-slate-200 bg-slate-50 px-[clamp(0.55rem,2.5vw,0.75rem)] transition focus-within:border-emerald-600 focus-within:bg-white focus-within:ring-4 focus-within:ring-emerald-50 lg:mt-2 lg:h-[3.65rem] lg:gap-4 lg:rounded-[16px] lg:px-6">
                 <LockKeyhole className="h-[clamp(0.9rem,4vw,1rem)] w-[clamp(0.9rem,4vw,1rem)] shrink-0 text-emerald-700 lg:h-6 lg:w-6" />
                 <input
                   type={showPassword ? "text" : "password"}
@@ -109,7 +109,7 @@ export function LoginPage() {
                   autoComplete="current-password"
                   placeholder="Votre mot de passe"
                   required
-                  className="min-w-0 flex-1 bg-transparent text-[clamp(0.75rem,3.2vw,0.8125rem)] text-slate-900 outline-none placeholder:text-slate-400 lg:text-[clamp(1.05rem,1.8vw,1.45rem)]"
+                  className="min-w-0 flex-1 bg-transparent text-[clamp(0.75rem,3.2vw,0.8125rem)] text-slate-900 outline-none placeholder:text-slate-400 lg:text-[clamp(0.95rem,1.45vw,1.15rem)]"
                 />
                 <button
                   type="button"
@@ -123,12 +123,12 @@ export function LoginPage() {
             </label>
           </div>
           {error && <p className="mt-[clamp(0.65rem,2.8vw,1rem)] rounded-[10px] bg-rose-50 px-4 py-2.5 text-[clamp(0.72rem,3vw,0.8125rem)] font-semibold text-rose-700">{error}</p>}
-          <button disabled={loading} className="mt-[clamp(0.8rem,3vw,1rem)] h-[clamp(2.4rem,10vw,2.75rem)] w-full rounded-[10px] bg-[#0b1f33] px-4 text-[clamp(0.75rem,3vw,0.8125rem)] font-bold text-white shadow-lg shadow-slate-950/15 transition hover:bg-[#123554] disabled:opacity-60 lg:mt-8 lg:h-[4.2rem] lg:rounded-[18px] lg:text-[clamp(1.05rem,1.75vw,1.45rem)]">
+          <button disabled={loading} className="mt-[clamp(0.8rem,3vw,1rem)] h-[clamp(2.4rem,10vw,2.75rem)] w-full rounded-[10px] bg-[#0b1f33] px-4 text-[clamp(0.75rem,3vw,0.8125rem)] font-bold text-white shadow-lg shadow-slate-950/15 transition hover:bg-[#123554] disabled:opacity-60 lg:mt-7 lg:h-[3.35rem] lg:rounded-[16px] lg:text-[clamp(0.95rem,1.35vw,1.1rem)]">
             {loading ? "Connexion..." : "Se connecter"}
           </button>
           <Link
             to="/"
-            className="mt-[clamp(0.55rem,2.5vw,0.75rem)] inline-flex w-full items-center justify-center gap-1.5 text-[clamp(0.7rem,2.8vw,0.75rem)] font-semibold text-slate-500 transition hover:text-emerald-800"
+            className="mt-[clamp(0.55rem,2.5vw,0.75rem)] inline-flex h-[clamp(2.4rem,10vw,2.75rem)] w-full items-center justify-center gap-1.5 rounded-[10px] border border-slate-200 bg-white text-[clamp(0.7rem,2.8vw,0.75rem)] font-bold text-slate-600 transition hover:border-emerald-200 hover:text-emerald-800 lg:h-[3.35rem] lg:rounded-[16px] lg:text-[clamp(0.95rem,1.35vw,1.1rem)]"
           >
             <ArrowLeft className="h-[clamp(0.75rem,3vw,0.8125rem)] w-[clamp(0.75rem,3vw,0.8125rem)]" />
             Retour à l'accueil
