@@ -90,16 +90,56 @@ const fallbackMedia = [
 ];
 
 const reasons = [
-  { title: "Encadrement sérieux", image: "/images/nengapeta-gallery/laboratoire-sciences.jpg" },
-  { title: "Suivi des élèves", image: "/images/nengapeta-gallery/vie-scolaire.jpg" },
-  { title: "Communication claire", image: "/images/nengapeta-gallery/electricite-pratique.jpg" },
-  { title: "Paiements tracés", image: "/images/nengapeta-gallery/atelier-cuisine.jpg" },
-  { title: "Reçus disponibles", image: "/images/nengapeta-gallery/laboratoire-sciences.jpg" },
-  { title: "Espace élève", image: "/images/nengapeta-gallery/vie-scolaire.jpg" },
-  { title: "Gestion moderne", image: "/images/nengapeta-gallery/electricite-pratique.jpg" },
-  { title: "Archives propres", image: "/images/nengapeta-gallery/agriculture-pratique.jpg" },
-  { title: "Rapports professionnels", image: "/images/nengapeta-gallery/atelier-cuisine.jpg" },
-  { title: "Administration structurée", image: "/images/nengapeta-gallery/electricite-pratique.jpg" },
+  {
+    title: "Encadrement sérieux",
+    description: "Les élèves sont accompagnés dans des activités scientifiques pratiques avec rigueur et méthode.",
+    image: "/images/nengapeta-gallery/laboratoire-sciences.jpg",
+  },
+  {
+    title: "Vie scolaire suivie",
+    description: "La communauté scolaire reste organisée autour d'activités collectives et d'un suivi de proximité.",
+    image: "/images/nengapeta-gallery/vie-scolaire.jpg",
+  },
+  {
+    title: "Formation technique",
+    description: "Les élèves développent des compétences concrètes en électricité et en travaux pratiques.",
+    image: "/images/nengapeta-gallery/electricite-pratique.jpg",
+  },
+  {
+    title: "Paiements tracés",
+    description: "Les frais scolaires sont enregistrés avec ordre, justificatifs et suivi administratif.",
+    image: "/images/nengapeta-gallery/paiements-traces.png",
+  },
+  {
+    title: "Reçus disponibles",
+    description: "Chaque paiement peut produire un reçu clair, archivable et consultable par l'élève.",
+    image: "/images/nengapeta-gallery/recus-disponibles.png",
+  },
+  {
+    title: "Espace élève",
+    description: "Chaque élève garde un accès personnel à ses informations scolaires et financières.",
+    image: "/images/nengapeta-gallery/vie-scolaire.jpg",
+  },
+  {
+    title: "Gestion moderne",
+    description: "Les outils numériques aident l'école à suivre les inscriptions, paiements et dossiers.",
+    image: "/images/nengapeta-gallery/rapports-professionnels.png",
+  },
+  {
+    title: "Apprentissage agricole",
+    description: "Les activités pratiques renforcent l'autonomie, l'observation et le travail de terrain.",
+    image: "/images/nengapeta-gallery/agriculture-pratique.jpg",
+  },
+  {
+    title: "Rapports professionnels",
+    description: "Les responsables peuvent consulter des états structurés pour mieux piloter l'établissement.",
+    image: "/images/nengapeta-gallery/rapports-professionnels.png",
+  },
+  {
+    title: "Administration structurée",
+    description: "Les dossiers, archives et documents scolaires restent mieux classés et plus faciles à retrouver.",
+    image: "/images/nengapeta-gallery/archives-administration.png",
+  },
 ];
 
 const faqs = [
