@@ -123,7 +123,7 @@ export function LoginPage() {
             </label>
           </div>
           {error && <p className="mt-[clamp(0.65rem,2.8vw,1rem)] rounded-[10px] bg-rose-50 px-4 py-2.5 text-[clamp(0.72rem,3vw,0.8125rem)] font-semibold text-rose-700">{error}</p>}
-          <button disabled={loading} className="mx-auto mt-[clamp(0.8rem,3vw,1rem)] h-[clamp(2.4rem,10vw,2.75rem)] w-full rounded-[10px] bg-[#0b1f33] px-4 text-[clamp(0.75rem,3vw,0.8125rem)] font-bold text-white shadow-lg shadow-slate-950/15 transition hover:bg-[#123554] disabled:opacity-60 lg:mt-7 lg:h-[3.35rem] lg:w-[112%] lg:max-w-none lg:rounded-[16px] lg:text-[clamp(0.95rem,1.35vw,1.1rem)]">
+          <button disabled={loading} className="mt-[clamp(0.8rem,3vw,1rem)] h-[clamp(2.4rem,10vw,2.75rem)] w-full rounded-[10px] bg-[#0b1f33] px-4 text-[clamp(0.75rem,3vw,0.8125rem)] font-bold text-white shadow-lg shadow-slate-950/15 transition hover:bg-[#123554] disabled:opacity-60 lg:mt-7 lg:h-[3.35rem] lg:rounded-[16px] lg:text-[clamp(0.95rem,1.35vw,1.1rem)]">
             {loading ? "Connexion..." : "Se connecter"}
           </button>
           <Link
