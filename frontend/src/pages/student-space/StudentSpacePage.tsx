@@ -4,12 +4,30 @@ import { BadgeCheck, Bell, CreditCard, Download, IdCard, ReceiptText, UserRound 
 import { StatCard } from "../../components/StatCard";
 import { cardPdfUrl, getStudentDashboard, receiptPdfUrl } from "../../services/studentSpaceService";
 import { money, shortDate } from "../../utils/format";
+import { printTable } from "../../utils/print";
 
 export function StudentSpacePage() {
   const { data, isLoading } = useQuery({ queryKey: ["student-dashboard"], queryFn: getStudentDashboard });
 
   if (isLoading) return <div className="text-slate-500">Chargement de votre espace...</div>;
   if (!data) return <div className="text-slate-500">Aucune information élève disponible.</div>;
+
+  const printRegistrationForm = () => {
+    printTable("Formulaire d'inscription valide", [
+      { label: "Champ", value: (row: any) => row.label },
+      { label: "Information", value: (row: any) => row.value },
+    ], [
+      { label: "Nom complet", value: data.profile.nom_complet },
+      { label: "Matricule", value: data.profile.matricule },
+      { label: "Classe", value: data.classe ?? "Non renseignee" },
+      { label: "Option", value: data.option ?? "Non renseignee" },
+      { label: "Annee scolaire", value: data.annee_scolaire ?? "Non renseignee" },
+      { label: "Date de naissance", value: shortDate(data.profile.date_naissance) },
+      { label: "Lieu de naissance", value: data.profile.lieu_naissance ?? "-" },
+      { label: "Tuteur", value: data.profile.nom_tuteur ?? "-" },
+      { label: "Telephone tuteur", value: data.profile.telephone_tuteur ?? "-" },
+    ]);
+  };
 
   return (
     <div className="space-y-6">
@@ -28,9 +46,14 @@ export function StudentSpacePage() {
               <p className="mt-1 text-sm text-teal-100">Matricule: {data.profile.matricule}</p>
             </div>
           </div>
-          <a href={cardPdfUrl()} className="inline-flex h-12 items-center justify-center gap-2 rounded-[8px] bg-teal-300 px-4 font-bold text-[#102a2b]">
-            <IdCard size={18} /> Carte PDF
-          </a>
+          <div className="flex flex-col gap-2">
+            <a href={cardPdfUrl()} className="inline-flex h-12 items-center justify-center gap-2 rounded-[8px] bg-teal-300 px-4 font-bold text-[#102a2b]">
+              <IdCard size={18} /> Carte PDF
+            </a>
+            <button type="button" onClick={printRegistrationForm} className="inline-flex h-12 items-center justify-center gap-2 rounded-[8px] bg-white/10 px-4 font-bold text-white">
+              <Download size={18} /> Formulaire
+            </button>
+          </div>
         </div>
       </section>
 
