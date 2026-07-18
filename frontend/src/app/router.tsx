@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 
 import { ProtectedRoute } from "../components/ProtectedRoute";
 import { AppLayout } from "../layouts/AppLayout";
@@ -12,6 +12,13 @@ import { ReportsPage } from "../pages/reports/ReportsPage";
 import { AdministrationPage } from "../pages/administration/AdministrationPage";
 import { StudentSpacePage } from "../pages/student-space/StudentSpacePage";
 import { ReclamationsPage } from "../pages/reclamations/ReclamationsPage";
+import { useAuth } from "../contexts/AuthContext";
+
+function AppHome() {
+  const { hasRole } = useAuth();
+  if (hasRole("ROLE_ELEVE")) return <Navigate to="/app/student" replace />;
+  return <DashboardPage />;
+}
 
 export const router = createBrowserRouter([
   { path: "/", element: <LandingPage /> },
@@ -24,7 +31,7 @@ export const router = createBrowserRouter([
       {
         element: <AppLayout />,
         children: [
-          { index: true, element: <DashboardPage /> },
+          { index: true, element: <AppHome /> },
           {
             element: <ProtectedRoute permission="students.view" />,
             children: [{ path: "students", element: <StudentsPage /> }],
