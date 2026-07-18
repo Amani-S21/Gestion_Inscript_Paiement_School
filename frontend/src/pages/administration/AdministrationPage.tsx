@@ -9,17 +9,20 @@ import {
   createClassroom,
   createFee,
   createFeeType,
+  createMarketingMedia,
   createOption,
   createSection,
   createUser,
   deleteAcademicYear,
   deleteClassroom,
   deleteFee,
+  deleteMarketingMedia,
   deleteOption,
   deleteSection,
   getAcademicYears,
   getClasses,
   getFees,
+  getMarketingMedia,
   getOptions,
   getRoles,
   getSections,
@@ -49,6 +52,7 @@ type ModalView =
   | "create-section"
   | "create-option"
   | "configure-fees"
+  | "create-media"
   | "create-user"
   | "edit-user"
   | null;
@@ -82,6 +86,7 @@ type AdminSection = { id: string; nom: string };
 type AdminOption = { id: string; nom: string; sectionId: string; niveauType: string; niveaux: string[]; classes: string[] };
 type AdminClass = { id: string; nom: string; sectionId: string; optionId: string; niveauType: string; niveau: string };
 type AdminFee = { id: string; type: string; cible: string; référence: string; montant: string };
+type MarketingMediaItem = { id: string; title: string; description?: string; image_url: string; statut: string };
 
 type ConfirmAction = {
   title: string;
@@ -109,6 +114,7 @@ export function AdministrationPage() {
   const optionsQuery = useQuery({ queryKey: ["options"], queryFn: getOptions });
   const classesQuery = useQuery({ queryKey: ["classes"], queryFn: getClasses });
   const feesQuery = useQuery({ queryKey: ["fees"], queryFn: getFees });
+  const mediaQuery = useQuery({ queryKey: ["marketing-media"], queryFn: getMarketingMedia });
   const roles = useMemo(() => (rolesQuery.data ?? []) as AdminRole[], [rolesQuery.data]);
   const users = useMemo(() => (usersQuery.data?.items ?? []) as AdminUser[], [usersQuery.data?.items]);
   const permissionCount = useMemo(
@@ -166,6 +172,11 @@ export function AdministrationPage() {
   );
 
   const [feesForm, setFeesForm] = useState({ type: "Inscription", cible: "all", référence: "", montant: "" });
+  const [mediaForm, setMediaForm] = useState({ title: "", description: "", image_url: "" });
+  const marketingMedia = useMemo<MarketingMediaItem[]>(
+    () => (mediaQuery.data ?? []).map((item: any) => ({ id: String(item.id), title: item.title, description: item.description, image_url: item.image_url, statut: item.statut })),
+    [mediaQuery.data]
+  );
   const fees = useMemo<AdminFee[]>(
     () =>
       (feesQuery.data ?? []).map((fee: any) => {
@@ -279,6 +290,26 @@ export function AdministrationPage() {
         setYearForm({ libellé: "", dateDebut: "", dateFin: "" });
         setModalView(null);
         setMessage("Année scolaire créée avec succès.");
+      },
+    });
+  };
+
+  const handleCreateMedia = (event: FormEvent) => {
+    event.preventDefault();
+    if (!mediaForm.title || !mediaForm.image_url) {
+      setMessage("Renseignez le titre et l'URL de la photo.");
+      return;
+    }
+    requestConfirmation({
+      title: "Publier la photo",
+      description: "Voulez-vous publier cette photo sur la page d'accueil ?",
+      confirmLabel: "Publier",
+      onConfirm: async () => {
+        await createMarketingMedia({ ...mediaForm, statut: "publie" });
+        setMediaForm({ title: "", description: "", image_url: "" });
+        closeModal();
+        await queryClient.invalidateQueries({ queryKey: ["marketing-media"] });
+        setMessage("Photo publicitaire publiée.");
       },
     });
   };
