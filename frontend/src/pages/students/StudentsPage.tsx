@@ -23,6 +23,7 @@ const initialForm = {
   telephone: "",
   adresse: "",
   matricule: "",
+  photo_url: "",
   sexe: "",
   date_naissance: "",
   lieu_naissance: "",
@@ -82,6 +83,7 @@ export function StudentsPage() {
       telephone: student.user?.telephone ?? "",
       adresse: student.user?.adresse ?? "",
       matricule: student.matricule ?? "",
+      photo_url: student.user?.photo_url ?? "",
       sexe: student.sexe ?? "",
       date_naissance: student.date_naissance ?? "",
       lieu_naissance: student.lieu_naissance ?? "",
@@ -133,8 +135,8 @@ export function StudentsPage() {
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
-    if (!form.nom || !form.email || !form.login || !form.matricule || (!editingStudent && !form.password)) {
-      setMessage("Renseignez le nom, l'email, le login, le mot de passe et le matricule.");
+    if (!form.nom || !form.email || !form.login || (!editingStudent && !form.password)) {
+      setMessage("Renseignez le nom, l'email, le login et le mot de passe.");
       return;
     }
     setConfirmOpen(true);
@@ -181,7 +183,7 @@ export function StudentsPage() {
             <thead className="text-xs uppercase text-slate-500">
               <tr>
                 <th className="py-3">Matricule</th>
-                <th>Nom</th>
+                <th>Élève</th>
                 <th>Login</th>
                 <th>Email</th>
                 <th>Téléphone</th>
@@ -201,7 +203,18 @@ export function StudentsPage() {
                   return (
                     <tr key={student.id}>
                       <td className="py-3 font-semibold text-slate-900">{student.matricule}</td>
-                      <td>{student.user?.nom} {student.user?.postnom} {student.user?.prenom}</td>
+                      <td>
+                        <div className="flex items-center gap-3">
+                          <div className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-[8px] bg-teal-50 text-xs font-extrabold text-teal-700">
+                            {student.user?.photo_url ? (
+                              <img src={student.user.photo_url} className="h-full w-full object-cover" />
+                            ) : (
+                              `${student.user?.nom?.[0] ?? "E"}${student.user?.prenom?.[0] ?? ""}`.toUpperCase()
+                            )}
+                          </div>
+                          <span>{student.user?.nom} {student.user?.postnom} {student.user?.prenom}</span>
+                        </div>
+                      </td>
                       <td>{student.user?.login ?? "-"}</td>
                       <td>{student.user?.email}</td>
                       <td>{student.user?.telephone ?? "-"}</td>
@@ -264,9 +277,10 @@ export function StudentsPage() {
                 <input required className="rounded-[8px] border border-slate-200 px-3 py-2 outline-none focus:border-teal-600" placeholder="Nom" value={form.nom} onChange={(e) => setForm({ ...form, nom: e.target.value })} />
                 <input className="rounded-[8px] border border-slate-200 px-3 py-2 outline-none focus:border-teal-600" placeholder="Postnom" value={form.postnom} onChange={(e) => setForm({ ...form, postnom: e.target.value })} />
                 <input className="rounded-[8px] border border-slate-200 px-3 py-2 outline-none focus:border-teal-600" placeholder="Prénom" value={form.prenom} onChange={(e) => setForm({ ...form, prenom: e.target.value })} />
-                <input required className="rounded-[8px] border border-slate-200 px-3 py-2 outline-none focus:border-teal-600" placeholder="Matricule" value={form.matricule} onChange={(e) => setForm({ ...form, matricule: e.target.value, login: form.login || e.target.value })} />
+                <input className="rounded-[8px] border border-slate-200 px-3 py-2 outline-none focus:border-teal-600" placeholder="Matricule automatique si vide" value={form.matricule} onChange={(e) => setForm({ ...form, matricule: e.target.value, login: form.login || e.target.value })} />
                 <input required type="email" className="rounded-[8px] border border-slate-200 px-3 py-2 outline-none focus:border-teal-600" placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
                 <input required className="rounded-[8px] border border-slate-200 px-3 py-2 outline-none focus:border-teal-600" placeholder="Login" value={form.login} onChange={(e) => setForm({ ...form, login: e.target.value })} />
+                <input className="rounded-[8px] border border-slate-200 px-3 py-2 outline-none focus:border-teal-600" placeholder="Photo de profil (URL)" value={form.photo_url} onChange={(e) => setForm({ ...form, photo_url: e.target.value })} />
                 <div className="flex overflow-hidden rounded-[8px] border border-slate-200 focus-within:border-teal-600">
                   <input required={!editingStudent} type={showPassword ? "text" : "password"} className="w-full px-3 py-2 outline-none" placeholder={editingStudent ? "Nouveau mot de passe" : "Mot de passe"} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
                   <button type="button" onClick={() => setShowPassword((value) => !value)} className="grid w-11 place-items-center text-slate-500" title={showPassword ? "Masquer" : "Afficher"}>
