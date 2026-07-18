@@ -240,13 +240,14 @@ export function AdministrationPage() {
     setEditingUserId(null);
   };
 
-  const handleDeleteConfig = (kind: "year" | "section" | "option" | "class" | "fee", id: string, title: string) => {
+  const handleDeleteConfig = (kind: "year" | "section" | "option" | "class" | "fee" | "media", id: string, title: string) => {
     const actions = {
       year: () => deleteAcademicYear(id),
       section: () => deleteSection(id),
       option: () => deleteOption(id),
       class: () => deleteClassroom(id),
       fee: () => deleteFee(id),
+      media: () => deleteMarketingMedia(id),
     };
     const queryKeys = {
       year: ["academic-years"],
@@ -254,6 +255,7 @@ export function AdministrationPage() {
       option: ["options"],
       class: ["classes"],
       fee: ["fees"],
+      media: ["marketing-media"],
     };
     requestConfirmation({
       title,
@@ -598,6 +600,36 @@ export function AdministrationPage() {
     </div>
   );
 
+  const renderMediaSection = () => (
+    <div className="space-y-5">
+      <div className="grid gap-3 sm:grid-cols-2">
+        <button onClick={() => handleOpenModal("create-media")} className="rounded-[12px] bg-[#10242f] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#163747]">
+          Publier une photo
+        </button>
+      </div>
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {marketingMedia.length === 0 ? (
+          <div className="rounded-[14px] border border-slate-200 bg-white p-4 text-sm text-slate-500">Aucune photo publicitaire publiée.</div>
+        ) : marketingMedia.map((item) => (
+          <article key={item.id} className="overflow-hidden rounded-[14px] border border-slate-200 bg-white shadow-sm">
+            <img src={item.image_url} alt="" className="h-40 w-full object-cover" />
+            <div className="p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="font-extrabold text-slate-900">{item.title}</p>
+                  <p className="mt-1 text-sm text-slate-500">{item.description || "Aucune description."}</p>
+                </div>
+                <button type="button" onClick={() => handleDeleteConfig("media", item.id, "Supprimer la photo")} className="grid h-8 w-8 shrink-0 place-items-center rounded-[8px] bg-rose-50 text-rose-700" title="Supprimer">
+                  <Trash2 size={15} />
+                </button>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+
   const renderUsersSection = () => (
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-[14px] border border-slate-200 bg-white p-4 shadow-sm">
@@ -672,6 +704,8 @@ export function AdministrationPage() {
         return renderStructureSection();
       case "frais":
         return renderFeesSection();
+      case "photos":
+        return renderMediaSection();
       case "utilisateurs":
         return renderUsersSection();
       case "roles":
@@ -729,6 +763,7 @@ export function AdministrationPage() {
                 {modalView === "create-section" && "Créer une section"}
                 {modalView === "create-option" && "Créer une option"}
                 {modalView === "configure-fees" && "Configurer les frais scolaires"}
+                {modalView === "create-media" && "Publier une photo publicitaire"}
                 {modalView === "create-user" && "Créer un utilisateur"}
                 {modalView === "edit-user" && "Modifier un utilisateur"}
               </h3>
@@ -879,6 +914,32 @@ export function AdministrationPage() {
                   <input className="w-full rounded-[12px] border border-slate-200 bg-slate-50 px-3 py-2 text-[13px] outline-none focus:border-emerald-500" placeholder="Montant" value={feesForm.montant} onChange={(e) => setFeesForm({ ...feesForm, montant: e.target.value })} />
                   {message && <p className="rounded-[12px] bg-rose-50 px-3 py-2 text-sm font-bold text-rose-700">{message}</p>}
                   <button type="submit" className="rounded-[12px] bg-[#10242f] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#163747]">Enregistrer</button>
+                </form>
+              )}
+
+              {modalView === "create-media" && (
+                <form onSubmit={handleCreateMedia} className="space-y-4">
+                  <input
+                    className="w-full rounded-[12px] border border-slate-200 bg-slate-50 px-3 py-2 text-[13px] outline-none focus:border-emerald-500"
+                    placeholder="Titre de la photo"
+                    value={mediaForm.title}
+                    onChange={(e) => setMediaForm({ ...mediaForm, title: e.target.value })}
+                  />
+                  <input
+                    className="w-full rounded-[12px] border border-slate-200 bg-slate-50 px-3 py-2 text-[13px] outline-none focus:border-emerald-500"
+                    placeholder="URL de la photo"
+                    value={mediaForm.image_url}
+                    onChange={(e) => setMediaForm({ ...mediaForm, image_url: e.target.value })}
+                  />
+                  <textarea
+                    className="min-h-28 w-full rounded-[12px] border border-slate-200 bg-slate-50 px-3 py-2 text-[13px] outline-none focus:border-emerald-500"
+                    placeholder="Petite description"
+                    value={mediaForm.description}
+                    onChange={(e) => setMediaForm({ ...mediaForm, description: e.target.value })}
+                  />
+                  {mediaForm.image_url && <img src={mediaForm.image_url} alt="" className="h-44 w-full rounded-[12px] object-cover" />}
+                  {message && <p className="rounded-[12px] bg-rose-50 px-3 py-2 text-sm font-bold text-rose-700">{message}</p>}
+                  <button type="submit" className="rounded-[12px] bg-[#10242f] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#163747]">Publier</button>
                 </form>
               )}
 
