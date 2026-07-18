@@ -33,6 +33,7 @@ class Reclamation(Base):
     id = Column(Integer, primary_key=True, index=True)
     student_id = Column(Integer, ForeignKey("students.id", ondelete="CASCADE"), nullable=False)
     payment_id = Column(Integer, ForeignKey("payments.id", ondelete="SET NULL"), nullable=True)
+    recipient = Column(String(80), nullable=True)
     subject = Column(String(180), nullable=False)
     message = Column(Text, nullable=False)
     status = Column(String(40), default="open", nullable=False)

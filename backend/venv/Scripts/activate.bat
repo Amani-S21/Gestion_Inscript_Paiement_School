@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\Light\Pictures\Gestion_Inscript_Paiement_School\backend\venv
+set VIRTUAL_ENV=C:\Users\AFRIX GLOBAL PC\Documents\Gestion_Inscript_Paiement_School\backend\venv
 
 if not defined PROMPT set PROMPT=$P$G
 
