@@ -75,31 +75,31 @@ const fallbackMedia = [
   {
     title: "Vie scolaire organisée",
     description: "Une école vivante avec un encadrement structuré.",
-    image_url: "/images/nengapeta-school-hero.png",
+    image_url: "/images/nengapeta-gallery/vie-scolaire.jpg",
   },
   {
     title: "Encadrement pédagogique",
     description: "Des élèves accompagnés dans leur parcours scolaire.",
-    image_url: "/images/nengapeta-school-hero.png",
+    image_url: "/images/nengapeta-gallery/electricite-pratique.jpg",
   },
   {
     title: "Activités éducatives",
     description: "Des espaces de formation orientés vers la réussite.",
-    image_url: "/images/nengapeta-school-hero.png",
+    image_url: "/images/nengapeta-gallery/atelier-cuisine.jpg",
   },
 ];
 
 const reasons = [
-  { title: "Encadrement sérieux", image: "/images/nengapeta-school-hero.png" },
-  { title: "Suivi des élèves", image: "/images/nengapeta-school-hero.png" },
-  { title: "Communication claire", image: "/images/nengapeta-school-hero.png" },
-  { title: "Paiements tracés", image: "/images/nengapeta-school-hero.png" },
-  { title: "Reçus disponibles", image: "/images/nengapeta-school-hero.png" },
-  { title: "Espace élève", image: "/images/nengapeta-school-hero.png" },
-  { title: "Gestion moderne", image: "/images/nengapeta-school-hero.png" },
-  { title: "Archives propres", image: "/images/nengapeta-school-hero.png" },
-  { title: "Rapports professionnels", image: "/images/nengapeta-school-hero.png" },
-  { title: "Administration structurée", image: "/images/nengapeta-school-hero.png" },
+  { title: "Encadrement sérieux", image: "/images/nengapeta-gallery/laboratoire-sciences.jpg" },
+  { title: "Suivi des élèves", image: "/images/nengapeta-gallery/vie-scolaire.jpg" },
+  { title: "Communication claire", image: "/images/nengapeta-gallery/electricite-pratique.jpg" },
+  { title: "Paiements tracés", image: "/images/nengapeta-gallery/atelier-cuisine.jpg" },
+  { title: "Reçus disponibles", image: "/images/nengapeta-gallery/laboratoire-sciences.jpg" },
+  { title: "Espace élève", image: "/images/nengapeta-gallery/vie-scolaire.jpg" },
+  { title: "Gestion moderne", image: "/images/nengapeta-gallery/electricite-pratique.jpg" },
+  { title: "Archives propres", image: "/images/nengapeta-gallery/agriculture-pratique.jpg" },
+  { title: "Rapports professionnels", image: "/images/nengapeta-gallery/atelier-cuisine.jpg" },
+  { title: "Administration structurée", image: "/images/nengapeta-gallery/electricite-pratique.jpg" },
 ];
 
 const faqs = [
@@ -123,8 +123,18 @@ const faqs = [
 
 export function LandingPage() {
   const [openFaq, setOpenFaq] = useState(0);
+  const [mediaIndex, setMediaIndex] = useState(0);
   const mediaQuery = useQuery({ queryKey: ["public-marketing-media"], queryFn: getPublicMarketingMedia });
   const publicMedia = (mediaQuery.data?.length ? mediaQuery.data : fallbackMedia) as Array<{ id?: number; title: string; description?: string; image_url: string }>;
+  const currentMedia = publicMedia[mediaIndex % publicMedia.length];
+
+  useEffect(() => {
+    if (publicMedia.length <= 1) return;
+    const timer = window.setInterval(() => {
+      setMediaIndex((index) => (index + 1) % publicMedia.length);
+    }, 5000);
+    return () => window.clearInterval(timer);
+  }, [publicMedia.length]);
 
   return (
     <main className="min-h-screen bg-[#f4f8f7] text-slate-950">
@@ -255,23 +265,33 @@ export function LandingPage() {
               <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">La vie de l'Institut NENGAPETA</h2>
             </div>
           </div>
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {publicMedia.map((item, index) => (
-              <article key={item.id ?? item.title} className="overflow-hidden rounded-[14px] border border-slate-200 bg-[#f8fbfb] shadow-sm">
-                <img
-                  src={item.image_url}
-                  alt=""
-                  className="h-44 w-full object-cover"
-                  onError={(event) => {
-                    event.currentTarget.src = "/images/nengapeta-school-hero.png";
-                  }}
-                />
-                <div className="p-4">
-                  <p className="font-black text-slate-900">{item.title}</p>
-                  <p className="mt-1 text-[12px] leading-5 text-slate-600">{item.description || `Photo publicitaire ${index + 1}`}</p>
+          <div className="mt-6 overflow-hidden rounded-[14px] border border-slate-200 bg-[#f8fbfb] shadow-sm">
+            <article key={currentMedia.id ?? currentMedia.title} className="grid md:grid-cols-[1.15fr_0.85fr]">
+              <img
+                src={currentMedia.image_url}
+                alt=""
+                className="h-[360px] w-full object-cover"
+                onError={(event) => {
+                  event.currentTarget.src = "/images/nengapeta-school-hero.png";
+                }}
+              />
+              <div className="flex flex-col justify-center p-6 md:p-8">
+                <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">Publication {mediaIndex + 1}</p>
+                <h3 className="mt-3 text-[24px] font-black text-[#0b1f33]">{currentMedia.title}</h3>
+                <p className="mt-3 text-[14px] leading-7 text-slate-600">{currentMedia.description || "Photo publicitaire de l'Institut NENGAPETA."}</p>
+                <div className="mt-6 flex gap-2">
+                  {publicMedia.map((item, index) => (
+                    <button
+                      key={item.id ?? item.title}
+                      type="button"
+                      onClick={() => setMediaIndex(index)}
+                      className={`h-2.5 rounded-full transition ${index === mediaIndex % publicMedia.length ? "w-8 bg-[#0e4f4a]" : "w-2.5 bg-slate-300"}`}
+                      title={`Afficher ${item.title}`}
+                    />
+                  ))}
                 </div>
-              </article>
-            ))}
+              </div>
+            </article>
           </div>
         </div>
       </section>
