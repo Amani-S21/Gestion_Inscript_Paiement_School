@@ -1,10 +1,28 @@
 import { useQuery } from "@tanstack/react-query";
-import { Download, FileSpreadsheet, PieChart, TrendingUp } from "lucide-react";
+import { Download, FileSpreadsheet, PieChart, Printer, TrendingUp } from "lucide-react";
 
 import { getReportsOverview } from "../../services/adminService";
 import { money, shortDate } from "../../utils/format";
+import { printTable } from "../../utils/print";
 
-const reports = ["Journalier", "Hebdomadaire", "Mensuel", "Trimestriel", "Annuel", "Par élève", "Par classe", "Par type de frais"];
+const reports = [
+  "Eleves inscrits",
+  "Eleves reinscrits",
+  "Tous les paiements",
+  "Insolvables",
+  "Recherche individuelle",
+  "Journalier",
+  "Hebdomadaire",
+  "Mensuel",
+  "Trimestriel",
+  "Semestriel",
+  "Annuel",
+  "Par classe",
+  "Par option",
+  "Par section",
+];
+
+const periods = ["Jour", "Semaine", "Mois", "Trimestre", "Semestre", "Annee scolaire"];
 
 function exportCsv(report: string, rows: string[]) {
   const content = [`Rapport;${report}`, `Date;${new Date().toLocaleDateString("fr-FR")}`, ...rows].join("\n");
@@ -20,6 +38,7 @@ function exportCsv(report: string, rows: string[]) {
 export function ReportsPage() {
   const { data, isLoading } = useQuery({ queryKey: ["reports-overview"], queryFn: getReportsOverview });
   const byFee = data?.by_fee ?? [];
+  const recentPayments = data?.recent_payments ?? [];
   const maxFee = Math.max(...byFee.map((item: any) => Number(item.montant ?? 0)), 1);
 
   const exportReport = (report: string) => {
@@ -27,18 +46,41 @@ export function ReportsPage() {
       "Indicateur;Valeur",
       ...(data?.cards ?? []).map((card: any) => `${card.label};${card.label.toLowerCase().includes("montant") ? money(card.value) : card.value}`),
       "",
-      "Paiement;Élève;Montant;Date",
-      ...(data?.recent_payments ?? []).map((payment: any) => `${payment.reference};${payment.student_name};${money(payment.montant, payment.devise)};${shortDate(payment.date_paiement)}`),
+      "Paiement;Eleve;Montant;Date",
+      ...recentPayments.map((payment: any) => `${payment.reference};${payment.student_name};${money(payment.montant, payment.devise)};${shortDate(payment.date_paiement)}`),
     ];
     exportCsv(report, rows);
+  };
+
+  const printReport = (report: string) => {
+    printTable(`Rapport - ${report}`, [
+      { label: "Reference", value: (payment: any) => payment.reference },
+      { label: "Eleve", value: (payment: any) => payment.student_name },
+      { label: "Matricule", value: (payment: any) => payment.matricule ?? "-" },
+      { label: "Type de frais", value: (payment: any) => payment.fee_type ?? "-" },
+      { label: "Montant", value: (payment: any) => money(payment.montant, payment.devise) },
+      { label: "Date", value: (payment: any) => shortDate(payment.date_paiement) },
+    ], recentPayments);
   };
 
   return (
     <div className="space-y-6">
       <div>
         <h2 className="heading text-3xl font-bold text-slate-950">Rapports</h2>
-        <p className="mt-1 text-slate-500">Suivi des inscriptions, paiements, reçus et recettes pour la direction et la comptabilité.</p>
+        <p className="mt-1 text-slate-500">Suivi des inscriptions, paiements, recus et recettes pour la direction et la comptabilite.</p>
       </div>
+
+      <section className="surface rounded-[8px] p-4">
+        <div className="grid gap-3 md:grid-cols-5">
+          <select className="rounded-[8px] border border-slate-200 px-3 py-2 text-sm outline-none focus:border-teal-600">
+            {periods.map((period) => <option key={period}>{period}</option>)}
+          </select>
+          <input className="rounded-[8px] border border-slate-200 px-3 py-2 text-sm outline-none focus:border-teal-600" placeholder="Classe ou toutes" />
+          <input className="rounded-[8px] border border-slate-200 px-3 py-2 text-sm outline-none focus:border-teal-600" placeholder="Option" />
+          <input className="rounded-[8px] border border-slate-200 px-3 py-2 text-sm outline-none focus:border-teal-600" placeholder="Section" />
+          <input className="rounded-[8px] border border-slate-200 px-3 py-2 text-sm outline-none focus:border-teal-600" placeholder="Eleve / matricule" />
+        </div>
+      </section>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {(data?.cards ?? []).map((card: any) => (
@@ -57,13 +99,13 @@ export function ReportsPage() {
           <div className="mb-5 flex items-center justify-between gap-4">
             <div>
               <h3 className="heading text-lg font-bold text-slate-950">Recettes par type de frais</h3>
-              <p className="text-sm text-slate-500">Vision utile pour contrôler les frais les plus payés.</p>
+              <p className="text-sm text-slate-500">Vision utile pour controler les frais les plus payes.</p>
             </div>
             <PieChart className="text-emerald-700" size={20} />
           </div>
           <div className="space-y-3">
             {byFee.length === 0 ? (
-              <p className="text-sm text-slate-500">Aucune donnée financière disponible.</p>
+              <p className="text-sm text-slate-500">Aucune donnee financiere disponible.</p>
             ) : (
               byFee.map((item: any) => {
                 const width = Math.max((Number(item.montant ?? 0) / maxFee) * 100, 6);
@@ -86,7 +128,7 @@ export function ReportsPage() {
         <section className="surface rounded-[8px] p-5">
           <div className="mb-5 flex items-center justify-between gap-4">
             <div>
-              <h3 className="heading text-lg font-bold text-slate-950">Paiements récents</h3>
+              <h3 className="heading text-lg font-bold text-slate-950">Paiements recents</h3>
               <p className="text-sm text-slate-500">Base rapide pour les rapports journaliers et mensuels.</p>
             </div>
             <TrendingUp className="text-emerald-700" size={20} />
@@ -94,13 +136,13 @@ export function ReportsPage() {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[620px] text-left text-sm">
               <thead className="text-xs uppercase text-slate-500">
-                <tr><th className="py-3">Référence</th><th>Élève</th><th>Montant</th><th>Date</th></tr>
+                <tr><th className="py-3">Reference</th><th>Eleve</th><th>Montant</th><th>Date</th></tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {(data?.recent_payments ?? []).length === 0 ? (
-                  <tr><td className="py-4 text-slate-500" colSpan={4}>Aucun paiement récent.</td></tr>
+                {recentPayments.length === 0 ? (
+                  <tr><td className="py-4 text-slate-500" colSpan={4}>Aucun paiement recent.</td></tr>
                 ) : (
-                  data.recent_payments.map((payment: any) => (
+                  recentPayments.map((payment: any) => (
                     <tr key={payment.id}>
                       <td className="py-3 font-semibold text-slate-800">{payment.reference}</td>
                       <td>{payment.student_name}</td>
@@ -120,9 +162,14 @@ export function ReportsPage() {
           <div className="surface rounded-[8px] p-5" key={report}>
             <FileSpreadsheet className="text-teal-700" />
             <p className="mt-4 font-bold text-slate-900">{report}</p>
-            <button type="button" onClick={() => exportReport(report)} className="mt-4 inline-flex items-center gap-2 rounded-[8px] border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700">
-              <Download size={16} /> Exporter
-            </button>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <button type="button" onClick={() => exportReport(report)} className="inline-flex items-center gap-2 rounded-[8px] border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700">
+                <Download size={16} /> Exporter
+              </button>
+              <button type="button" onClick={() => printReport(report)} className="inline-flex items-center gap-2 rounded-[8px] bg-[#102a2b] px-3 py-2 text-sm font-semibold text-white">
+                <Printer size={16} /> PDF
+              </button>
+            </div>
           </div>
         ))}
       </div>
