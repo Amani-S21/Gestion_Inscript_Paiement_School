@@ -27,6 +27,17 @@ class Announcement(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
 
 
+class MarketingMedia(Base):
+    __tablename__ = "marketing_media"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(180), nullable=False)
+    description = Column(Text, nullable=True)
+    image_url = Column(String(500), nullable=False)
+    statut = Column(String(40), default="publie", nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+
+
 class Reclamation(Base):
     __tablename__ = "reclamations"
 
