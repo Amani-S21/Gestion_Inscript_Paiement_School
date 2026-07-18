@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { BadgeCheck, Bell, CreditCard, Download, IdCard, ReceiptText, UserRound } from "lucide-react";
 
@@ -7,6 +8,7 @@ import { money, shortDate } from "../../utils/format";
 import { printTable } from "../../utils/print";
 
 export function StudentSpacePage() {
+  const [isDownloadingCard, setIsDownloadingCard] = useState(false);
   const { data, isLoading } = useQuery({ queryKey: ["student-dashboard"], queryFn: getStudentDashboard });
 
   if (isLoading) return <div className="text-slate-500">Chargement de votre espace...</div>;
@@ -30,7 +32,12 @@ export function StudentSpacePage() {
   };
 
   const downloadCard = async () => {
-    await downloadStudentCardPdf(`carte-${data.profile.matricule}.pdf`);
+    try {
+      setIsDownloadingCard(true);
+      await downloadStudentCardPdf(`carte-${data.profile.matricule}.pdf`);
+    } finally {
+      setIsDownloadingCard(false);
+    }
   };
 
   const downloadReceipt = async (receipt: { id: number; numero: string }) => {
@@ -55,8 +62,8 @@ export function StudentSpacePage() {
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <button type="button" onClick={() => void downloadCard()} className="inline-flex h-12 items-center justify-center gap-2 rounded-[8px] bg-teal-300 px-4 font-bold text-[#102a2b]">
-              <IdCard size={18} /> Carte PDF
+            <button type="button" onClick={() => void downloadCard()} disabled={isDownloadingCard} className="inline-flex h-12 items-center justify-center gap-2 rounded-[8px] bg-teal-300 px-4 font-bold text-[#102a2b] disabled:cursor-not-allowed disabled:opacity-70">
+              <IdCard size={18} /> {isDownloadingCard ? "Téléchargement..." : "Carte PDF"}
             </button>
             <button type="button" onClick={printRegistrationForm} className="inline-flex h-12 items-center justify-center gap-2 rounded-[8px] bg-white/10 px-4 font-bold text-white">
               <Download size={18} /> Formulaire
