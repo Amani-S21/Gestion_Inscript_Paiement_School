@@ -16,11 +16,24 @@ export async function updateStudentProfile(payload: Partial<StudentProfile>) {
   return data;
 }
 
-export function receiptPdfUrl(receiptId: number) {
-  return `${api.defaults.baseURL}/student/me/receipts/${receiptId}/pdf`;
+function downloadBlob(data: BlobPart, fileName: string) {
+  const url = window.URL.createObjectURL(new Blob([data], { type: "application/pdf" }));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.URL.revokeObjectURL(url);
 }
 
-export function cardPdfUrl() {
-  return `${api.defaults.baseURL}/student/me/card/pdf`;
+export async function downloadStudentReceiptPdf(receiptId: number, fileName = "recu-paiement.pdf") {
+  const { data } = await api.get(`/student/me/receipts/${receiptId}/pdf`, { responseType: "blob" });
+  downloadBlob(data, fileName);
+}
+
+export async function downloadStudentCardPdf(fileName = "carte-eleve.pdf") {
+  const { data } = await api.get("/student/me/card/pdf", { responseType: "blob" });
+  downloadBlob(data, fileName);
 }
 
