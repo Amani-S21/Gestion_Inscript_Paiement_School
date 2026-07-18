@@ -62,6 +62,11 @@ const administrationItems = [
       if (item.to === "/app/administration") return canAccessAdministration;
       if (item.to === "/app/payments") return hasRole("ROLE_COMPTABLE") || hasRole("ROLE_ADMIN") || hasRole("ROLE_PREFET");
       return hasPermission(item.permission);
+    }).sort((a, b) => {
+      if (!hasRole("ROLE_ELEVE")) return 0;
+      if (a.to === "/app/student") return -1;
+      if (b.to === "/app/student") return 1;
+      return 0;
     });
     const isAdministrationActive = location.pathname.startsWith("/app/administration");
 

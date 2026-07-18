@@ -71,8 +71,28 @@ export async function closeAcademicYear(yearId: string | number) {
   return data;
 }
 
+export async function updateAcademicYear(yearId: string | number, payload: { libelle: string; date_debut?: string; date_fin?: string; active?: boolean }) {
+  const { data } = await api.patch(`/api/academic-years/${yearId}`, payload);
+  return data;
+}
+
+export async function deleteAcademicYear(yearId: string | number) {
+  const { data } = await api.delete(`/api/academic-years/${yearId}`);
+  return data;
+}
+
 export async function createSection(payload: { nom: string; description?: string }) {
   const { data } = await api.post("/api/sections", payload);
+  return data;
+}
+
+export async function updateSection(sectionId: string | number, payload: { nom: string; description?: string }) {
+  const { data } = await api.patch(`/api/sections/${sectionId}`, payload);
+  return data;
+}
+
+export async function deleteSection(sectionId: string | number) {
+  const { data } = await api.delete(`/api/sections/${sectionId}`);
   return data;
 }
 
@@ -81,8 +101,28 @@ export async function createOption(payload: { nom: string; section_id: number })
   return data;
 }
 
+export async function updateOption(optionId: string | number, payload: { nom: string; section_id: number }) {
+  const { data } = await api.patch(`/api/options/${optionId}`, payload);
+  return data;
+}
+
+export async function deleteOption(optionId: string | number) {
+  const { data } = await api.delete(`/api/options/${optionId}`);
+  return data;
+}
+
 export async function createClassroom(payload: { nom: string; niveau?: string; option_id: number }) {
   const { data } = await api.post("/api/classes", payload);
+  return data;
+}
+
+export async function updateClassroom(classId: string | number, payload: { nom: string; niveau?: string; option_id: number }) {
+  const { data } = await api.patch(`/api/classes/${classId}`, payload);
+  return data;
+}
+
+export async function deleteClassroom(classId: string | number) {
+  const { data } = await api.delete(`/api/classes/${classId}`);
   return data;
 }
 
@@ -96,6 +136,16 @@ export async function createFee(payload: { fee_type_id: number; academic_year_id
   return data;
 }
 
+export async function updateFee(feeId: string | number, payload: { fee_type_id: number; academic_year_id: number; class_id?: number | null; montant: string | number; devise?: string }) {
+  const { data } = await api.patch(`/api/fees/${feeId}`, payload);
+  return data;
+}
+
+export async function deleteFee(feeId: string | number) {
+  const { data } = await api.delete(`/api/fees/${feeId}`);
+  return data;
+}
+
 export async function createStudent(payload: {
   nom: string;
   postnom?: string;
@@ -105,7 +155,8 @@ export async function createStudent(payload: {
   password?: string;
   telephone?: string;
   adresse?: string;
-  matricule: string;
+  matricule?: string;
+  photo_url?: string;
   sexe?: string;
   date_naissance?: string;
   lieu_naissance?: string;
@@ -126,6 +177,7 @@ export async function updateStudent(studentId: string | number, payload: {
   telephone?: string;
   adresse?: string;
   matricule?: string;
+  photo_url?: string;
   sexe?: string;
   date_naissance?: string;
   lieu_naissance?: string;
@@ -166,7 +218,7 @@ export async function getReclamations(params?: { page?: number; size?: number })
   return data;
 }
 
-export async function createReclamation(payload: { payment_id?: number | null; subject: string; message: string }) {
+export async function createReclamation(payload: { payment_id?: number | null; recipient?: string; subject: string; message: string }) {
   const { data } = await api.post("/api/reclamations", payload);
   return data;
 }
