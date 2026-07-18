@@ -1,7 +1,9 @@
 from datetime import date, datetime
+from io import BytesIO
 from pathlib import Path
 from decimal import Decimal
 from uuid import uuid4
+from zipfile import ZIP_DEFLATED, ZipFile
 
 from fastapi import APIRouter, Depends, File, HTTPException, Query, Request, Response, UploadFile, status
 from sqlalchemy import func
@@ -20,7 +22,7 @@ from app.models.user import Permission, Role, User
 from app.permissions.codes import ROLE_ELEVE, ROLE_PERMISSION_MAP
 from app.schemas.common_schema import AnnouncementIn, FeeIn, PaymentIn, RegistrationIn, StructureIn
 from app.schemas.student_schema import StudentCreate, StudentUpdate
-from app.services.receipt_service import render_receipt_pdf
+from app.services.receipt_service import render_receipt_pdf, render_student_card_pdf
 
 router = APIRouter(prefix="/api", tags=["Gestion"])
 UPLOAD_DIR = Path("uploads")
@@ -117,6 +119,28 @@ def full_student_name(student: Student | None) -> str:
         return "Élève non renseigné"
     names = [student.user.nom, student.user.postnom, student.user.prenom]
     return " ".join(name for name in names if name) or student.matricule
+
+
+def latest_student_class(db: Session, student_id: int) -> str | None:
+    registration = (
+        db.query(Registration)
+        .options(joinedload(Registration.classroom))
+        .filter(Registration.student_id == student_id)
+        .order_by(Registration.id.desc())
+        .first()
+    )
+    return registration.classroom.nom if registration and registration.classroom else None
+
+
+def render_admin_student_card(db: Session, student: Student) -> bytes:
+    payload = f"STUDENT:{student.id}:{student.matricule}"
+    return render_student_card_pdf(
+        payload,
+        full_student_name(student),
+        student.matricule,
+        latest_student_class(db, student.id),
+        student.user.photo_url if student.user else None,
+    )
 
 
 def serialize_payment(payment: Payment) -> dict:
@@ -422,6 +446,34 @@ def list_students(q: str | None = None, page: int = 1, size: int = 20, db: Sessi
     total = query.count()
     items = query.order_by(Student.id.desc()).offset((page - 1) * size).limit(size).all()
     return {"items": [serialize_student(item) for item in items], "total": total, "page": page, "size": size}
+
+
+@router.get("/students/cards/pdf", dependencies=[Depends(require_permission("students.view"))])
+def download_all_student_cards(db: Session = Depends(get_db)):
+    students = db.query(Student).options(joinedload(Student.user)).order_by(Student.id.desc()).all()
+    if not students:
+        raise HTTPException(status_code=404, detail="Aucun élève trouvé.")
+    buffer = BytesIO()
+    with ZipFile(buffer, "w", ZIP_DEFLATED) as archive:
+        for student in students:
+            archive.writestr(f"carte-{student.matricule}.pdf", render_admin_student_card(db, student))
+    return Response(
+        content=buffer.getvalue(),
+        media_type="application/zip",
+        headers={"Content-Disposition": 'attachment; filename="cartes-eleves.zip"'},
+    )
+
+
+@router.get("/students/{student_id}/card/pdf", dependencies=[Depends(require_permission("students.view"))])
+def download_student_card(student_id: int, db: Session = Depends(get_db)):
+    student = db.query(Student).options(joinedload(Student.user)).filter(Student.id == student_id).first()
+    if not student:
+        raise HTTPException(status_code=404, detail="Élève introuvable.")
+    return Response(
+        content=render_admin_student_card(db, student),
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="carte-{student.matricule}.pdf"'},
+    )
 
 
 @router.post("/students", dependencies=[Depends(require_permission("students.manage"))])

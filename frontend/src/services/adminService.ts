@@ -207,6 +207,27 @@ export async function deleteStudent(studentId: string | number) {
   return data;
 }
 
+function downloadBlob(data: BlobPart, fileName: string, type: string) {
+  const url = URL.createObjectURL(new Blob([data], { type }));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+export async function downloadStudentCardPdf(studentId: string | number, fileName = "carte-eleve.pdf") {
+  const { data } = await api.get(`/api/students/${studentId}/card/pdf`, { responseType: "blob" });
+  downloadBlob(data, fileName, "application/pdf");
+}
+
+export async function downloadAllStudentCards(fileName = "cartes-eleves.zip") {
+  const { data } = await api.get("/api/students/cards/pdf", { responseType: "blob" });
+  downloadBlob(data, fileName, "application/zip");
+}
+
 export async function getReportsOverview() {
   const { data } = await api.get("/api/reports/overview");
   return data;
@@ -259,12 +280,7 @@ export async function updateReclamation(id: string | number, payload: { status: 
 
 export async function downloadReceiptPdf(paymentId: string | number, fileName = "recu-paiement.pdf") {
   const { data } = await api.get(`/api/payments/${paymentId}/receipt/pdf`, { responseType: "blob" });
-  const url = URL.createObjectURL(data);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = fileName;
-  link.click();
-  URL.revokeObjectURL(url);
+  downloadBlob(data, fileName, "application/pdf");
 }
 
 export async function getUsers(params?: { q?: string; page?: number; size?: number }) {
