@@ -117,21 +117,52 @@ def render_receipt_pdf(receipt: Receipt) -> bytes:
     return buffer.getvalue()
 
 
-def render_student_card_pdf(receipt_payload: str, full_name: str, matricule: str, classe: str | None) -> bytes:
+def render_student_card_pdf(receipt_payload: str, full_name: str, matricule: str, classe: str | None, photo_url: str | None = None) -> bytes:
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer, pagesize=A4)
     pdf.setTitle(f"Carte eleve {matricule}")
-    pdf.setFont("Helvetica-Bold", 18)
-    pdf.drawString(72, 780, "Carte d'eleve - Institut NENGAPETA")
+    card_x, card_y, card_w, card_h = 55, 610, 430, 190
+    pdf.setFillColor(colors.HexColor("#f8fbfb"))
+    pdf.roundRect(card_x, card_y, card_w, card_h, 12, stroke=0, fill=1)
+    pdf.setStrokeColor(colors.HexColor("#0f766e"))
+    pdf.setLineWidth(1.2)
+    pdf.roundRect(card_x, card_y, card_w, card_h, 12, stroke=1, fill=0)
+    pdf.setFillColor(colors.HexColor("#10242f"))
+    pdf.rect(card_x, card_y + card_h - 44, card_w, 44, stroke=0, fill=1)
+    pdf.setFillColor(colors.white)
+    pdf.setFont("Helvetica-Bold", 13)
+    pdf.drawString(card_x + 18, card_y + card_h - 28, "INSTITUT NENGAPETA")
+    pdf.setFont("Helvetica", 8)
+    pdf.drawRightString(card_x + card_w - 18, card_y + card_h - 27, "CARTE D'ELEVE")
+
+    photo_x, photo_y, photo_s = card_x + 18, card_y + 58, 74
+    pdf.setFillColor(colors.HexColor("#d7e4e1"))
+    pdf.roundRect(photo_x, photo_y, photo_s, photo_s, 8, stroke=0, fill=1)
+    if photo_url:
+        try:
+            pdf.drawImage(ImageReader(photo_url), photo_x, photo_y, width=photo_s, height=photo_s, preserveAspectRatio=True, mask="auto")
+        except Exception:
+            pdf.setFillColor(colors.HexColor("#64748b"))
+            pdf.setFont("Helvetica-Bold", 9)
+            pdf.drawCentredString(photo_x + photo_s / 2, photo_y + 36, "PHOTO")
+    else:
+        pdf.setFillColor(colors.HexColor("#64748b"))
+        pdf.setFont("Helvetica-Bold", 9)
+        pdf.drawCentredString(photo_x + photo_s / 2, photo_y + 36, "PHOTO")
+
     pdf.setFont("Helvetica", 12)
-    pdf.drawString(72, 740, f"Nom: {full_name}")
-    pdf.drawString(72, 720, f"Matricule: {matricule}")
-    pdf.drawString(72, 700, f"Classe: {classe or 'Non renseignee'}")
+    pdf.setFillColor(colors.HexColor("#10242f"))
+    pdf.drawString(card_x + 110, card_y + 118, f"Nom: {full_name}")
+    pdf.drawString(card_x + 110, card_y + 96, f"Matricule: {matricule}")
+    pdf.drawString(card_x + 110, card_y + 74, f"Classe: {classe or 'Non renseignee'}")
     qr = qrcode.make(receipt_payload)
     qr_buffer = BytesIO()
     qr.save(qr_buffer, format="PNG")
     qr_buffer.seek(0)
-    pdf.drawImage(ImageReader(qr_buffer), 380, 680, width=130, height=130)
+    pdf.drawImage(ImageReader(qr_buffer), card_x + card_w - 112, card_y + 54, width=82, height=82)
+    pdf.setFont("Helvetica", 8)
+    pdf.setFillColor(colors.HexColor("#64748b"))
+    pdf.drawString(card_x + 18, card_y + 20, "Document genere automatiquement - QR code de verification")
     pdf.showPage()
     pdf.save()
     return buffer.getvalue()

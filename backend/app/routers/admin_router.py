@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal
 from uuid import uuid4
 
@@ -22,6 +22,24 @@ from app.schemas.student_schema import StudentCreate, StudentUpdate
 from app.services.receipt_service import render_receipt_pdf
 
 router = APIRouter(prefix="/api", tags=["Gestion"])
+
+
+def refresh_academic_year_status(db: Session) -> None:
+    today = date.today()
+    db.query(AcademicYear).filter(AcademicYear.date_fin.isnot(None), AcademicYear.date_fin < today, AcademicYear.active.is_(True)).update(
+        {"active": False},
+        synchronize_session=False,
+    )
+
+
+def generate_student_matricule(db: Session) -> str:
+    current_year = date.today().year
+    next_id = (db.query(func.coalesce(func.max(Student.id), 0)).scalar() or 0) + 1
+    matricule = f"ELEV-{current_year}-{next_id:04d}"
+    while db.query(Student).filter(Student.matricule == matricule).first():
+        next_id += 1
+        matricule = f"ELEV-{current_year}-{next_id:04d}"
+    return matricule
 
 
 def serialize_student(student: Student) -> dict:
@@ -170,6 +188,7 @@ def serialize_reclamation(item: Reclamation) -> dict:
         "payment_reference": item.payment.reference if item.payment else None,
         "payment_amount": item.payment.montant if item.payment else None,
         "payment_currency": item.payment.devise if item.payment else None,
+        "recipient": item.recipient,
         "subject": item.subject,
         "message": item.message,
         "status": item.status,
@@ -380,6 +399,7 @@ def create_student(payload: StudentCreate, db: Session = Depends(get_db)):
     role = db.query(Role).filter(Role.code == ROLE_ELEVE).first()
     if not role:
         raise HTTPException(status_code=500, detail="Rôle élève non initialisé.")
+    matricule = payload.matricule or generate_student_matricule(db)
     user = User(
         nom=payload.nom,
         postnom=payload.postnom,
@@ -388,13 +408,14 @@ def create_student(payload: StudentCreate, db: Session = Depends(get_db)):
         login=payload.login,
         telephone=payload.telephone,
         adresse=payload.adresse,
-        mot_de_passe=hash_password(payload.password or f"{payload.matricule}@123"),
+        photo_url=payload.photo_url,
+        mot_de_passe=hash_password(payload.password or f"{matricule}@123"),
         statut="actif",
         type_utilisateur=ROLE_ELEVE,
     )
     user.roles.append(role)
     student = Student(
-        matricule=payload.matricule,
+        matricule=matricule,
         sexe=payload.sexe,
         date_naissance=payload.date_naissance,
         lieu_naissance=payload.lieu_naissance,
@@ -477,6 +498,12 @@ def list_registrations(page: int = 1, size: int = 20, db: Session = Depends(get_
 
 @router.post("/payments", dependencies=[Depends(require_permission("payments.manage"))])
 def create_payment(payload: PaymentIn, current_user: User = Depends(require_permission("payments.manage")), db: Session = Depends(get_db)):
+    fee = db.query(Fee).options(joinedload(Fee.fee_type)).filter(Fee.id == payload.fee_id, Fee.statut == "actif").first()
+    if not fee:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Frais invalide ou supprimé.")
+    fee_type_name = fee.fee_type.nom.lower() if fee.fee_type else ""
+    if "inscription" in fee_type_name and Decimal(payload.montant) != Decimal(fee.montant):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Le paiement d'inscription doit couvrir la totalité du frais configuré.")
     payment = Payment(
         **payload.model_dump(),
         statut="valide",
@@ -571,6 +598,7 @@ def create_reclamation(payload: dict, db: Session = Depends(get_db), current_use
     item = Reclamation(
         student_id=current_user.student.id,
         payment_id=int(payment_id) if payment_id else None,
+        recipient=payload.get("recipient") or "Administration",
         subject=payload.get("subject") or "Réclamation",
         message=payload.get("message") or "",
         status="open",
@@ -648,6 +676,8 @@ def list_announcements(db: Session = Depends(get_db)):
 
 @router.get("/academic-years", dependencies=[Depends(require_permission("registrations.view"))])
 def list_academic_years(db: Session = Depends(get_db)):
+    refresh_academic_year_status(db)
+    db.commit()
     years = db.query(AcademicYear).order_by(AcademicYear.active.desc(), AcademicYear.id.desc()).all()
     return [serialize_year(year) for year in years]
 
@@ -661,6 +691,31 @@ def create_year(payload: dict, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(item)
     return item
+
+
+@router.patch("/academic-years/{year_id}", dependencies=[Depends(require_permission("admin.settings"))])
+def update_year(year_id: int, payload: dict, db: Session = Depends(get_db)):
+    item = db.get(AcademicYear, year_id)
+    if not item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Année scolaire introuvable.")
+    if payload.get("active"):
+        db.query(AcademicYear).filter(AcademicYear.id != year_id, AcademicYear.active.is_(True)).update({"active": False})
+    for key in ["libelle", "date_debut", "date_fin", "active"]:
+        if key in payload:
+            setattr(item, key, payload[key])
+    db.commit()
+    db.refresh(item)
+    return serialize_year(item)
+
+
+@router.delete("/academic-years/{year_id}", dependencies=[Depends(require_permission("admin.settings"))])
+def delete_year(year_id: int, db: Session = Depends(get_db)):
+    item = db.get(AcademicYear, year_id)
+    if not item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Année scolaire introuvable.")
+    db.delete(item)
+    db.commit()
+    return {"message": "Année scolaire supprimée."}
 
 
 @router.patch("/academic-years/{year_id}/close", dependencies=[Depends(require_permission("admin.settings"))])
@@ -688,6 +743,28 @@ def create_section(payload: StructureIn, db: Session = Depends(get_db)):
     return item
 
 
+@router.patch("/sections/{section_id}", dependencies=[Depends(require_permission("admin.settings"))])
+def update_section(section_id: int, payload: StructureIn, db: Session = Depends(get_db)):
+    item = db.get(Section, section_id)
+    if not item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Section introuvable.")
+    item.nom = payload.nom or item.nom
+    item.description = payload.description
+    db.commit()
+    db.refresh(item)
+    return serialize_section(item)
+
+
+@router.delete("/sections/{section_id}", dependencies=[Depends(require_permission("admin.settings"))])
+def delete_section(section_id: int, db: Session = Depends(get_db)):
+    item = db.get(Section, section_id)
+    if not item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Section introuvable.")
+    db.delete(item)
+    db.commit()
+    return {"message": "Section supprimée."}
+
+
 @router.get("/options", dependencies=[Depends(require_permission("registrations.view"))])
 def list_options(db: Session = Depends(get_db)):
     return [serialize_option(option) for option in db.query(Option).order_by(Option.nom.asc()).all()]
@@ -700,6 +777,29 @@ def create_option(payload: StructureIn, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(item)
     return item
+
+
+@router.patch("/options/{option_id}", dependencies=[Depends(require_permission("admin.settings"))])
+def update_option(option_id: int, payload: StructureIn, db: Session = Depends(get_db)):
+    item = db.get(Option, option_id)
+    if not item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Option introuvable.")
+    item.nom = payload.nom or item.nom
+    if payload.section_id:
+        item.section_id = payload.section_id
+    db.commit()
+    db.refresh(item)
+    return serialize_option(item)
+
+
+@router.delete("/options/{option_id}", dependencies=[Depends(require_permission("admin.settings"))])
+def delete_option(option_id: int, db: Session = Depends(get_db)):
+    item = db.get(Option, option_id)
+    if not item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Option introuvable.")
+    db.delete(item)
+    db.commit()
+    return {"message": "Option supprimée."}
 
 
 @router.get("/classes", dependencies=[Depends(require_permission("registrations.view"))])
@@ -717,9 +817,33 @@ def create_class(payload: StructureIn, db: Session = Depends(get_db)):
     return item
 
 
+@router.patch("/classes/{class_id}", dependencies=[Depends(require_permission("admin.settings"))])
+def update_class(class_id: int, payload: StructureIn, db: Session = Depends(get_db)):
+    item = db.get(ClassRoom, class_id)
+    if not item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Classe introuvable.")
+    item.nom = payload.nom or item.nom
+    item.niveau = payload.niveau
+    if payload.option_id:
+        item.option_id = payload.option_id
+    db.commit()
+    db.refresh(item)
+    return serialize_classroom(item)
+
+
+@router.delete("/classes/{class_id}", dependencies=[Depends(require_permission("admin.settings"))])
+def delete_class(class_id: int, db: Session = Depends(get_db)):
+    item = db.get(ClassRoom, class_id)
+    if not item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Classe introuvable.")
+    db.delete(item)
+    db.commit()
+    return {"message": "Classe supprimée."}
+
+
 @router.get("/fees", dependencies=[Depends(require_permission("payments.view"))])
 def list_fees(db: Session = Depends(get_db)):
-    fees = db.query(Fee).options(joinedload(Fee.fee_type)).order_by(Fee.id.desc()).all()
+    fees = db.query(Fee).options(joinedload(Fee.fee_type)).filter(Fee.statut == "actif").order_by(Fee.id.desc()).all()
     return [serialize_fee(fee) for fee in fees]
 
 
@@ -742,8 +866,46 @@ def create_fee_type(payload: StructureIn, db: Session = Depends(get_db)):
 
 @router.post("/fees", dependencies=[Depends(require_permission("admin.settings"))])
 def create_fee(payload: FeeIn, db: Session = Depends(get_db)):
+    existing = (
+        db.query(Fee)
+        .filter(
+            Fee.fee_type_id == payload.fee_type_id,
+            Fee.academic_year_id == payload.academic_year_id,
+            Fee.class_id == payload.class_id,
+            Fee.statut == "actif",
+        )
+        .first()
+    )
+    if existing:
+        existing.montant = payload.montant
+        existing.devise = payload.devise
+        db.commit()
+        db.refresh(existing)
+        return serialize_fee(existing)
     item = Fee(**payload.model_dump(), statut="actif")
     db.add(item)
     db.commit()
     db.refresh(item)
     return item
+
+
+@router.patch("/fees/{fee_id}", dependencies=[Depends(require_permission("admin.settings"))])
+def update_fee(fee_id: int, payload: FeeIn, db: Session = Depends(get_db)):
+    item = db.get(Fee, fee_id)
+    if not item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Frais introuvable.")
+    for key, value in payload.model_dump().items():
+        setattr(item, key, value)
+    db.commit()
+    db.refresh(item)
+    return serialize_fee(item)
+
+
+@router.delete("/fees/{fee_id}", dependencies=[Depends(require_permission("admin.settings"))])
+def delete_fee(fee_id: int, db: Session = Depends(get_db)):
+    item = db.get(Fee, fee_id)
+    if not item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Frais introuvable.")
+    item.statut = "supprime"
+    db.commit()
+    return {"message": "Configuration de frais supprimée."}

@@ -13,7 +13,8 @@ class StudentCreate(BaseModel):
     password: str | None = None
     telephone: str | None = None
     adresse: str | None = None
-    matricule: str
+    matricule: str | None = None
+    photo_url: str | None = None
     sexe: str | None = None
     date_naissance: date | None = None
     lieu_naissance: str | None = None

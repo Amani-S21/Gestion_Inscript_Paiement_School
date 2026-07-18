@@ -120,7 +120,7 @@ def receipt_pdf(
 def student_card(student: Student = Depends(current_student), db: Session = Depends(get_db)):
     reg = db.query(Registration).options(joinedload(Registration.classroom)).filter(Registration.student_id == student.id).order_by(Registration.id.desc()).first()
     payload = f"STUDENT:{student.id}:{student.matricule}"
-    pdf = render_student_card_pdf(payload, full_name(student.user), student.matricule, reg.classroom.nom if reg else None)
+    pdf = render_student_card_pdf(payload, full_name(student.user), student.matricule, reg.classroom.nom if reg else None, student.user.photo_url)
     return Response(
         content=pdf,
         media_type="application/pdf",
