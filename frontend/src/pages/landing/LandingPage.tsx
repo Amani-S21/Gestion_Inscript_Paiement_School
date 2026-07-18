@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   ArrowRight,
   BadgeCheck,
@@ -15,6 +16,7 @@ import {
   UserCog,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { getPublicMarketingMedia } from "../../services/adminService";
 
 const advantages = [
   {
