@@ -42,6 +42,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+Path("uploads").mkdir(exist_ok=True)
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 
