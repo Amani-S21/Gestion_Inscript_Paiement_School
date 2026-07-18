@@ -42,6 +42,7 @@ const administrationItems = [
   { tab: "années", label: "Années scolaires" },
   { tab: "structure", label: "Sections, options, classes" },
   { tab: "frais", label: "Frais scolaires" },
+  { tab: "photos", label: "Photos publicitaires" },
   { tab: "utilisateurs", label: "Utilisateurs" },
   { tab: "roles", label: "Rôles et permissions" },
 ];
