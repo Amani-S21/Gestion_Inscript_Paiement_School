@@ -21,23 +21,23 @@ import { getPublicMarketingMedia } from "../../services/adminService";
 
 const advantages = [
   {
-    title: "Inscriptions maÃ®trisÃ©es",
-    description: "CrÃ©ation des Ã©lÃ¨ves, inscriptions, rÃ©inscriptions et suivi des classes dans un mÃªme espace.",
+    title: "Inscriptions maîtrisées",
+    description: "Création des élèves, inscriptions, réinscriptions et suivi des classes dans un même espace.",
     icon: BookOpenCheck,
   },
   {
     title: "Paiements fiables",
-    description: "Encaissements tracÃ©s, soldes calculÃ©s automatiquement et reÃ§us gÃ©nÃ©rÃ©s sans ressaisie.",
+    description: "Encaissements tracés, soldes calculés automatiquement et reçus générés sans ressaisie.",
     icon: CreditCard,
   },
   {
-    title: "AccÃ¨s par rÃ´le",
-    description: "Administrateur, agent comptable et Ã©lÃ¨ve disposent chacun d'un espace limitÃ© Ã  leurs droits.",
+    title: "Accès par rôle",
+    description: "Administrateur, agent comptable et élève disposent chacun d'un espace limité à leurs droits.",
     icon: ShieldCheck,
   },
   {
     title: "Dossiers consultables",
-    description: "Chaque Ã©lÃ¨ve retrouve son profil, son inscription, ses frais, ses paiements et son Ã©tat financier.",
+    description: "Chaque élève retrouve son profil, son inscription, ses frais, ses paiements et son état financier.",
     icon: FileCheck2,
   },
 ];
@@ -45,114 +45,114 @@ const advantages = [
 const roleCards = [
   {
     role: "Administrateur",
-    text: "Configure les annÃ©es scolaires, sections, options, classes, frais, utilisateurs, rÃ´les et permissions.",
+    text: "Configure les années scolaires, sections, options, classes, frais, utilisateurs, rôles et permissions.",
     icon: UserCog,
   },
   {
     role: "Agent comptable",
-    text: "Enregistre les paiements, consulte les soldes, Ã©dite les reÃ§us et suit les encaissements de l'Ã©tablissement.",
+    text: "Enregistre les paiements, consulte les soldes, édite les reçus et suit les encaissements de l'établissement.",
     icon: Landmark,
   },
   {
-    role: "Ã‰lÃ¨ve",
-    text: "Consulte son profil, son inscription, ses paiements, son solde, ses reÃ§us et ses informations personnelles.",
+    role: "Élève",
+    text: "Consulte son profil, son inscription, ses paiements, son solde, ses reçus et ses informations personnelles.",
     icon: GraduationCap,
   },
 ];
 
 const functionalities = [
-  "Gestion des Ã©lÃ¨ves avec photo de profil",
-  "Options, sections, classes et annÃ©es scolaires",
-  "Inscriptions et rÃ©inscriptions",
+  "Gestion des élèves avec photo de profil",
+  "Options, sections, classes et années scolaires",
+  "Inscriptions et réinscriptions",
   "Configuration des frais scolaires",
   "Paiements, soldes et historiques",
-  "GÃ©nÃ©ration automatique des reÃ§us",
+  "Génération automatique des reçus",
   "Tableaux de bord par profil",
-  "RÃ´les, permissions et sÃ©curitÃ©",
+  "Rôles, permissions et sécurité",
 ];
 
 const fallbackMedia = [
   {
-    title: "Vie scolaire organisÃ©e",
-    description: "Une Ã©cole vivante avec un encadrement structurÃ©.",
+    title: "Vie scolaire organisée",
+    description: "Une école vivante avec un encadrement structuré.",
     image_url: "/images/nengapeta-gallery/vie-scolaire.jpg",
   },
   {
-    title: "Encadrement pÃ©dagogique",
-    description: "Des Ã©lÃ¨ves accompagnÃ©s dans leur parcours scolaire.",
+    title: "Encadrement pédagogique",
+    description: "Des élèves accompagnés dans leur parcours scolaire.",
     image_url: "/images/nengapeta-gallery/electricite-pratique.jpg",
   },
 ];
 
 const reasons = [
   {
-    title: "Encadrement sÃ©rieux",
-    description: "Les Ã©lÃ¨ves sont accompagnÃ©s dans des activitÃ©s scientifiques pratiques avec rigueur et mÃ©thode.",
+    title: "Encadrement sérieux",
+    description: "Les élèves sont accompagnés dans des activités scientifiques pratiques avec rigueur et méthode.",
     image: "/images/nengapeta-gallery/laboratoire-sciences.jpg",
   },
   {
     title: "Vie scolaire suivie",
-    description: "La communautÃ© scolaire reste organisÃ©e autour d'activitÃ©s collectives et d'un suivi de proximitÃ©.",
+    description: "La communauté scolaire reste organisée autour d'activités collectives et d'un suivi de proximité.",
     image: "/images/nengapeta-gallery/vie-scolaire.jpg",
   },
   {
     title: "Formation technique",
-    description: "Les Ã©lÃ¨ves dÃ©veloppent des compÃ©tences concrÃ¨tes en Ã©lectricitÃ© et en travaux pratiques.",
+    description: "Les élèves développent des compétences concrètes en électricité et en travaux pratiques.",
     image: "/images/nengapeta-gallery/electricite-pratique.jpg",
   },
   {
-    title: "Paiements tracÃ©s",
-    description: "Les frais scolaires sont enregistrÃ©s avec ordre, justificatifs et suivi administratif.",
+    title: "Paiements tracés",
+    description: "Les frais scolaires sont enregistrés avec ordre, justificatifs et suivi administratif.",
     image: "/images/nengapeta-gallery/paiements-traces.png",
   },
   {
-    title: "ReÃ§us disponibles",
-    description: "Chaque paiement peut produire un reÃ§u clair, archivable et consultable par l'Ã©lÃ¨ve.",
+    title: "Reçus disponibles",
+    description: "Chaque paiement peut produire un reçu clair, archivable et consultable par l'élève.",
     image: "/images/nengapeta-gallery/recus-disponibles.png",
   },
   {
-    title: "Espace Ã©lÃ¨ve",
-    description: "Chaque Ã©lÃ¨ve garde un accÃ¨s personnel Ã  ses informations scolaires et financiÃ¨res.",
+    title: "Espace élève",
+    description: "Chaque élève garde un accès personnel à ses informations scolaires et financières.",
     image: "/images/nengapeta-gallery/vie-scolaire.jpg",
   },
   {
     title: "Gestion moderne",
-    description: "Les outils numÃ©riques aident l'Ã©cole Ã  suivre les inscriptions, paiements et dossiers.",
+    description: "Les outils numériques aident l'école à suivre les inscriptions, paiements et dossiers.",
     image: "/images/nengapeta-gallery/rapports-professionnels.png",
   },
   {
     title: "Apprentissage agricole",
-    description: "Les activitÃ©s pratiques renforcent l'autonomie, l'observation et le travail de terrain.",
+    description: "Les activités pratiques renforcent l'autonomie, l'observation et le travail de terrain.",
     image: "/images/nengapeta-gallery/agriculture-pratique.jpg",
   },
   {
     title: "Rapports professionnels",
-    description: "Les responsables peuvent consulter des Ã©tats structurÃ©s pour mieux piloter l'Ã©tablissement.",
+    description: "Les responsables peuvent consulter des états structurés pour mieux piloter l'établissement.",
     image: "/images/nengapeta-gallery/rapports-professionnels.png",
   },
   {
-    title: "Administration structurÃ©e",
-    description: "Les dossiers, archives et documents scolaires restent mieux classÃ©s et plus faciles Ã  retrouver.",
+    title: "Administration structurée",
+    description: "Les dossiers, archives et documents scolaires restent mieux classés et plus faciles à retrouver.",
     image: "/images/nengapeta-gallery/archives-administration.png",
   },
 ];
 
 const faqs = [
   {
-    question: "Qui peut crÃ©er un Ã©lÃ¨ve dans le systÃ¨me ?",
-    answer: "L'administrateur dispose des droits de crÃ©ation et de gestion des Ã©lÃ¨ves. Il peut aussi configurer les classes, options, sections, frais et utilisateurs du systÃ¨me.",
+    question: "Qui peut créer un élève dans le système ?",
+    answer: "L'administrateur dispose des droits de création et de gestion des élèves. Il peut aussi configurer les classes, options, sections, frais et utilisateurs du système.",
   },
   {
-    question: "Le comptable peut-il modifier les paramÃ¨tres administratifs ?",
-    answer: "Non. L'agent comptable travaille sur le volet financier : enregistrement des paiements, vÃ©rification des soldes, Ã©dition des reÃ§us et consultation des historiques autorisÃ©s.",
+    question: "Le comptable peut-il modifier les paramètres administratifs ?",
+    answer: "Non. L'agent comptable travaille sur le volet financier : enregistrement des paiements, vérification des soldes, édition des reçus et consultation des historiques autorisés.",
   },
   {
-    question: "Que voit un Ã©lÃ¨ve aprÃ¨s connexion ?",
-    answer: "L'Ã©lÃ¨ve accÃ¨de uniquement Ã  ses propres donnÃ©es : profil, inscription, classe, option, frais, paiements, reÃ§us et solde restant.",
+    question: "Que voit un élève après connexion ?",
+    answer: "L'élève accède uniquement à ses propres données : profil, inscription, classe, option, frais, paiements, reçus et solde restant.",
   },
   {
-    question: "Les reÃ§us de paiement sont-ils gÃ©nÃ©rÃ©s automatiquement ?",
-    answer: "Oui. AprÃ¨s l'enregistrement d'un paiement, le systÃ¨me prÃ©pare un reÃ§u numÃ©rotÃ© et rattachÃ© Ã  l'Ã©lÃ¨ve, au frais concernÃ© et Ã  l'agent qui a rÃ©alisÃ© l'opÃ©ration.",
+    question: "Les reçus de paiement sont-ils générés automatiquement ?",
+    answer: "Oui. Après l'enregistrement d'un paiement, le système prépare un reçu numéroté et rattaché à l'élève, au frais concerné et à l'agent qui a réalisé l'opération.",
   },
 ];
 
@@ -186,8 +186,8 @@ export function LandingPage() {
           </Link>
           <nav className="hidden items-center gap-5 text-[12px] font-bold text-slate-600 md:flex">
             <a href="#avantages" className="transition hover:text-[#0e4f4a]">Avantages</a>
-            <a href="#roles" className="transition hover:text-[#0e4f4a]">RÃ´les</a>
-            <a href="#fonctionnalites" className="transition hover:text-[#0e4f4a]">FonctionnalitÃ©s</a>
+            <a href="#roles" className="transition hover:text-[#0e4f4a]">Rôles</a>
+            <a href="#fonctionnalites" className="transition hover:text-[#0e4f4a]">Fonctionnalités</a>
             <a href="#photos" className="transition hover:text-[#0e4f4a]">Photos</a>
             <a href="#faq" className="transition hover:text-[#0e4f4a]">FAQ</a>
           </nav>
@@ -211,19 +211,19 @@ export function LandingPage() {
               Gestion dynamique des inscriptions et paiements scolaires
             </h1>
             <p className="mt-4 max-w-2xl text-[14px] leading-7 text-slate-600 sm:text-[15px]">
-              Une application web conÃ§ue pour centraliser les dossiers des Ã©lÃ¨ves, organiser les inscriptions et suivre les paiements au sein d'une institution secondaire.
+              Une application web conçue pour centraliser les dossiers des élèves, organiser les inscriptions et suivre les paiements au sein d'une institution secondaire.
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Link to="/login" className="inline-flex h-11 items-center justify-center gap-2 rounded-[10px] bg-[#0e4f4a] px-5 text-[13px] font-extrabold text-white shadow-xl shadow-emerald-950/15 transition hover:-translate-y-0.5 hover:bg-[#0b403c]">
-                AccÃ©der au systÃ¨me
+                Accéder au système
                 <ArrowRight size={16} />
               </Link>
               <a href="#fonctionnalites" className="inline-flex h-11 items-center justify-center gap-2 rounded-[10px] border border-slate-200 bg-white px-5 text-[13px] font-extrabold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-200 hover:text-[#0e4f4a]">
-                Voir les fonctionnalitÃ©s
+                Voir les fonctionnalités
               </a>
             </div>
             <div className="mt-8 grid max-w-2xl grid-cols-3 gap-3">
-              {[["RÃ´les", "3 espaces"], ["ReÃ§us", "Automatiques"], ["AccÃ¨s", "SÃ©curisÃ©"]].map(([label, value]) => (
+              {[["Rôles", "3 espaces"], ["Reçus", "Automatiques"], ["Accès", "Sécurisé"]].map(([label, value]) => (
                 <div key={label} className="rounded-[12px] border border-white bg-white/75 p-3 shadow-sm">
                   <p className="text-[11px] font-bold text-slate-500">{label}</p>
                   <p className="mt-1 text-[13px] font-black text-[#0b1f33]">{value}</p>
@@ -238,7 +238,7 @@ export function LandingPage() {
       <section id="avantages" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
           <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">Avantages</p>
-          <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Un systÃ¨me adaptÃ© Ã  la gestion scolaire</h2>
+          <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Un système adapté à la gestion scolaire</h2>
         </div>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {advantages.map((item) => (
@@ -257,9 +257,9 @@ export function LandingPage() {
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="grid gap-6 lg:grid-cols-[0.72fr_1.28fr]">
             <div>
-              <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">RÃ´les et permissions</p>
-              <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Chaque utilisateur accÃ¨de uniquement Ã  son espace</h2>
-              <p className="mt-3 text-[13px] leading-6 text-slate-600">Les permissions sÃ©parent clairement les tÃ¢ches administratives, financiÃ¨res et personnelles.</p>
+              <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">Rôles et permissions</p>
+              <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Chaque utilisateur accède uniquement à son espace</h2>
+              <p className="mt-3 text-[13px] leading-6 text-slate-600">Les permissions séparent clairement les tâches administratives, financières et personnelles.</p>
             </div>
             <div className="grid gap-4 md:grid-cols-3">
               {roleCards.map((item) => (
@@ -276,10 +276,10 @@ export function LandingPage() {
 
       <section id="fonctionnalites" className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8">
         <div>
-          <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">FonctionnalitÃ©s</p>
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">Fonctionnalités</p>
           <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Outils essentiels pour l'Institut NENGAPETA</h2>
           <p className="mt-3 text-[13px] leading-6 text-slate-600">
-            Le projet est organisÃ© autour des opÃ©rations rÃ©elles d'une institution secondaire : dossier Ã©lÃ¨ve, inscription, paiement, reÃ§u, solde et contrÃ´le d'accÃ¨s.
+            Le projet est organisé autour des opérations réelles d'une institution secondaire : dossier élève, inscription, paiement, reçu, solde et contrôle d'accès.
           </p>
         </div>
         <div className="grid gap-3 sm:grid-cols-2">
@@ -361,8 +361,8 @@ export function LandingPage() {
         <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[0.72fr_1.28fr] lg:px-8">
           <div>
             <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">FAQ</p>
-            <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Questions frÃ©quentes</h2>
-            <p className="mt-3 text-[13px] leading-6 text-slate-600">Les rÃ©ponses ci-contre prÃ©cisent le fonctionnement attendu des principaux profils.</p>
+            <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Questions fréquentes</h2>
+            <p className="mt-3 text-[13px] leading-6 text-slate-600">Les réponses ci-contre précisent le fonctionnement attendu des principaux profils.</p>
           </div>
           <div className="space-y-3">
             {faqs.map((faq, index) => {
@@ -389,11 +389,11 @@ export function LandingPage() {
         <div className="mx-auto grid max-w-7xl gap-6 text-[12px] md:grid-cols-3">
           <div>
             <p className="font-black">A propos</p>
-            <p className="mt-2 leading-6 text-slate-300">Historique, photos et fichiers de prÃ©sentation de l'Institut NENGAPETA.</p>
+            <p className="mt-2 leading-6 text-slate-300">Historique, photos et fichiers de présentation de l'Institut NENGAPETA.</p>
           </div>
           <div>
             <p className="font-black">Contactez-nous</p>
-            <p className="mt-2 leading-6 text-slate-300">TÃ©lÃ©phone des autoritÃ©s, Facebook, WhatsApp, Instagram, Telegram, TikTok et YouTube.</p>
+            <p className="mt-2 leading-6 text-slate-300">Téléphone des autorités, Facebook, WhatsApp, Instagram, Telegram, TikTok et YouTube.</p>
           </div>
           <div>
             <p className="font-black">Dernier mot</p>
@@ -407,3 +407,4 @@ export function LandingPage() {
     </main>
   );
 }
+

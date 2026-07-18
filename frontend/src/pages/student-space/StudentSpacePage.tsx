@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { BadgeCheck, Bell, CreditCard, Download, IdCard, ReceiptText, UserRound } from "lucide-react";
 
 import { StatCard } from "../../components/StatCard";
-import { cardPdfUrl, getStudentDashboard, receiptPdfUrl } from "../../services/studentSpaceService";
+import { downloadStudentCardPdf, downloadStudentReceiptPdf, getStudentDashboard } from "../../services/studentSpaceService";
 import { money, shortDate } from "../../utils/format";
 import { printTable } from "../../utils/print";
 
@@ -29,6 +29,14 @@ export function StudentSpacePage() {
     ]);
   };
 
+  const downloadCard = async () => {
+    await downloadStudentCardPdf(`carte-${data.profile.matricule}.pdf`);
+  };
+
+  const downloadReceipt = async (receipt: { id: number; numero: string }) => {
+    await downloadStudentReceiptPdf(receipt.id, `recu-${receipt.numero}.pdf`);
+  };
+
   return (
     <div className="space-y-6">
       <section className="overflow-hidden rounded-[8px] bg-[#102a2b] text-white shadow-2xl shadow-teal-950/10">
@@ -47,9 +55,9 @@ export function StudentSpacePage() {
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <a href={cardPdfUrl()} className="inline-flex h-12 items-center justify-center gap-2 rounded-[8px] bg-teal-300 px-4 font-bold text-[#102a2b]">
+            <button type="button" onClick={() => void downloadCard()} className="inline-flex h-12 items-center justify-center gap-2 rounded-[8px] bg-teal-300 px-4 font-bold text-[#102a2b]">
               <IdCard size={18} /> Carte PDF
-            </a>
+            </button>
             <button type="button" onClick={printRegistrationForm} className="inline-flex h-12 items-center justify-center gap-2 rounded-[8px] bg-white/10 px-4 font-bold text-white">
               <Download size={18} /> Formulaire
             </button>
@@ -83,9 +91,9 @@ export function StudentSpacePage() {
                     <ReceiptText className="text-teal-700" size={20} />
                     <span className="font-semibold text-slate-800">{receipt.numero}</span>
                   </div>
-                  <a href={receiptPdfUrl(receipt.id)} className="grid h-9 w-9 place-items-center rounded-[8px] bg-slate-950 text-white" title="Télécharger le reçu">
+                  <button type="button" onClick={() => void downloadReceipt(receipt)} className="grid h-9 w-9 place-items-center rounded-[8px] bg-slate-950 text-white" title="Télécharger le reçu">
                     <Download size={16} />
-                  </a>
+                  </button>
                 </div>
               ))
             )}
