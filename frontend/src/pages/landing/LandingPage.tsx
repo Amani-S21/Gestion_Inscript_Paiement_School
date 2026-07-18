@@ -68,6 +68,21 @@ const functionalities = [
   "Rôles, permissions et sécurité",
 ];
 
+const mediaItems = ["Vie scolaire organisée", "Encadrement pédagogique", "Suivi numérique"];
+
+const reasons = [
+  "Encadrement sérieux",
+  "Suivi des élèves",
+  "Communication claire",
+  "Paiements tracés",
+  "Reçus disponibles",
+  "Espace élève",
+  "Gestion moderne",
+  "Archives propres",
+  "Rapports professionnels",
+  "Administration structurée",
+];
+
 const faqs = [
   {
     question: "Qui peut créer un élève dans le système ?",
