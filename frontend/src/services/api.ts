@@ -3,7 +3,6 @@ import axios from "axios";
 function defaultApiUrl() {
   if (typeof window === "undefined") return "http://localhost:8000";
   const { protocol, hostname } = window.location;
-  if (hostname === "localhost" || hostname === "127.0.0.1") return "http://localhost:8000";
   return `${protocol}//${hostname}:8000`;
 }
 
