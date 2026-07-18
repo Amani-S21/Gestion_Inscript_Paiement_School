@@ -1,7 +1,7 @@
 ﻿import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Eye, EyeOff, X } from "lucide-react";
+import { Eye, EyeOff, Trash2, X } from "lucide-react";
 
 import {
   closeAcademicYear,
@@ -12,6 +12,11 @@ import {
   createOption,
   createSection,
   createUser,
+  deleteAcademicYear,
+  deleteClassroom,
+  deleteFee,
+  deleteOption,
+  deleteSection,
   getAcademicYears,
   getClasses,
   getFees,
@@ -222,6 +227,33 @@ export function AdministrationPage() {
   const closeModal = () => {
     setModalView(null);
     setEditingUserId(null);
+  };
+
+  const handleDeleteConfig = (kind: "year" | "section" | "option" | "class" | "fee", id: string, title: string) => {
+    const actions = {
+      year: () => deleteAcademicYear(id),
+      section: () => deleteSection(id),
+      option: () => deleteOption(id),
+      class: () => deleteClassroom(id),
+      fee: () => deleteFee(id),
+    };
+    const queryKeys = {
+      year: ["academic-years"],
+      section: ["sections"],
+      option: ["options"],
+      class: ["classes"],
+      fee: ["fees"],
+    };
+    requestConfirmation({
+      title,
+      description: "Voulez-vous supprimer cette configuration ?",
+      confirmLabel: "Supprimer",
+      onConfirm: async () => {
+        await actions[kind]();
+        await queryClient.invalidateQueries({ queryKey: queryKeys[kind] });
+        setMessage("Configuration supprimée.");
+      },
+    });
   };
   const handleCreateYear = (event: FormEvent) => {
     event.preventDefault();
