@@ -405,7 +405,7 @@ export function LandingPage() {
             </div>
           </div>
         </div>
-        <div className="mx-auto mt-8 max-w-7xl border-t border-white/10 pt-4 text-[12px] font-semibold text-slate-300">
+        <div className="mx-auto mt-8 max-w-7xl border-t border-white/10 pt-4 text-center text-[12px] font-semibold text-slate-300">
           Copyright 2026 Institut NENGAPETA. Tous droits réservés. Developed by Ir Jean de Dieu BAG.
         </div>
       </footer>
