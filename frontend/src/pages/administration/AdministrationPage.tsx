@@ -466,17 +466,18 @@ export function AdministrationPage() {
         <div className="mt-4 overflow-x-auto">
           <table className="w-full text-left text-[13px]">
             <thead className="border-b border-slate-200 text-slate-500">
-              <tr><th className="py-3">Libellé</th><th>Date début</th><th>Date fin</th><th>Statut</th></tr>
+              <tr><th className="py-3">Libellé</th><th>Date début</th><th>Date fin</th><th>Statut</th><th>Action</th></tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {years.length === 0 ? (
-                <tr><td colSpan={4} className="py-4 text-sm text-slate-500">Aucune année scolaire enregistrée.</td></tr>
+                <tr><td colSpan={5} className="py-4 text-sm text-slate-500">Aucune année scolaire enregistrée.</td></tr>
               ) : years.map((year) => (
                 <tr key={year.id}>
                   <td className="py-3 font-semibold text-slate-800">{year.libellé}</td>
                   <td>{year.dateDebut}</td>
                   <td>{year.dateFin}</td>
                   <td><span className="rounded-full bg-emerald-50 px-2 py-1 text-[11px] font-bold text-emerald-700">{year.statut}</span></td>
+                  <td><button type="button" onClick={() => handleDeleteConfig("year", year.id, "Supprimer l'année scolaire")} className="grid h-8 w-8 place-items-center rounded-[8px] bg-rose-50 text-rose-700" title="Supprimer"><Trash2 size={15} /></button></td>
                 </tr>
               ))}
             </tbody>
@@ -499,7 +500,12 @@ export function AdministrationPage() {
         <div className="rounded-[14px] border border-slate-200 bg-white p-4 shadow-sm">
           <h3 className="heading text-base font-extrabold text-slate-900">Sections</h3>
           <ul className="mt-3 space-y-2 text-sm text-slate-600">
-            {sections.length === 0 ? <li>Aucune section créée.</li> : sections.map((section) => <li key={section.id}>• {section.nom}</li>)}
+            {sections.length === 0 ? <li>Aucune section créée.</li> : sections.map((section) => (
+              <li key={section.id} className="flex items-center justify-between gap-2">
+                <span>• {section.nom}</span>
+                <button type="button" onClick={() => handleDeleteConfig("section", section.id, "Supprimer la section")} className="grid h-7 w-7 place-items-center rounded-[8px] bg-rose-50 text-rose-700" title="Supprimer"><Trash2 size={14} /></button>
+              </li>
+            ))}
           </ul>
         </div>
         <div className="rounded-[14px] border border-slate-200 bg-white p-4 shadow-sm">
@@ -508,6 +514,7 @@ export function AdministrationPage() {
             {options.length === 0 ? <li>Aucune option créée.</li> : options.map((option) => (
               <li key={option.id}>
                 <span className="font-semibold text-slate-800">{option.nom}</span> ({option.niveauType})
+                <button type="button" onClick={() => handleDeleteConfig("option", option.id, "Supprimer l'option")} className="ml-2 inline-grid h-7 w-7 place-items-center rounded-[8px] bg-rose-50 text-rose-700" title="Supprimer"><Trash2 size={14} /></button>
               </li>
             ))}
           </ul>
@@ -515,7 +522,12 @@ export function AdministrationPage() {
         <div className="rounded-[14px] border border-slate-200 bg-white p-4 shadow-sm">
           <h3 className="heading text-base font-extrabold text-slate-900">Classes</h3>
           <ul className="mt-3 space-y-2 text-sm text-slate-600">
-            {classes.length === 0 ? <li>Aucune classe créée.</li> : classes.map((classe) => <li key={classe.id}>• {classe.nom} — {classe.niveau}</li>)}
+            {classes.length === 0 ? <li>Aucune classe créée.</li> : classes.map((classe) => (
+              <li key={classe.id} className="flex items-center justify-between gap-2">
+                <span>• {classe.nom} — {classe.niveau}</span>
+                <button type="button" onClick={() => handleDeleteConfig("class", classe.id, "Supprimer la classe")} className="grid h-7 w-7 place-items-center rounded-[8px] bg-rose-50 text-rose-700" title="Supprimer"><Trash2 size={14} /></button>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
@@ -534,17 +546,18 @@ export function AdministrationPage() {
         <div className="mt-4 overflow-x-auto">
           <table className="w-full text-left text-[13px]">
             <thead className="border-b border-slate-200 text-slate-500">
-              <tr><th className="py-3">Type</th><th>Cible</th><th>Référence</th><th>Montant</th></tr>
+              <tr><th className="py-3">Type</th><th>Cible</th><th>Référence</th><th>Montant</th><th>Action</th></tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {fees.length === 0 ? (
-                <tr><td colSpan={4} className="py-4 text-sm text-slate-500">Aucune configuration de frais.</td></tr>
+                <tr><td colSpan={5} className="py-4 text-sm text-slate-500">Aucune configuration de frais.</td></tr>
               ) : fees.map((fee) => (
                 <tr key={fee.id}>
                   <td className="py-3 text-slate-800">{fee.type}</td>
                   <td>{fee.cible}</td>
                   <td>{fee.référence}</td>
                   <td>{fee.montant}</td>
+                  <td><button type="button" onClick={() => handleDeleteConfig("fee", fee.id, "Supprimer le frais")} className="grid h-8 w-8 place-items-center rounded-[8px] bg-rose-50 text-rose-700" title="Supprimer"><Trash2 size={15} /></button></td>
                 </tr>
               ))}
             </tbody>
