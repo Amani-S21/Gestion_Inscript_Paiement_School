@@ -8,7 +8,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { money, shortDate } from "../../utils/format";
 import { printTable } from "../../utils/print";
 
-const initialForm = { subject: "", message: "" };
+const initialForm = { recipient: "Administration", subject: "", message: "" };
 
 export function ReclamationsPage() {
   const queryClient = useQueryClient();
@@ -33,7 +33,7 @@ export function ReclamationsPage() {
   }, [message]);
 
   const createMutation = useMutation({
-    mutationFn: () => createReclamation({ subject: form.subject, message: form.message }),
+    mutationFn: () => createReclamation({ recipient: form.recipient, subject: form.subject, message: form.message }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["reclamations"] });
       setForm(initialForm);
@@ -72,6 +72,7 @@ export function ReclamationsPage() {
   const printReclamations = () => {
     printTable("Liste des réclamations", [
       { label: "Élève", value: (row: any) => row.student_name },
+      { label: "Destinataire", value: (row: any) => row.recipient ?? "Administration" },
       { label: "Objet", value: (row: any) => row.subject },
       { label: "Paiement", value: (row: any) => row.payment_reference ? `${row.payment_reference} - ${money(row.payment_amount, row.payment_currency)}` : "-" },
       { label: "Message", value: (row: any) => row.message },
@@ -108,16 +109,17 @@ export function ReclamationsPage() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[920px] text-left text-sm">
             <thead className="text-xs uppercase text-slate-500">
-              <tr><th className="py-3">Élève</th><th>Objet</th><th>Paiement</th><th>Message</th><th>Réponse</th><th>Date</th><th>Statut</th>{canManage && <th>Action</th>}</tr>
+              <tr><th className="py-3">Élève</th><th>Destinataire</th><th>Objet</th><th>Paiement</th><th>Message</th><th>Réponse</th><th>Date</th><th>Statut</th>{canManage && <th>Action</th>}</tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {isLoading ? (
-                <tr><td className="py-4 text-slate-500" colSpan={canManage ? 8 : 7}>Chargement...</td></tr>
+                <tr><td className="py-4 text-slate-500" colSpan={canManage ? 9 : 8}>Chargement...</td></tr>
               ) : rows.length === 0 ? (
-                <tr><td className="py-4 text-slate-500" colSpan={canManage ? 8 : 7}>Aucune réclamation.</td></tr>
+                <tr><td className="py-4 text-slate-500" colSpan={canManage ? 9 : 8}>Aucune réclamation.</td></tr>
               ) : rows.map((row: any) => (
                 <tr key={row.id}>
                   <td className="py-3 font-semibold text-slate-900">{row.student_name}</td>
+                  <td>{row.recipient ?? "Administration"}</td>
                   <td>{row.subject}</td>
                   <td>{row.payment_reference ? `${row.payment_reference} - ${money(row.payment_amount, row.payment_currency)}` : "-"}</td>
                   <td className="max-w-[220px]">{row.message}</td>
@@ -167,6 +169,13 @@ export function ReclamationsPage() {
               <button type="button" onClick={() => setShowModal(false)} className="grid h-9 w-9 place-items-center rounded-[8px] bg-slate-100 text-slate-600"><X size={18} /></button>
             </div>
             <div className="space-y-3">
+              <select required className="w-full rounded-[8px] border border-slate-200 px-3 py-2 outline-none focus:border-teal-600" value={form.recipient} onChange={(e) => setForm({ ...form, recipient: e.target.value })}>
+                <option value="Administration">Administration</option>
+                <option value="Comptabilité">Comptabilité</option>
+                <option value="Préfecture">Préfecture</option>
+                <option value="Direction">Direction</option>
+                <option value="Secrétariat">Secrétariat</option>
+              </select>
               <input required className="w-full rounded-[8px] border border-slate-200 px-3 py-2 outline-none focus:border-teal-600" placeholder="Objet" value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} />
               <textarea required className="min-h-32 w-full rounded-[8px] border border-slate-200 px-3 py-2 outline-none focus:border-teal-600" placeholder="Message" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
             </div>
