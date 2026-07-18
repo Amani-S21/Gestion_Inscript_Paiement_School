@@ -388,7 +388,7 @@ export function LandingPage() {
       <footer className="border-t border-slate-200 bg-[#0b1f33] px-4 py-8 text-white">
         <div className="mx-auto grid max-w-7xl gap-6 text-[12px] md:grid-cols-3">
           <div>
-            <p className="font-black">A propos</p>
+            <p className="font-black">À propos</p>
             <p className="mt-2 leading-6 text-slate-300">Historique, photos et fichiers de présentation de l'Institut NENGAPETA.</p>
           </div>
           <div>

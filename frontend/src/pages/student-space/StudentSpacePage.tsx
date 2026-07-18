@@ -19,13 +19,13 @@ export function StudentSpacePage() {
     ], [
       { label: "Nom complet", value: data.profile.nom_complet },
       { label: "Matricule", value: data.profile.matricule },
-      { label: "Classe", value: data.classe ?? "Non renseignee" },
-      { label: "Option", value: data.option ?? "Non renseignee" },
-      { label: "Annee scolaire", value: data.annee_scolaire ?? "Non renseignee" },
+      { label: "Classe", value: data.classe ?? "Non renseignée" },
+      { label: "Option", value: data.option ?? "Non renseignée" },
+      { label: "Année scolaire", value: data.annee_scolaire ?? "Non renseignée" },
       { label: "Date de naissance", value: shortDate(data.profile.date_naissance) },
       { label: "Lieu de naissance", value: data.profile.lieu_naissance ?? "-" },
       { label: "Tuteur", value: data.profile.nom_tuteur ?? "-" },
-      { label: "Telephone tuteur", value: data.profile.telephone_tuteur ?? "-" },
+      { label: "Téléphone tuteur", value: data.profile.telephone_tuteur ?? "-" },
     ]);
   };
 
