@@ -75,31 +75,31 @@ const fallbackMedia = [
   {
     title: "Vie scolaire organisée",
     description: "Une école vivante avec un encadrement structuré.",
-    image_url: "https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=900&q=80",
+    image_url: "https://source.unsplash.com/900x600/?african-students,school",
   },
   {
     title: "Encadrement pédagogique",
     description: "Des élèves accompagnés dans leur parcours scolaire.",
-    image_url: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80",
+    image_url: "https://source.unsplash.com/900x600/?black-students,classroom",
   },
   {
     title: "Activités éducatives",
     description: "Des espaces de formation orientés vers la réussite.",
-    image_url: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=900&q=80",
+    image_url: "https://source.unsplash.com/900x600/?african-school,education",
   },
 ];
 
 const reasons = [
-  { title: "Encadrement sérieux", image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=600&q=80" },
-  { title: "Suivi des élèves", image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80" },
-  { title: "Communication claire", image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80" },
-  { title: "Paiements tracés", image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=600&q=80" },
-  { title: "Reçus disponibles", image: "https://images.unsplash.com/photo-1554224154-26032ffc0d07?auto=format&fit=crop&w=600&q=80" },
-  { title: "Espace élève", image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80" },
-  { title: "Gestion moderne", image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=600&q=80" },
-  { title: "Archives propres", image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=600&q=80" },
-  { title: "Rapports professionnels", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" },
-  { title: "Administration structurée", image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=600&q=80" },
+  { title: "Encadrement sérieux", image: "https://source.unsplash.com/600x400/?african-teacher,students" },
+  { title: "Suivi des élèves", image: "https://source.unsplash.com/600x400/?black-students,teacher" },
+  { title: "Communication claire", image: "https://source.unsplash.com/600x400/?african-students,computer" },
+  { title: "Paiements tracés", image: "https://source.unsplash.com/600x400/?african-office,finance" },
+  { title: "Reçus disponibles", image: "https://source.unsplash.com/600x400/?african-administration,documents" },
+  { title: "Espace élève", image: "https://source.unsplash.com/600x400/?african-students,study" },
+  { title: "Gestion moderne", image: "https://source.unsplash.com/600x400/?african-school,technology" },
+  { title: "Archives propres", image: "https://source.unsplash.com/600x400/?african-office,files" },
+  { title: "Rapports professionnels", image: "https://source.unsplash.com/600x400/?african-professional,charts" },
+  { title: "Administration structurée", image: "https://source.unsplash.com/600x400/?african-school,administration" },
 ];
 
 const faqs = [
@@ -254,7 +254,6 @@ export function LandingPage() {
               <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">Photos publicitaires</p>
               <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">La vie de l'Institut NENGAPETA</h2>
             </div>
-            <p className="max-w-xl text-[13px] leading-6 text-slate-600">Les photos publiées par l'administrateur apparaissent ici avec une courte description.</p>
           </div>
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {publicMedia.map((item, index) => (
