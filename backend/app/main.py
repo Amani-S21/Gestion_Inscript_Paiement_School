@@ -1,7 +1,9 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.database.session import Base, SessionLocal, engine
@@ -14,6 +16,7 @@ from app.seed import seed_initial_data
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    Path("uploads").mkdir(exist_ok=True)
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:
@@ -38,6 +41,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 
 @app.get("/")

@@ -8,6 +8,7 @@ import {
   getStudents,
   updateStudent,
   updateStudentStatus,
+  uploadImage,
 } from "../../services/adminService";
 import { Pagination } from "../../components/Pagination";
 import { useAuth } from "../../contexts/AuthContext";
@@ -41,6 +42,7 @@ export function StudentsPage() {
   const [confirmAction, setConfirmAction] = useState<null | { title: string; text: string; run: () => void }>(null);
   const [message, setMessage] = useState("");
   const [form, setForm] = useState(initialForm);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [editingStudent, setEditingStudent] = useState<any>(null);
   const [showPassword, setShowPassword] = useState(false);
   const { data, isLoading } = useQuery({ queryKey: ["students", q, page], queryFn: () => getStudents({ q, page, size: 10 }) });
@@ -62,17 +64,20 @@ export function StudentsPage() {
     setShowModal(false);
     setEditingStudent(null);
     setForm(initialForm);
+    setPhotoFile(null);
     setShowPassword(false);
   };
 
   const openCreate = () => {
     setEditingStudent(null);
     setForm(initialForm);
+    setPhotoFile(null);
     setShowModal(true);
   };
 
   const openEdit = (student: any) => {
     setEditingStudent(student);
+    setPhotoFile(null);
     setForm({
       nom: student.user?.nom ?? "",
       postnom: student.user?.postnom ?? "",
@@ -94,10 +99,16 @@ export function StudentsPage() {
   };
 
   const saveMutation = useMutation({
-    mutationFn: () => {
+    mutationFn: async () => {
+      let photoUrl = form.photo_url;
+      if (photoFile) {
+        const uploaded = await uploadImage(photoFile);
+        photoUrl = uploaded.url;
+      }
       const payload = Object.fromEntries(
         Object.entries(form).filter(([key, value]) => value !== "" || !["password", "date_naissance"].includes(key)),
       ) as typeof form;
+      payload.photo_url = photoUrl;
       return editingStudent ? updateStudent(editingStudent.id, payload) : createStudent(payload);
     },
     onSuccess: async () => {
@@ -137,6 +148,10 @@ export function StudentsPage() {
     event.preventDefault();
     if (!form.nom || !form.email || !form.login || (!editingStudent && !form.password)) {
       setMessage("Renseignez le nom, l'email, le login et le mot de passe.");
+      return;
+    }
+    if (photoFile && photoFile.size > 5 * 1024 * 1024) {
+      setMessage("La photo de profil ne doit pas dépasser 5 Mo.");
       return;
     }
     setConfirmOpen(true);
@@ -280,7 +295,23 @@ export function StudentsPage() {
                 <input className="rounded-[8px] border border-slate-200 px-3 py-2 outline-none focus:border-teal-600" placeholder="Matricule automatique si vide" value={form.matricule} onChange={(e) => setForm({ ...form, matricule: e.target.value, login: form.login || e.target.value })} />
                 <input required type="email" className="rounded-[8px] border border-slate-200 px-3 py-2 outline-none focus:border-teal-600" placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
                 <input required className="rounded-[8px] border border-slate-200 px-3 py-2 outline-none focus:border-teal-600" placeholder="Login" value={form.login} onChange={(e) => setForm({ ...form, login: e.target.value })} />
-                <input className="rounded-[8px] border border-slate-200 px-3 py-2 outline-none focus:border-teal-600" placeholder="Photo de profil (URL)" value={form.photo_url} onChange={(e) => setForm({ ...form, photo_url: e.target.value })} />
+                <label className="rounded-[8px] border border-slate-200 px-3 py-2 text-sm text-slate-500 outline-none focus-within:border-teal-600">
+                  <span className="block text-xs font-bold text-slate-600">Photo de profil</span>
+                  <input
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp,image/gif"
+                    className="mt-1 block w-full text-xs"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0] ?? null;
+                      if (file && file.size > 5 * 1024 * 1024) {
+                        setMessage("La photo de profil ne doit pas dépasser 5 Mo.");
+                        e.currentTarget.value = "";
+                        return;
+                      }
+                      setPhotoFile(file);
+                    }}
+                  />
+                </label>
                 <div className="flex overflow-hidden rounded-[8px] border border-slate-200 focus-within:border-teal-600">
                   <input required={!editingStudent} type={showPassword ? "text" : "password"} className="w-full px-3 py-2 outline-none" placeholder={editingStudent ? "Nouveau mot de passe" : "Mot de passe"} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
                   <button type="button" onClick={() => setShowPassword((value) => !value)} className="grid w-11 place-items-center text-slate-500" title={showPassword ? "Masquer" : "Afficher"}>

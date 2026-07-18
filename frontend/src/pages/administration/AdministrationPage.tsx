@@ -27,6 +27,7 @@ import {
   getRoles,
   getSections,
   getUsers,
+  uploadImage,
   updateUserStatus,
 } from "../../services/adminService";
 import { useAuth } from "../../contexts/AuthContext";
@@ -173,6 +174,7 @@ export function AdministrationPage() {
 
   const [feesForm, setFeesForm] = useState({ type: "Inscription", cible: "all", référence: "", montant: "" });
   const [mediaForm, setMediaForm] = useState({ title: "", description: "", image_url: "" });
+  const [mediaFile, setMediaFile] = useState<File | null>(null);
   const marketingMedia = useMemo<MarketingMediaItem[]>(
     () => (mediaQuery.data ?? []).map((item: any) => ({ id: String(item.id), title: item.title, description: item.description, image_url: item.image_url, statut: item.statut })),
     [mediaQuery.data]
@@ -238,6 +240,7 @@ export function AdministrationPage() {
   const closeModal = () => {
     setModalView(null);
     setEditingUserId(null);
+    setMediaFile(null);
   };
 
   const handleDeleteConfig = (kind: "year" | "section" | "option" | "class" | "fee" | "media", id: string, title: string) => {
@@ -298,8 +301,12 @@ export function AdministrationPage() {
 
   const handleCreateMedia = (event: FormEvent) => {
     event.preventDefault();
-    if (!mediaForm.title || !mediaForm.image_url) {
-      setMessage("Renseignez le titre et l'URL de la photo.");
+    if (!mediaForm.title || !mediaFile) {
+      setMessage("Renseignez le titre et sélectionnez une photo.");
+      return;
+    }
+    if (mediaFile.size > 5 * 1024 * 1024) {
+      setMessage("La photo publicitaire ne doit pas dépasser 5 Mo.");
       return;
     }
     requestConfirmation({
@@ -307,8 +314,10 @@ export function AdministrationPage() {
       description: "Voulez-vous publier cette photo sur la page d'accueil ?",
       confirmLabel: "Publier",
       onConfirm: async () => {
-        await createMarketingMedia({ ...mediaForm, statut: "publie" });
+        const uploaded = await uploadImage(mediaFile);
+        await createMarketingMedia({ ...mediaForm, image_url: uploaded.url, statut: "publie" });
         setMediaForm({ title: "", description: "", image_url: "" });
+        setMediaFile(null);
         closeModal();
         await queryClient.invalidateQueries({ queryKey: ["marketing-media"] });
         setMessage("Photo publicitaire publiée.");
@@ -925,19 +934,30 @@ export function AdministrationPage() {
                     value={mediaForm.title}
                     onChange={(e) => setMediaForm({ ...mediaForm, title: e.target.value })}
                   />
-                  <input
-                    className="w-full rounded-[12px] border border-slate-200 bg-slate-50 px-3 py-2 text-[13px] outline-none focus:border-emerald-500"
-                    placeholder="URL de la photo"
-                    value={mediaForm.image_url}
-                    onChange={(e) => setMediaForm({ ...mediaForm, image_url: e.target.value })}
-                  />
+                  <label className="block rounded-[12px] border border-slate-200 bg-slate-50 px-3 py-2 text-[13px] text-slate-600 outline-none focus-within:border-emerald-500">
+                    <span className="block text-xs font-bold text-slate-700">Photo à publier (max 5 Mo)</span>
+                    <input
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp,image/gif"
+                      className="mt-2 block w-full text-xs"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] ?? null;
+                        if (file && file.size > 5 * 1024 * 1024) {
+                          setMessage("La photo publicitaire ne doit pas dépasser 5 Mo.");
+                          e.currentTarget.value = "";
+                          return;
+                        }
+                        setMediaFile(file);
+                      }}
+                    />
+                    {mediaFile && <span className="mt-2 block text-xs font-semibold text-emerald-700">{mediaFile.name}</span>}
+                  </label>
                   <textarea
                     className="min-h-28 w-full rounded-[12px] border border-slate-200 bg-slate-50 px-3 py-2 text-[13px] outline-none focus:border-emerald-500"
                     placeholder="Petite description"
                     value={mediaForm.description}
                     onChange={(e) => setMediaForm({ ...mediaForm, description: e.target.value })}
                   />
-                  {mediaForm.image_url && <img src={mediaForm.image_url} alt="" className="h-44 w-full rounded-[12px] object-cover" />}
                   {message && <p className="rounded-[12px] bg-rose-50 px-3 py-2 text-sm font-bold text-rose-700">{message}</p>}
                   <button type="submit" className="rounded-[12px] bg-[#10242f] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#163747]">Publier</button>
                 </form>

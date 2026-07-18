@@ -16,6 +16,7 @@ import {
   UserCog,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+
 import { getPublicMarketingMedia } from "../../services/adminService";
 
 const advantages = [
@@ -70,46 +71,60 @@ const functionalities = [
   "Rôles, permissions et sécurité",
 ];
 
-const mediaItems = ["Vie scolaire organisée", "Encadrement pédagogique", "Suivi numérique"];
+const fallbackMedia = [
+  {
+    title: "Vie scolaire organisée",
+    description: "Une école vivante avec un encadrement structuré.",
+    image_url: "https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    title: "Encadrement pédagogique",
+    description: "Des élèves accompagnés dans leur parcours scolaire.",
+    image_url: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    title: "Activités éducatives",
+    description: "Des espaces de formation orientés vers la réussite.",
+    image_url: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=900&q=80",
+  },
+];
 
 const reasons = [
-  "Encadrement sérieux",
-  "Suivi des élèves",
-  "Communication claire",
-  "Paiements tracés",
-  "Reçus disponibles",
-  "Espace élève",
-  "Gestion moderne",
-  "Archives propres",
-  "Rapports professionnels",
-  "Administration structurée",
+  { title: "Encadrement sérieux", image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=600&q=80" },
+  { title: "Suivi des élèves", image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80" },
+  { title: "Communication claire", image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80" },
+  { title: "Paiements tracés", image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=600&q=80" },
+  { title: "Reçus disponibles", image: "https://images.unsplash.com/photo-1554224154-26032ffc0d07?auto=format&fit=crop&w=600&q=80" },
+  { title: "Espace élève", image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80" },
+  { title: "Gestion moderne", image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=600&q=80" },
+  { title: "Archives propres", image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=600&q=80" },
+  { title: "Rapports professionnels", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" },
+  { title: "Administration structurée", image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=600&q=80" },
 ];
 
 const faqs = [
   {
     question: "Qui peut créer un élève dans le système ?",
-    answer:
-      "L'administrateur dispose des droits de création et de gestion des élèves. Il peut aussi configurer les classes, options, sections, frais et utilisateurs du système.",
+    answer: "L'administrateur dispose des droits de création et de gestion des élèves. Il peut aussi configurer les classes, options, sections, frais et utilisateurs du système.",
   },
   {
     question: "Le comptable peut-il modifier les paramètres administratifs ?",
-    answer:
-      "Non. L'agent comptable travaille sur le volet financier : enregistrement des paiements, vérification des soldes, édition des reçus et consultation des historiques autorisés.",
+    answer: "Non. L'agent comptable travaille sur le volet financier : enregistrement des paiements, vérification des soldes, édition des reçus et consultation des historiques autorisés.",
   },
   {
     question: "Que voit un élève après connexion ?",
-    answer:
-      "L'élève accède uniquement à ses propres données : profil, inscription, classe, option, frais, paiements, reçus et solde restant. Il ne peut pas consulter les informations d'un autre élève.",
+    answer: "L'élève accède uniquement à ses propres données : profil, inscription, classe, option, frais, paiements, reçus et solde restant.",
   },
   {
     question: "Les reçus de paiement sont-ils générés automatiquement ?",
-    answer:
-      "Oui. Après l'enregistrement d'un paiement, le système prépare un reçu numéroté et rattaché à l'élève, au frais concerné et à l'agent qui a réalisé l'opération.",
+    answer: "Oui. Après l'enregistrement d'un paiement, le système prépare un reçu numéroté et rattaché à l'élève, au frais concerné et à l'agent qui a réalisé l'opération.",
   },
 ];
 
 export function LandingPage() {
   const [openFaq, setOpenFaq] = useState(0);
+  const mediaQuery = useQuery({ queryKey: ["public-marketing-media"], queryFn: getPublicMarketingMedia });
+  const publicMedia = (mediaQuery.data?.length ? mediaQuery.data : fallbackMedia) as Array<{ id?: number; title: string; description?: string; image_url: string }>;
 
   return (
     <main className="min-h-screen bg-[#f4f8f7] text-slate-950">
@@ -125,23 +140,13 @@ export function LandingPage() {
             </span>
           </Link>
           <nav className="hidden items-center gap-5 text-[12px] font-bold text-slate-600 md:flex">
-            <a href="#avantages" className="transition hover:text-[#0e4f4a]">
-              Avantages
-            </a>
-            <a href="#roles" className="transition hover:text-[#0e4f4a]">
-              Rôles
-            </a>
-            <a href="#fonctionnalites" className="transition hover:text-[#0e4f4a]">
-              Fonctionnalités
-            </a>
-            <a href="#faq" className="transition hover:text-[#0e4f4a]">
-              FAQ
-            </a>
+            <a href="#avantages" className="transition hover:text-[#0e4f4a]">Avantages</a>
+            <a href="#roles" className="transition hover:text-[#0e4f4a]">Rôles</a>
+            <a href="#fonctionnalites" className="transition hover:text-[#0e4f4a]">Fonctionnalités</a>
+            <a href="#photos" className="transition hover:text-[#0e4f4a]">Photos</a>
+            <a href="#faq" className="transition hover:text-[#0e4f4a]">FAQ</a>
           </nav>
-          <Link
-            to="/login"
-            className="inline-flex h-9 items-center gap-2 rounded-[9px] bg-[#0b1f33] px-4 text-[12px] font-extrabold text-white shadow-lg shadow-slate-950/15 transition hover:-translate-y-0.5 hover:bg-[#123554]"
-          >
+          <Link to="/login" className="inline-flex h-9 items-center gap-2 rounded-[9px] bg-[#0b1f33] px-4 text-[12px] font-extrabold text-white shadow-lg shadow-slate-950/15 transition hover:-translate-y-0.5 hover:bg-[#123554]">
             Connexion
             <ArrowRight size={15} />
           </Link>
@@ -149,18 +154,8 @@ export function LandingPage() {
       </header>
 
       <section className="relative min-h-[calc(100vh-64px)] overflow-hidden border-b border-slate-200/80">
-        <img
-          src="/images/nengapeta-school-hero.png"
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover object-center opacity-100 brightness-[1.16] contrast-[1.03] saturate-[1.06] lg:object-right"
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(90deg, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.88) 40%, rgba(255,255,255,0.48) 66%, rgba(255,255,255,0.1) 100%), linear-gradient(180deg, rgba(255,255,255,0.42) 0%, rgba(244,248,247,0.68) 100%)",
-          }}
-        />
+        <img src="/images/nengapeta-school-hero.png" alt="" className="absolute inset-0 h-full w-full object-cover object-center opacity-100 brightness-[1.16] contrast-[1.03] saturate-[1.06] lg:object-right" />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.88) 40%, rgba(255,255,255,0.48) 66%, rgba(255,255,255,0.1) 100%), linear-gradient(180deg, rgba(255,255,255,0.42) 0%, rgba(244,248,247,0.68) 100%)" }} />
         <div className="relative mx-auto grid min-h-[calc(100vh-64px)] max-w-7xl gap-8 px-4 py-12 sm:px-6 md:py-16 lg:grid-cols-[0.82fr_1.18fr] lg:px-8 lg:py-20">
           <div className="flex flex-col justify-center">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a] shadow-sm">
@@ -174,26 +169,16 @@ export function LandingPage() {
               Une application web conçue pour centraliser les dossiers des élèves, organiser les inscriptions et suivre les paiements au sein d'une institution secondaire.
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <Link
-                to="/login"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-[10px] bg-[#0e4f4a] px-5 text-[13px] font-extrabold text-white shadow-xl shadow-emerald-950/15 transition hover:-translate-y-0.5 hover:bg-[#0b403c]"
-              >
+              <Link to="/login" className="inline-flex h-11 items-center justify-center gap-2 rounded-[10px] bg-[#0e4f4a] px-5 text-[13px] font-extrabold text-white shadow-xl shadow-emerald-950/15 transition hover:-translate-y-0.5 hover:bg-[#0b403c]">
                 Accéder au système
                 <ArrowRight size={16} />
               </Link>
-              <a
-                href="#fonctionnalites"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-[10px] border border-slate-200 bg-white px-5 text-[13px] font-extrabold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-200 hover:text-[#0e4f4a]"
-              >
+              <a href="#fonctionnalites" className="inline-flex h-11 items-center justify-center gap-2 rounded-[10px] border border-slate-200 bg-white px-5 text-[13px] font-extrabold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-200 hover:text-[#0e4f4a]">
                 Voir les fonctionnalités
               </a>
             </div>
             <div className="mt-8 grid max-w-2xl grid-cols-3 gap-3">
-              {[
-                ["Rôles", "3 espaces"],
-                ["Reçus", "Automatiques"],
-                ["Accès", "Sécurisé"],
-              ].map(([label, value]) => (
+              {[["Rôles", "3 espaces"], ["Reçus", "Automatiques"], ["Accès", "Sécurisé"]].map(([label, value]) => (
                 <div key={label} className="rounded-[12px] border border-white bg-white/75 p-3 shadow-sm">
                   <p className="text-[11px] font-bold text-slate-500">{label}</p>
                   <p className="mt-1 text-[13px] font-black text-[#0b1f33]">{value}</p>
@@ -201,7 +186,6 @@ export function LandingPage() {
               ))}
             </div>
           </div>
-
           <div className="hidden lg:block" aria-hidden="true" />
         </div>
       </section>
@@ -230,9 +214,7 @@ export function LandingPage() {
             <div>
               <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">Rôles et permissions</p>
               <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Chaque utilisateur accède uniquement à son espace</h2>
-              <p className="mt-3 text-[13px] leading-6 text-slate-600">
-                Les permissions séparent clairement les tâches administratives, financières et personnelles.
-              </p>
+              <p className="mt-3 text-[13px] leading-6 text-slate-600">Les permissions séparent clairement les tâches administratives, financières et personnelles.</p>
             </div>
             <div className="grid gap-4 md:grid-cols-3">
               {roleCards.map((item) => (
@@ -265,22 +247,22 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section className="border-y border-slate-200 bg-white">
+      <section id="photos" className="border-y border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
             <div>
-              <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">Photos et vidéos publicitaires</p>
+              <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">Photos publicitaires</p>
               <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">La vie de l'Institut NENGAPETA</h2>
             </div>
-            <p className="max-w-xl text-[13px] leading-6 text-slate-600">Ces emplacements peuvent recevoir les photos, vidéos et fichiers dynamiques de l'école selon les options organisées.</p>
+            <p className="max-w-xl text-[13px] leading-6 text-slate-600">Les photos publiées par l'administrateur apparaissent ici avec une courte description.</p>
           </div>
           <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {mediaItems.map((item) => (
-              <article key={item} className="overflow-hidden rounded-[14px] border border-slate-200 bg-[#f8fbfb] shadow-sm">
-                <img src="/images/nengapeta-school-hero.png" alt="" className="h-44 w-full object-cover" />
+            {publicMedia.map((item, index) => (
+              <article key={item.id ?? item.title} className="overflow-hidden rounded-[14px] border border-slate-200 bg-[#f8fbfb] shadow-sm">
+                <img src={item.image_url} alt="" className="h-44 w-full object-cover" />
                 <div className="p-4">
-                  <p className="font-black text-slate-900">{item}</p>
-                  <p className="mt-1 text-[12px] leading-5 text-slate-600">Support photo ou vidéo pour présenter l'école, ses sections, ses options et ses activités.</p>
+                  <p className="font-black text-slate-900">{item.title}</p>
+                  <p className="mt-1 text-[12px] leading-5 text-slate-600">{item.description || `Photo publicitaire ${index + 1}`}</p>
                 </div>
               </article>
             ))}
@@ -291,14 +273,16 @@ export function LandingPage() {
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
           <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">10 raisons</p>
-          <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Pourquoi rejoindre NE NGAPETA</h2>
+          <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Pourquoi rejoindre NENGAPETA</h2>
         </div>
         <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {reasons.map((reason, index) => (
-            <div key={reason} className="rounded-[12px] border border-slate-200 bg-white p-4 shadow-sm">
-              <img src="/images/nengapeta-school-hero.png" alt="" className="mb-3 h-20 w-full rounded-[8px] object-cover" />
-              <p className="text-[11px] font-black text-[#0e4f4a]">Raison {index + 1}</p>
-              <p className="mt-1 text-[13px] font-bold text-slate-800">{reason}</p>
+            <div key={reason.title} className="overflow-hidden rounded-[12px] border border-slate-200 bg-white shadow-sm">
+              <img src={reason.image} alt="" className="h-28 w-full object-cover" />
+              <div className="p-4">
+                <p className="text-[11px] font-black text-[#0e4f4a]">Raison {index + 1}</p>
+                <p className="mt-1 text-[13px] font-bold text-slate-800">{reason.title}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -309,20 +293,14 @@ export function LandingPage() {
           <div>
             <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">FAQ</p>
             <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Questions fréquentes</h2>
-            <p className="mt-3 text-[13px] leading-6 text-slate-600">
-              Les réponses ci-contre précisent le fonctionnement attendu des principaux profils.
-            </p>
+            <p className="mt-3 text-[13px] leading-6 text-slate-600">Les réponses ci-contre précisent le fonctionnement attendu des principaux profils.</p>
           </div>
           <div className="space-y-3">
             {faqs.map((faq, index) => {
               const isOpen = openFaq === index;
               return (
                 <div key={faq.question} className="rounded-[14px] border border-slate-200 bg-[#f8fbfb]">
-                  <button
-                    type="button"
-                    onClick={() => setOpenFaq(isOpen ? -1 : index)}
-                    className="flex w-full items-center justify-between gap-4 px-4 py-4 text-left"
-                  >
+                  <button type="button" onClick={() => setOpenFaq(isOpen ? -1 : index)} className="flex w-full items-center justify-between gap-4 px-4 py-4 text-left">
                     <span className="text-[13px] font-black text-slate-900">{faq.question}</span>
                     <ChevronDown size={18} className={`shrink-0 text-[#0e4f4a] transition ${isOpen ? "rotate-180" : ""}`} />
                   </button>
@@ -342,7 +320,7 @@ export function LandingPage() {
         <div className="mx-auto grid max-w-7xl gap-6 text-[12px] md:grid-cols-3">
           <div>
             <p className="font-black">A propos</p>
-            <p className="mt-2 leading-6 text-slate-300">Historique, photos, vidéos et fichiers de présentation de l'Institut NENGAPETA.</p>
+            <p className="mt-2 leading-6 text-slate-300">Historique, photos et fichiers de présentation de l'Institut NENGAPETA.</p>
           </div>
           <div>
             <p className="font-black">Contactez-nous</p>

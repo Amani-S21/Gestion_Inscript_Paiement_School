@@ -1,8 +1,9 @@
 from datetime import date, datetime
+from pathlib import Path
 from decimal import Decimal
 from uuid import uuid4
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
+from fastapi import APIRouter, Depends, File, HTTPException, Query, Request, Response, UploadFile, status
 from sqlalchemy import func
 from sqlalchemy.orm import Session, joinedload
 
@@ -22,6 +23,9 @@ from app.schemas.student_schema import StudentCreate, StudentUpdate
 from app.services.receipt_service import render_receipt_pdf
 
 router = APIRouter(prefix="/api", tags=["Gestion"])
+UPLOAD_DIR = Path("uploads")
+MAX_IMAGE_SIZE = 5 * 1024 * 1024
+ALLOWED_IMAGE_TYPES = {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp", "image/gif": ".gif"}
 
 
 def refresh_academic_year_status(db: Session) -> None:
@@ -40,6 +44,21 @@ def generate_student_matricule(db: Session) -> str:
         next_id += 1
         matricule = f"ELEV-{current_year}-{next_id:04d}"
     return matricule
+
+
+@router.post("/uploads/images", dependencies=[Depends(require_permission("students.manage"))])
+async def upload_image(request: Request, file: UploadFile = File(...)):
+    if file.content_type not in ALLOWED_IMAGE_TYPES:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Seules les images JPG, PNG, WEBP ou GIF sont autorisées.")
+    content = await file.read()
+    if len(content) > MAX_IMAGE_SIZE:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="La photo ne doit pas dépasser 5 Mo.")
+    UPLOAD_DIR.mkdir(exist_ok=True)
+    suffix = ALLOWED_IMAGE_TYPES[file.content_type]
+    filename = f"{datetime.utcnow():%Y%m%d%H%M%S}-{uuid4().hex}{suffix}"
+    path = UPLOAD_DIR / filename
+    path.write_bytes(content)
+    return {"url": str(request.base_url).rstrip("/") + f"/uploads/{filename}"}
 
 
 def serialize_student(student: Student) -> dict:

@@ -136,6 +136,15 @@ export async function createFee(payload: { fee_type_id: number; academic_year_id
   return data;
 }
 
+export async function uploadImage(file: File) {
+  const formData = new FormData();
+  formData.append("file", file);
+  const { data } = await api.post("/api/uploads/images", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return data as { url: string };
+}
+
 export async function updateFee(feeId: string | number, payload: { fee_type_id: number; academic_year_id: number; class_id?: number | null; montant: string | number; devise?: string }) {
   const { data } = await api.patch(`/api/fees/${feeId}`, payload);
   return data;
