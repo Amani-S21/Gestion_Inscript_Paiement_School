@@ -1,10 +1,12 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Eye, EyeOff, Pencil, Printer, Power, Search, Trash2, UserPlus, X } from "lucide-react";
+import { Download, Eye, EyeOff, IdCard, Pencil, Printer, Power, Search, Trash2, UserPlus, X } from "lucide-react";
 
 import {
   createStudent,
   deleteStudent,
+  downloadAllStudentCards,
+  downloadStudentCardPdf,
   getStudents,
   updateStudent,
   updateStudentStatus,
@@ -45,12 +47,16 @@ export function StudentsPage() {
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [editingStudent, setEditingStudent] = useState<any>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [downloadingCardId, setDownloadingCardId] = useState<number | null>(null);
+  const [downloadingAllCards, setDownloadingAllCards] = useState(false);
   const { data, isLoading } = useQuery({ queryKey: ["students", q, page], queryFn: () => getStudents({ q, page, size: 10 }) });
   const items = data?.items ?? [];
   const total = data?.total ?? 0;
   const canManageStudents = hasRole("ROLE_ADMIN") || hasPermission("students.manage");
   const canAddStudent = canManageStudents && (hasRole("ROLE_COMPTABLE") || hasRole("ROLE_ADMIN"));
   const canAdminActions = canManageStudents && hasRole("ROLE_ADMIN");
+  const canDownloadCards = hasRole("ROLE_ADMIN") || hasRole("ROLE_SECRETAIRE") || hasRole("ROLE_PREFET") || hasPermission("students.view");
+  const tableColSpan = 7 + (canDownloadCards ? 1 : 0) + (canAdminActions ? 1 : 0);
 
   useEffect(() => {
     if (!message) return;
@@ -169,6 +175,28 @@ export function StudentsPage() {
     ], items);
   };
 
+  const downloadCard = async (student: any) => {
+    try {
+      setDownloadingCardId(student.id);
+      await downloadStudentCardPdf(student.id, `carte-${student.matricule}.pdf`);
+    } catch {
+      setMessage("Impossible de télécharger la carte de cet élève.");
+    } finally {
+      setDownloadingCardId(null);
+    }
+  };
+
+  const downloadAllCards = async () => {
+    try {
+      setDownloadingAllCards(true);
+      await downloadAllStudentCards("cartes-eleves.zip");
+    } catch {
+      setMessage("Impossible de télécharger les cartes des élèves.");
+    } finally {
+      setDownloadingAllCards(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {message && <div className="fixed right-5 top-20 z-[70] max-w-sm rounded-[14px] border border-emerald-100 bg-white px-4 py-3 text-sm font-bold text-emerald-700 shadow-xl shadow-slate-950/10">{message}</div>}
@@ -178,6 +206,12 @@ export function StudentsPage() {
           <p className="mt-1 text-slate-500">Ajout des élèves par le comptable et suivi des dossiers du système.</p>
         </div>
         <div className="flex flex-wrap gap-2">
+          {canDownloadCards && (
+            <button type="button" onClick={() => void downloadAllCards()} disabled={downloadingAllCards} className="inline-flex items-center justify-center gap-2 rounded-[8px] bg-teal-600 px-4 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70">
+              <Download size={18} />
+              {downloadingAllCards ? "Téléchargement..." : "Toutes les cartes"}
+            </button>
+          )}
           <button type="button" onClick={printStudents} className="grid h-12 w-12 place-items-center rounded-[8px] bg-slate-950 text-white" title="Imprimer"><Printer size={18} /></button>
           {canAddStudent && (
             <button type="button" onClick={openCreate} className="inline-flex items-center justify-center gap-2 rounded-[8px] bg-[#102a2b] px-4 py-3 font-semibold text-white">
@@ -204,14 +238,15 @@ export function StudentsPage() {
                 <th>Téléphone</th>
                 <th>Tuteur</th>
                 <th>Statut</th>
+                {canDownloadCards && <th>Carte</th>}
                 {canAdminActions && <th>Actions</th>}
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {isLoading ? (
-                <tr><td className="py-4 text-slate-500" colSpan={canAdminActions ? 8 : 7}>Chargement...</td></tr>
+                <tr><td className="py-4 text-slate-500" colSpan={tableColSpan}>Chargement...</td></tr>
               ) : items.length === 0 ? (
-                <tr><td className="py-4 text-slate-500" colSpan={canAdminActions ? 8 : 7}>Aucun élève trouvé.</td></tr>
+                <tr><td className="py-4 text-slate-500" colSpan={tableColSpan}>Aucun élève trouvé.</td></tr>
               ) : (
                 items.map((student: any) => {
                   const isActive = (student.user?.statut ?? "actif") === "actif";
@@ -235,6 +270,19 @@ export function StudentsPage() {
                       <td>{student.user?.telephone ?? "-"}</td>
                       <td>{student.nom_tuteur ?? "-"}</td>
                       <td><span className={`rounded-full px-3 py-1 text-xs font-bold ${isActive ? "bg-teal-50 text-teal-700" : "bg-rose-50 text-rose-700"}`}>{isActive ? "Actif" : "Inactif"}</span></td>
+                      {canDownloadCards && (
+                        <td>
+                          <button
+                            type="button"
+                            onClick={() => void downloadCard(student)}
+                            disabled={downloadingCardId === student.id}
+                            className="grid h-9 w-9 place-items-center rounded-[8px] bg-teal-50 text-teal-700 disabled:cursor-not-allowed disabled:opacity-60"
+                            title="Télécharger la carte"
+                          >
+                            <IdCard size={16} />
+                          </button>
+                        </td>
+                      )}
                       {canAdminActions && (
                         <td>
                           <div className="flex items-center gap-2">
