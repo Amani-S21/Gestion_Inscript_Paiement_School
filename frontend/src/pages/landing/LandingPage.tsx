@@ -9,7 +9,6 @@ import {
   FileCheck2,
   GraduationCap,
   Landmark,
-  LockKeyhole,
   School,
   ShieldCheck,
   Sparkles,
@@ -386,22 +385,28 @@ export function LandingPage() {
       </section>
 
       <footer className="border-t border-slate-200 bg-[#0b1f33] px-4 py-8 text-white">
-        <div className="mx-auto grid max-w-7xl gap-6 text-[12px] md:grid-cols-3">
+        <div className="mx-auto grid max-w-7xl gap-8 text-[12px] md:grid-cols-[1.2fr_0.8fr]">
           <div>
             <p className="font-black">À propos</p>
-            <p className="mt-2 leading-6 text-slate-300">Historique, photos et fichiers de présentation de l'Institut NENGAPETA.</p>
+            <p className="mt-2 max-w-2xl leading-6 text-slate-300">
+              L'Institut NENGAPETA accompagne les élèves dans une formation sérieuse, pratique et structurée. L'école met l'accent sur le suivi pédagogique, les activités éducatives, la discipline et la préparation des apprenants à une réussite durable.
+            </p>
           </div>
           <div>
             <p className="font-black">Contactez-nous</p>
-            <p className="mt-2 leading-6 text-slate-300">Téléphone des autorités, Facebook, WhatsApp, Instagram, Telegram, TikTok et YouTube.</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <a className="rounded-[8px] bg-white/10 px-3 py-2 font-bold text-slate-100 transition hover:bg-white/15" href="tel:+243972299529">+243 972 299 529</a>
+              <a className="rounded-[8px] bg-white/10 px-3 py-2 font-bold text-slate-100 transition hover:bg-white/15" href="https://wa.me/243972299529" target="_blank" rel="noreferrer">WhatsApp</a>
+              <a className="rounded-[8px] bg-white/10 px-3 py-2 font-bold text-slate-100 transition hover:bg-white/15" href="https://www.facebook.com/search/top?q=Institut%20NENGAPETA" target="_blank" rel="noreferrer">Facebook</a>
+              <a className="rounded-[8px] bg-white/10 px-3 py-2 font-bold text-slate-100 transition hover:bg-white/15" href="https://www.instagram.com/explore/search/keyword/?q=Institut%20NENGAPETA" target="_blank" rel="noreferrer">Instagram</a>
+              <a className="rounded-[8px] bg-white/10 px-3 py-2 font-bold text-slate-100 transition hover:bg-white/15" href="https://t.me/share/url?url=https://nengapeta.local&text=Institut%20NENGAPETA" target="_blank" rel="noreferrer">Telegram</a>
+              <a className="rounded-[8px] bg-white/10 px-3 py-2 font-bold text-slate-100 transition hover:bg-white/15" href="https://www.tiktok.com/search?q=Institut%20NENGAPETA" target="_blank" rel="noreferrer">TikTok</a>
+              <a className="rounded-[8px] bg-white/10 px-3 py-2 font-bold text-slate-100 transition hover:bg-white/15" href="https://www.youtube.com/results?search_query=Institut%20NENGAPETA" target="_blank" rel="noreferrer">YouTube</a>
+            </div>
           </div>
-          <div>
-            <p className="font-black">Dernier mot</p>
-            <p className="mt-2 flex items-center gap-2 text-slate-300">
-              <LockKeyhole size={14} />
-              Developed by Ir Jean de Dieu BAG, copyright 2026
-            </p>
-          </div>
+        </div>
+        <div className="mx-auto mt-8 max-w-7xl border-t border-white/10 pt-4 text-[12px] font-semibold text-slate-300">
+          Copyright 2026 Institut NENGAPETA. Tous droits réservés. Developed by Ir Jean de Dieu BAG.
         </div>
       </footer>
     </main>
