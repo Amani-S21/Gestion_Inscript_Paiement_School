@@ -218,14 +218,29 @@ function downloadBlob(data: BlobPart, fileName: string, type: string) {
   URL.revokeObjectURL(url);
 }
 
+type DownloadPayload = {
+  file_name: string;
+  content_type: string;
+  content_base64: string;
+};
+
+function downloadBase64File(payload: DownloadPayload, fallbackFileName: string) {
+  const binary = window.atob(payload.content_base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+  downloadBlob(bytes, payload.file_name || fallbackFileName, payload.content_type);
+}
+
 export async function downloadStudentCardPdf(studentId: string | number, fileName = "carte-eleve.pdf") {
-  const { data } = await api.get(`/api/students/${studentId}/card/pdf`, { responseType: "blob" });
-  downloadBlob(data, fileName, "application/pdf");
+  const { data } = await api.get<DownloadPayload>(`/api/students/${studentId}/card/pdf-data`);
+  downloadBase64File(data, fileName);
 }
 
 export async function downloadAllStudentCards(fileName = "cartes-eleves.zip") {
-  const { data } = await api.get("/api/students/cards/pdf", { responseType: "blob" });
-  downloadBlob(data, fileName, "application/zip");
+  const { data } = await api.get<DownloadPayload>("/api/students/cards/pdf-data");
+  downloadBase64File(data, fileName);
 }
 
 export async function getReportsOverview() {
