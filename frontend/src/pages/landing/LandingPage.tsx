@@ -263,6 +263,45 @@ export function LandingPage() {
         </div>
       </section>
 
+      <section className="border-y border-slate-200 bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+            <div>
+              <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">Photos et vidéos publicitaires</p>
+              <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">La vie de l'Institut NENGAPETA</h2>
+            </div>
+            <p className="max-w-xl text-[13px] leading-6 text-slate-600">Ces emplacements peuvent recevoir les photos, vidéos et fichiers dynamiques de l'école selon les options organisées.</p>
+          </div>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {mediaItems.map((item) => (
+              <article key={item} className="overflow-hidden rounded-[14px] border border-slate-200 bg-[#f8fbfb] shadow-sm">
+                <img src="/images/nengapeta-school-hero.png" alt="" className="h-44 w-full object-cover" />
+                <div className="p-4">
+                  <p className="font-black text-slate-900">{item}</p>
+                  <p className="mt-1 text-[12px] leading-5 text-slate-600">Support photo ou vidéo pour présenter l'école, ses sections, ses options et ses activités.</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="max-w-2xl">
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#0e4f4a]">10 raisons</p>
+          <h2 className="mt-2 text-[24px] font-black text-[#0b1f33]">Pourquoi rejoindre NE NGAPETA</h2>
+        </div>
+        <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          {reasons.map((reason, index) => (
+            <div key={reason} className="rounded-[12px] border border-slate-200 bg-white p-4 shadow-sm">
+              <img src="/images/nengapeta-school-hero.png" alt="" className="mb-3 h-20 w-full rounded-[8px] object-cover" />
+              <p className="text-[11px] font-black text-[#0e4f4a]">Raison {index + 1}</p>
+              <p className="mt-1 text-[13px] font-bold text-slate-800">{reason}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section id="faq" className="border-t border-slate-200 bg-white">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[0.72fr_1.28fr] lg:px-8">
           <div>
@@ -297,13 +336,23 @@ export function LandingPage() {
         </div>
       </section>
 
-      <footer className="border-t border-slate-200 bg-[#0b1f33] px-4 py-6 text-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 text-[12px] sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-bold">Institut NENGAPETA - Gestion des inscriptions et paiements</p>
-          <p className="flex items-center gap-2 text-slate-300">
-            <LockKeyhole size={14} />
-            Accès sécurisé par rôles et permissions
-          </p>
+      <footer className="border-t border-slate-200 bg-[#0b1f33] px-4 py-8 text-white">
+        <div className="mx-auto grid max-w-7xl gap-6 text-[12px] md:grid-cols-3">
+          <div>
+            <p className="font-black">A propos</p>
+            <p className="mt-2 leading-6 text-slate-300">Historique, photos, vidéos et fichiers de présentation de l'Institut NENGAPETA.</p>
+          </div>
+          <div>
+            <p className="font-black">Contactez-nous</p>
+            <p className="mt-2 leading-6 text-slate-300">Téléphone des autorités, Facebook, WhatsApp, Instagram, Telegram, TikTok et YouTube.</p>
+          </div>
+          <div>
+            <p className="font-black">Dernier mot</p>
+            <p className="mt-2 flex items-center gap-2 text-slate-300">
+              <LockKeyhole size={14} />
+              Developed by Ir Jean de Dieu BAG, copyright 2026
+            </p>
+          </div>
         </div>
       </footer>
     </main>
